@@ -1,12 +1,9 @@
 package main.facade;
 
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IBookFacade {
@@ -17,7 +14,7 @@ public interface IBookFacade {
      * @param longitude String The longitude.
      * @throws BookNotFoundException Exception is thrown if no books are found.
      */
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException, ConnectionAlreadyClosedException;
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException;
 
     /**
      * Returns a List of books an author has written.
@@ -26,7 +23,7 @@ public interface IBookFacade {
      * @return List of books The books the author has written.
      * @throws BookNotFoundException Exception is thrown if no books are found.
      */
-    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException, ConnectionAlreadyClosedException;
+    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException;
 
     /**
      * Returns a List of books where cities mentioned in a book is in.
@@ -35,7 +32,7 @@ public interface IBookFacade {
      * @return List of books The books where the cities are mentioned.
      * @throws BookNotFoundException Exception is thrown if no books are found.
      */
-    public List<Location> getCitiesFromBook(String title) throws BookNotFoundException, ConnectionAlreadyClosedException;
+    public List<Location> getCitiesFromBook(String title) throws BookNotFoundException;
 
     /**
      * Returns a List of books which has a specific location somewhere in the text.
@@ -44,5 +41,5 @@ public interface IBookFacade {
      * @return List of books The books where the location is mentioned.
      * @throws BookNotFoundException Exception is thrown if no books are found.
      */
-    public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException, ConnectionAlreadyClosedException, SQLException, ClassNotFoundException;
+    public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException;
 }

@@ -3,9 +3,6 @@ package test.dao;
 import main.dao.BookDAOMySQL;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
-import main.util.DBConnectorMongo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -41,7 +38,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void successfulGetCitiesFromBookTest() throws ConnectionAlreadyClosedException {
+    public void successfulGetCitiesFromBookTest() {
         dao = new BookDAOMySQL();
 
         List<Location> cities = dao.getCitiesFromBook("What Peace Means");
@@ -51,7 +48,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void unsuccessfulGetCitiesFromBookTest() throws ConnectionAlreadyClosedException {
+    public void unsuccessfulGetCitiesFromBookTest() {
         dao = new BookDAOMySQL();
 
         List<Location> cities = dao.getCitiesFromBook("BoogerButt Anthology, Book III");
@@ -61,7 +58,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void successfulGetAuthorsAndBooksFromCity() throws ConnectionAlreadyClosedException {
+    public void successfulGetAuthorsAndBooksFromCity() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getAuthorsAndBooksFromCity("Washington");
@@ -70,7 +67,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void unsuccessfulGetAuthorsAndBooksFromCity() throws ConnectionAlreadyClosedException {
+    public void unsuccessfulGetAuthorsAndBooksFromCity() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getAuthorsAndBooksFromCity("New Donk City");
@@ -79,7 +76,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void successfulGetBooksAndCitiesFromAuthor() throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public void successfulGetBooksAndCitiesFromAuthor() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getBooksAndCitiesFromAuthor("Thomas Clarkson");
@@ -88,7 +85,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void unsuccessfulGetBooksAndCitiesFromAuthor() throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public void unsuccessfulGetBooksAndCitiesFromAuthor() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getBooksAndCitiesFromAuthor("Slab PlunkChunk");
@@ -97,7 +94,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void successfulGetBooksFromLatLong() throws ConnectionAlreadyClosedException {
+    public void successfulGetBooksFromLatLong() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50);
@@ -106,7 +103,7 @@ public class BookDAOMySQLIT {
     }
 
     @Test
-    public void unsuccessfulGetBooksFromLatLong() throws ConnectionAlreadyClosedException {
+    public void unsuccessfulGetBooksFromLatLong() {
         dao = new BookDAOMySQL();
 
         List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666);

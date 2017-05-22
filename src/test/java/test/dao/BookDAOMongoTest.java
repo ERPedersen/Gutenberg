@@ -1,12 +1,8 @@
 package test.dao;
 
 import main.dao.BookDAOMongo;
-import main.dao.BookDAOMongo;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
-import main.util.DBConnectorMongo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -31,7 +27,7 @@ public class BookDAOMongoTest {
 
 
     @Test
-    public void successfulGetLocationsFromBookTest() throws ConnectionAlreadyClosedException {
+    public void successfulGetLocationsFromBookTest() {
         BookDAOMongo dao = mock(BookDAOMongo.class);
         List<Location> locations = new ArrayList<>();
         locations.add(new Location(1L, 2.1230, 2.123, "name"));
@@ -43,7 +39,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void failedGetLocationsFromBookTest() throws ConnectionAlreadyClosedException {
+    public void failedGetLocationsFromBookTest() {
         BookDAOMongo dao = mock(BookDAOMongo.class);
         when(dao.getCitiesFromBook(anyString())).
                 thenReturn(null);
@@ -52,7 +48,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void successfulGetBooksAndCitiesFromAuthorTest() throws ConnectionAlreadyClosedException, BookNotFoundException {
+    public void successfulGetBooksAndCitiesFromAuthorTest() {
         List<Book> books = new ArrayList<>();
 
         BookDAOMongo dao = mock(BookDAOMongo.class);
@@ -63,7 +59,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void failedGetBooksAndCitiesFromAuthorTest() throws ConnectionAlreadyClosedException, BookNotFoundException {
+    public void failedGetBooksAndCitiesFromAuthorTest() {
         BookDAOMongo dao = mock(BookDAOMongo.class);
         when(dao.getBooksAndCitiesFromAuthor(anyString())).
                 thenReturn(null);
@@ -72,7 +68,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void successfulGetBooksFromLatitudeLongitudeTest() throws ConnectionAlreadyClosedException {
+    public void successfulGetBooksFromLatitudeLongitudeTest() {
         List<Book> books = new ArrayList<>();
 
         BookDAOMongo dao = mock(BookDAOMongo.class);
@@ -83,7 +79,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void failedGetBooksFromLatitudeLongitudeTest() throws ConnectionAlreadyClosedException {
+    public void failedGetBooksFromLatitudeLongitudeTest() {
         BookDAOMongo dao = mock(BookDAOMongo.class);
         when(dao.getBooksFromLatLong(anyDouble(),anyDouble(), anyInt())).
                 thenReturn(null);
@@ -92,7 +88,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void successfulGetAuthorsAndBooksFromCities() throws ConnectionAlreadyClosedException {
+    public void successfulGetAuthorsAndBooksFromCities() {
         List<Book> books = new ArrayList<>();
 
         BookDAOMongo dao = mock(BookDAOMongo.class);
@@ -103,7 +99,7 @@ public class BookDAOMongoTest {
     }
 
     @Test
-    public void failedGetAuthorsAndBooksFromCities() throws ConnectionAlreadyClosedException {
+    public void failedGetAuthorsAndBooksFromCities() {
         BookDAOMongo dao = mock(BookDAOMongo.class);
         when(dao.getAuthorsAndBooksFromCity(anyString())).
                 thenReturn(null);
