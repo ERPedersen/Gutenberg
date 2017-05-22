@@ -122,7 +122,6 @@
             <artifactId>jersey-bundle</artifactId>
             <version>1.18.3</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>

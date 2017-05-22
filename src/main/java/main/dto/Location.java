@@ -1,7 +1,5 @@
 package main.dto;
 
-import java.util.List;
-
 public class Location {
 
     private Long UID;

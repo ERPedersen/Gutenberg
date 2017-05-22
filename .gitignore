@@ -41,6 +41,7 @@ nb-configuration.xml
 build.xml
 
 # Other
+*.iml
 *.iws
 *.ipr
 

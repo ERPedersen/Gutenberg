@@ -276,4 +276,140 @@ public class BookDAOMySQL implements IBookDAO {
         }
         return books;
     }
+
+    /**
+     * Returns a list of Author names for fuzzy searching.
+     *
+     * @param name String partial name of an author.
+     * @return List<String> List of String names of authors.
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+        List<String> authors = new ArrayList<>();
+
+        String[] split = name.split(" ");
+
+        String starredInput = "";
+        for (String spaced : split) {
+            starredInput = spaced + "* ";
+        }
+
+        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+
+
+        Connection con = null;
+        try {
+            con = connector.getConnection();
+            PreparedStatement statement = con.prepareStatement(queryString);
+            statement.setString(1, starredInput);
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+
+                authors.add(resultSet.getString(1));
+
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+                return null;
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            connector.closeConnection();
+        }
+        return authors;
+    }
+
+    /**
+     * Gets a list of Book titles for fuzzy searching.
+     *
+     * @param title String partial title of a book.
+     * @return List<String> List of String book titles.
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+        List<String> books = new ArrayList<>();
+        String[] split = title.split(" ");
+
+        String starredInput = "";
+        for (String spaced : split) {
+            starredInput = spaced + "* ";
+        }
+
+        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+
+
+        Connection con = null;
+        try {
+            con = connector.getConnection();
+            PreparedStatement statement = con.prepareStatement(queryString);
+            statement.setString(1, starredInput);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                books.add(resultSet.getString(1));
+
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+                return null;
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            connector.closeConnection();
+        }
+        return books;
+    }
+
+    /**
+     * Gets a list of City names from a partial name.
+     *
+     * @param name String partial name of a city.
+     * @return List<String> List of String names of cities.
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+        List<String> cities = new ArrayList<>();
+        String[] split = name.split(" ");
+
+        String starredInput = "";
+        for (String spaced : split) {
+            starredInput = spaced + "* ";
+        }
+        starredInput = starredInput.substring(0, starredInput.length()-1);
+
+        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+
+
+        Connection con;
+        try {
+            con = connector.getConnection();
+            PreparedStatement statement = con.prepareStatement(queryString);
+            statement.setString(1, starredInput);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+
+                cities.add(resultSet.getString(1));
+
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+                return null;
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            connector.closeConnection();
+        }
+        return cities;
+    }
 }

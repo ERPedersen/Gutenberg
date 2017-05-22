@@ -8,26 +8,19 @@ package main.api;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import main.dao.BookDAOMongo;
 import main.dao.IBookDAO;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 import main.facade.BookFacade;
 import main.facade.IBookFacade;
 
@@ -42,6 +35,9 @@ public class MongoAPI {
     IBookDAO dao;
     IBookFacade facade;
 
+    @Context
+    private UriInfo context;
+
     /**
      * Creates a new instance of MongoAPI
      */
@@ -50,7 +46,7 @@ public class MongoAPI {
                 .setPrettyPrinting()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create();
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
         facade = new BookFacade(dao);
     }
 
@@ -74,19 +70,21 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromlatlong/{lat}/{long}/{rad}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("fromlatlong")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBooksFromLatLong(@PathParam("lat") double latitude, @PathParam("long") double longitude, @PathParam("rad") int radius) {
+    public Response getBooksFromLatLong(
+            @QueryParam("lat") double latitude,
+            @QueryParam("long") double longitude,
+            @QueryParam("rad") int radius) {
 
         List<Book> books;
         try {
             books = facade.getBooksFromLatLong(latitude, longitude, radius);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
+        } catch (BookNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
-        return Response.status(Response.Status.OK).entity("{ \"data\":" + gson.toJson(books) + "}").build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
     }
 
     /**
@@ -97,19 +95,18 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromauthor/{auth}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("fromauthor")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response booksAndCitiesFromAuthorMongo(@PathParam("auth") String author) {
+    public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
 
         List<Book> books;
         try {
             books = facade.getBooksAndCitiesFromAuthor(author);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
+        } catch (BookNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
-        return Response.status(Response.Status.OK).entity("{ \"data\":" + gson.toJson(books) + "}").build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
     }
 
     /**
@@ -119,18 +116,17 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("frombook/{book}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("frombook")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCitiesFromBook(@PathParam("book") String bookName) {
+    public Response getCitiesFromBook(@QueryParam("q") String bookName) {
         List<Location> cities;
         try {
             cities = facade.getCitiesFromBook(bookName);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
+        } catch (BookNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
-        return Response.status(Response.Status.OK).entity("{ \"data\":" + gson.toJson(cities) + "}").build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(cities)).build();
     }
 
     /**
@@ -140,18 +136,17 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromcity/{city}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("fromcity")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAuthorsAndBooksFromCity(@PathParam("city") String cityName) {
+    public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
         List<Book> books;
         try {
             books = facade.getAuthorsAndBookFromCity(cityName);
-        } catch (SQLException | ClassNotFoundException | ConnectionAlreadyClosedException | BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
+        } catch (BookNotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
-        return Response.status(Response.Status.OK).entity("{ \"data\":" + gson.toJson(books) + "}").build();
+        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
     }
 
 }

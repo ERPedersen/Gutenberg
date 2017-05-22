@@ -1,32 +1,24 @@
 package main.dao;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.ConnectionAlreadyClosedException;
 import main.util.DBConnectorMongo;
-
-import static com.mongodb.client.model.Filters.*;
-
 
 import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ebbe Nielsen on 12/05/2017.
- */
 public class BookDAOMongo implements IBookDAO {
 
     DBConnectorMongo connector;
     MongoCollection<Document> collection;
     MongoDatabase db;
-    Gson gson;
+
 
 
     /**
@@ -35,10 +27,6 @@ public class BookDAOMongo implements IBookDAO {
     public BookDAOMongo() {
         connector = new DBConnectorMongo();
         db = connector.getConnection();
-        gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-                .create();
     }
 
     /**
@@ -185,4 +173,39 @@ public class BookDAOMongo implements IBookDAO {
         return books;
     }
 
+    /**
+     * Unused.
+     *
+     * @param name
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+    }
+
+    /**
+     * Unused.
+     *
+     * @param title
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+    }
+
+    /**
+     * Unused.
+     *
+     * @param name
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+    }
 }

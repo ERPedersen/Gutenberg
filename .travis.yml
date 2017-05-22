@@ -1,9 +1,20 @@
+# Define the program language and enviroments to run through travis
 language: java
 jdk: oraclejdk8
+
+# Loads in the deploy.sh script from root.
 before_script:
 - chmod +x ./deploy.sh
+
+# Override the normal script mvn test -B, runs the script loaded from the script above
 script:
-- "./deploy.sh"
+- ./deploy.sh
+
+# Defining global enviroment variables, secure are encrypted variables
+# use the '$ travis encrypt VARIABLENAME=variableValue --add' to encrypt,
+# the --add argument ensures that travis adds it to the travis.yml automatically
+#
+# !NB you have to install Travis CLI through Ruby and Ruby Gem
 env:
   global:
   - MONGO_DB=gutenberg
