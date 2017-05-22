@@ -3,7 +3,13 @@ package main.dao;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
 import main.dto.Book;
@@ -12,10 +18,11 @@ import main.util.DBConnectorMongo;
 
 import static com.mongodb.client.model.Filters.*;
 
-
 import org.bson.Document;
+import org.jongo.Jongo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,14 +67,15 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
-        throw new UnsupportedOperationException("Not implemented");
+
+        throw new UnsupportedOperationException();
         /*collection = db.getCollection("books");
 
         List<Book> books = new ArrayList<>();
 
         double[] latLong = new double[2];
-        latLong[0] = latitude;
-        latLong[1] = longitude;
+        latLong[1] = latitude;
+        latLong[0] = longitude;
 
         AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
                 new Document("$geoNear",
@@ -79,6 +87,8 @@ public class BookDAOMongo implements IBookDAO {
                                 .append("distanceField", "distance")
                                 .append("minDistance", 1))
         ));
+
+        System.out.println(output);
 
         for (Document dbObject : output) {
             System.out.println(dbObject);
