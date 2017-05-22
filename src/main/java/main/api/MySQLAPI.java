@@ -181,7 +181,7 @@ public class MySQLAPI {
         try {
             cities = facade.getCitiesFromBook(bookName);
         } catch (BookNotFoundException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace(); should this one print the stacktrace???
             return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 

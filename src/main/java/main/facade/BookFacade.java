@@ -34,7 +34,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException {
         List<Book> books = dao.getBooksFromLatLong(latitude, longitude, radius);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -50,7 +50,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
         List<Book> books = dao.getBooksAndCitiesFromAuthor(name);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -66,7 +66,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Location> getCitiesFromBook(String title) throws BookNotFoundException {
         List<Location> books = dao.getCitiesFromBook(title);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -82,7 +82,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException {
         List<Book> books = dao.getAuthorsAndBooksFromCity(name);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -93,7 +93,6 @@ public class BookFacade implements IBookFacade
      *
      * @param name String The partial name of a city.
      * @return List<String> A list of Strings for City names.
-     * @throws ConnectionAlreadyClosedException
      * @throws BookNotFoundException
      */
     @Override
@@ -111,8 +110,6 @@ public class BookFacade implements IBookFacade
      * @param title String The partial title of a book.
      * @return List<String> A list of Strings for Book titles.
      * @throws BookNotFoundException
-     * @throws ConnectionAlreadyClosedException
-     * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Override
@@ -130,7 +127,6 @@ public class BookFacade implements IBookFacade
      * @param name String The partial name of an author.
      * @return List<String> A list of Strings for Author names.
      * @throws BookNotFoundException
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException {

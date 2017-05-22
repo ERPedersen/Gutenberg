@@ -58,15 +58,14 @@ public class RestAssuredMySQL {
 
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/frombook/What Peace Means")
+                .get("http://localhost:8080/api/mysql/frombook?q=What Peace Means")
                 .then()
                 .statusCode(200)
                 .extract().response();
 
         String jsonString = response.asString();
 
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
         List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
         assertThat(cities, hasSize(greaterThan(0)));
@@ -84,16 +83,8 @@ public class RestAssuredMySQL {
                 .when()
                 .get("http://localhost:8080/api/mysql/frombook/Bonerbutt: The Collected Works")
                 .then()
-                .statusCode(200)
+                .statusCode(404)
                 .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
-        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
-
-        assertThat(cities, hasSize(equalTo(0)));
 
     }
 
@@ -102,7 +93,7 @@ public class RestAssuredMySQL {
 
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromcity/Copenhagen")
+                .get("http://localhost:8080/api/mysql/fromcity?q=Copenhagen")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
@@ -110,8 +101,7 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
         List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
@@ -132,19 +122,11 @@ public class RestAssuredMySQL {
 
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromcity/New Donk City")
+                .get("http://localhost:8080/api/mysql/fromcity?q=New Donk City")
                 .then()
                 .contentType(JSON)
-                .statusCode(200)
+                .statusCode(404)
                 .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-
-        assertThat(books, hasSize(0));
 
     }
 
@@ -153,7 +135,7 @@ public class RestAssuredMySQL {
 
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromauthor/Edith Wharton")
+                .get("http://localhost:8080/api/mysql/fromauthor?q=Edith Wharton")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
@@ -161,8 +143,7 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
         List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
@@ -173,26 +154,18 @@ public class RestAssuredMySQL {
     public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromauthor/Hunk SlabChest")
+                .get("http://localhost:8080/api/mysql/fromauthor?q=Hunk SlabChest")
                 .then()
                 .contentType(JSON)
-                .statusCode(200)
+                .statusCode(404)
                 .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-
-        assertThat(books, hasSize(equalTo(0)));
     }
 
     @Test
     public void successfulTestGetBooksFromLatLong() {
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromlatlong/52.18935/-2.22001/50")
+                .get("http://localhost:8080/api/mysql/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
@@ -200,8 +173,7 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
         List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
@@ -211,19 +183,11 @@ public class RestAssuredMySQL {
     public void unsuccessfulTestGetBooksFromLatLong() {
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mysql/fromlatlong/420420.0/-696969.0/666")
+                .get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
                 .then()
                 .contentType(JSON)
-                .statusCode(200)
+                .statusCode(404)
                 .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = (JsonArray) data.get("data");
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-
-        assertThat(books, hasSize(equalTo(0)));
     }
 
 }

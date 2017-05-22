@@ -9,20 +9,17 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.List;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-
 import main.dao.BookDAOMySQL;
 import main.dao.IBookDAO;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+
 import main.facade.BookFacade;
 import main.facade.IBookFacade;
 
