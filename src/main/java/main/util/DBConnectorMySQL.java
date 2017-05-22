@@ -65,7 +65,7 @@ public class DBConnectorMySQL implements IDBConnectorMySQL {
 	 * @throws ConnectionAlreadyClosedException If the connection is already closed or non-existent.
 	 */
 	@Override
-	public void closeConnection() throws ConnectionAlreadyClosedException {
+	public void closeConnection() {
 		try {
 			if (null != connection && !connection.isClosed()) {
 				connection.close();
@@ -73,8 +73,6 @@ public class DBConnectorMySQL implements IDBConnectorMySQL {
 		} catch (SQLException e) {
 			if (Objects.equals(System.getenv("PROCESS_ENV"), "dev")) {
 				e.printStackTrace();
-			} else {
-				throw new ConnectionAlreadyClosedException("Connection is already closed.");
 			}
 		}
 	}

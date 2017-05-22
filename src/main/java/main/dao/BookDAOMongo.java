@@ -1,5 +1,6 @@
 package main.dao;
 
+import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
@@ -13,11 +14,14 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class BookDAOMongo implements IBookDAO {
 
     DBConnectorMongo connector;
     MongoCollection<Document> collection;
     MongoDatabase db;
+    Gson gson = new Gson();
 
 
 
@@ -181,7 +185,7 @@ public class BookDAOMongo implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchAuthor(String name)  {
         throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 
@@ -193,7 +197,7 @@ public class BookDAOMongo implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchBook(String title) {
         throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 
@@ -205,7 +209,7 @@ public class BookDAOMongo implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchCity(String name) {
         throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 }

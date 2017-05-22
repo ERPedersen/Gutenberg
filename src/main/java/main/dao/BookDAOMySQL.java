@@ -42,7 +42,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @return List of books The list of books where the location is mentioned.
      */
     @Override
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws ConnectionAlreadyClosedException {
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
         List<Book> books = new ArrayList<>();
         String queryString = "" +
                 "SELECT b.b_id, b.title, b.text, a.a_id, a.name, l1.l_id, l1.latitude, l1.longitude, l1.name " +
@@ -120,7 +120,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @return List of books which are written by the author.
      */
     @Override
-    public List<Book> getBooksAndCitiesFromAuthor(String name) throws ConnectionAlreadyClosedException, BookNotFoundException {
+    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
         List<Book> books = new ArrayList<>();
         String queryString =
                 "SELECT DISTINCT b.b_id, b.title, b.text, a.a_id, l.l_id, l.latitude, l.longitude, l.name " +
@@ -186,7 +186,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @return List of books with locations.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title) throws ConnectionAlreadyClosedException {
+    public List<Location> getCitiesFromBook(String title) {
         List<Location> locations = new ArrayList<>();
         String queryString =
                 "SELECT * FROM location l " +
@@ -232,7 +232,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @return List of books The books where the location is mentioned.
      */
     @Override
-    public List<Book> getAuthorsAndBooksFromCity(String name) throws ConnectionAlreadyClosedException {
+    public List<Book> getAuthorsAndBooksFromCity(String name) {
         List<Book> books = new ArrayList<>();
         String queryString = "" +
                 "SELECT b.b_id, b.title, b.text, a.a_id, a.name " +
@@ -285,7 +285,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchAuthor(String name) {
         List<String> authors = new ArrayList<>();
 
         String[] split = name.split(" ");
@@ -332,7 +332,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchBook(String title) {
         List<String> books = new ArrayList<>();
         String[] split = title.split(" ");
 
@@ -376,7 +376,7 @@ public class BookDAOMySQL implements IBookDAO {
      * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchCity(String name)  {
         List<String> cities = new ArrayList<>();
         String[] split = name.split(" ");
 
