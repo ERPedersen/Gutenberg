@@ -12,9 +12,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
@@ -22,9 +20,7 @@ import main.dto.Location;
 import main.exception.BookNotFoundException;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 import java.util.List;
@@ -69,8 +65,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Location> cities = gson.fromJson(jsonString, new TypeToken<List<Location>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
         assertThat(cities, hasSize(greaterThan(0)));
 
@@ -92,8 +89,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Location> cities = gson.fromJson(jsonString, new TypeToken<List<Location>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
         assertThat(cities, hasSize(equalTo(0)));
 
@@ -112,8 +110,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
 
@@ -141,8 +140,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(0));
 
@@ -161,8 +161,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
 
@@ -180,8 +181,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(equalTo(0)));
     }
@@ -198,8 +200,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
     }
@@ -216,8 +219,9 @@ public class RestAssuredMySQL {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(equalTo(0)));
     }

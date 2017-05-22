@@ -1,8 +1,6 @@
 package test.dto;
 
 import main.dto.Author;
-import org.apache.http.auth.AUTH;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;

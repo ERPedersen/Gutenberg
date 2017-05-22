@@ -78,12 +78,17 @@ public class BookTest {
         locations.add(new Location(1L, 50.850346, 4.351721, "Brussels"));
         book.setLocations(locations);
         book.setText("RAWWWR");
+        List<Location> locationsWithinRadius = new ArrayList<Location>() {{
+            add(new Location());
+        }};
+        book.setLocationsWithinRadius(locationsWithinRadius);
 
         assertThat(book.getUID(), is(2L));
         assertThat(book.getTitle(), is("Den søde stenaldermand"));
         assertThat(book.getAuthors().size(), is(2));
         assertThat(book.getLocations().size(), is(3));
         assertThat(book.getText(), is("RAWWWR"));
+        assertThat(book.getLocationsWithinRadius().size(), is(1));
 	}
 
 	@Test
