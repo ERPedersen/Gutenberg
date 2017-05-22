@@ -128,7 +128,7 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
-        return null;
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 
     /**
@@ -140,7 +140,7 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
-        return null;
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 
     /**
@@ -152,6 +152,6 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
-        return null;
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 }
