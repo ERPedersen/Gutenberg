@@ -1,7 +1,6 @@
 package main.facade;
 
 import main.dao.IBookDAO;
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
@@ -37,7 +36,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException, ConnectionAlreadyClosedException {
         List<Book> books = dao.getBooksFromLatLong(latitude, longitude, radius);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -53,7 +52,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException, ConnectionAlreadyClosedException {
         List<Book> books = dao.getBooksAndCitiesFromAuthor(name);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -69,7 +68,7 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Location> getCitiesFromBook(String title) throws BookNotFoundException, ConnectionAlreadyClosedException {
         List<Location> books = dao.getCitiesFromBook(title);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
@@ -85,9 +84,62 @@ public class BookFacade implements IBookFacade
     @Override
     public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException, ConnectionAlreadyClosedException, SQLException, ClassNotFoundException {
         List<Book> books = dao.getAuthorsAndBooksFromCity(name);
-        if (null == books) {
+        if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
         }
         return books;
+    }
+
+    /**
+     * Gets a list of city names for fuzzy searching.
+     *
+     * @param name String The partial name of a city.
+     * @return List<String> A list of Strings for City names.
+     * @throws ConnectionAlreadyClosedException
+     * @throws BookNotFoundException
+     */
+    @Override
+    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException, BookNotFoundException {
+        List<String> cities = dao.getFuzzySearchCity(name);
+        if (null == cities || cities.size() == 0) {
+            throw new BookNotFoundException("No city was found");
+        }
+        return cities;
+    }
+
+    /**
+     *  Gets a list of book names for fuzzy searching.
+     *
+     * @param title String The partial title of a book.
+     * @return List<String> A list of Strings for Book titles.
+     * @throws BookNotFoundException
+     * @throws ConnectionAlreadyClosedException
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    @Override
+    public List<String> getFuzzySearchBook(String title) throws BookNotFoundException, ConnectionAlreadyClosedException, SQLException, ClassNotFoundException {
+        List<String> books = dao.getFuzzySearchBook(title);
+        if (null == books || books.size() == 0) {
+            throw new BookNotFoundException("No book was found");
+        }
+        return books;
+    }
+
+    /**
+     * Gets a list of author names for fuzzy searching.
+     *
+     * @param name String The partial name of an author.
+     * @return List<String> A list of Strings for Author names.
+     * @throws BookNotFoundException
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException, ConnectionAlreadyClosedException {
+        List<String> authors = dao.getFuzzySearchAuthor(name);
+        if (null == authors || authors.size() == 0) {
+            throw new BookNotFoundException("No author was found");
+        }
+        return authors;
     }
 }

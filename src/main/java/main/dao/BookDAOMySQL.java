@@ -230,46 +230,182 @@ public class BookDAOMySQL implements IBookDAO {
 	@Override
 	public List<Book> getAuthorsAndBooksFromCity(String name) throws ConnectionAlreadyClosedException {
         List<Book> books = new ArrayList<>();
-	    String queryString = "" +
-                "SELECT b.b_id, b.title, b.text, a.a_id, a.name " +
-                "FROM book b " +
-                "JOIN author_book ab ON b.b_id = ab.b_id " +
-                "JOIN author a ON ab.a_id = a.a_id " +
-                "JOIN book_location bl ON b.b_id = bl.b_id " +
-                "JOIN location l ON bl.l_id = l.l_id " +
-                "WHERE l.name = ?;";
+		String queryString = "" +
+				"SELECT b.b_id, b.title, b.text, a.a_id, a.name " +
+				"FROM book b " +
+				"JOIN author_book ab ON b.b_id = ab.b_id " +
+				"JOIN author a ON ab.a_id = a.a_id " +
+				"JOIN book_location bl ON b.b_id = bl.b_id " +
+				"JOIN location l ON bl.l_id = l.l_id " +
+				"WHERE l.name = ?;";
 
 
-        Connection con = null;
-        try {
-            con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
+		Connection con = null;
+		try {
+			con = connector.getConnection();
+			PreparedStatement statement = con.prepareStatement(queryString);
+			statement.setString(1, name);
+			ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                Book book = new Book(
-                        resultSet.getLong(1),
-                        resultSet.getString(2),
-                        new ArrayList<>(),
-                        new ArrayList<>(),
-                        resultSet.getString(3)
-                );
-                book.addAuthor(new Author(
-                        resultSet.getLong(4),
-                        resultSet.getString(5)
-                ));
-                books.add(book);
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
-                return null;
-            } else {
-                e.printStackTrace();
-            }
-        } finally {
-            connector.closeConnection();
-        }
+			while (resultSet.next()) {
+				Book book = new Book(
+						resultSet.getLong(1),
+						resultSet.getString(2),
+						new ArrayList<>(),
+						new ArrayList<>(),
+						resultSet.getString(3)
+				);
+				book.addAuthor(new Author(
+						resultSet.getLong(4),
+						resultSet.getString(5)
+				));
+				books.add(book);
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+				return null;
+			} else {
+				e.printStackTrace();
+			}
+		} finally {
+			connector.closeConnection();
+		}
         return books;
+	}
+
+	/**
+	 * Returns a list of Author names for fuzzy searching.
+	 *
+	 * @param name String partial name of an author.
+	 * @return List<String> List of String names of authors.
+	 * @throws ConnectionAlreadyClosedException
+	 */
+	@Override
+	public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+		List<String> authors = new ArrayList<>();
+
+		String[] split = name.split(" ");
+
+		String starredInput = "";
+		for (String spaced : split) {
+			starredInput = spaced + "* ";
+		}
+
+		String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+
+
+		Connection con = null;
+		try {
+			con = connector.getConnection();
+			PreparedStatement statement = con.prepareStatement(queryString);
+			statement.setString(1, starredInput);
+			ResultSet resultSet = statement.executeQuery();
+
+
+			while (resultSet.next()) {
+
+				authors.add(resultSet.getString(1));
+
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+				return null;
+			} else {
+				e.printStackTrace();
+			}
+		} finally {
+			connector.closeConnection();
+		}
+		return authors;
+	}
+
+	/**
+	 * Gets a list of Book titles for fuzzy searching.
+	 *
+	 * @param title String partial title of a book.
+	 * @return List<String> List of String book titles.
+	 * @throws ConnectionAlreadyClosedException
+	 */
+	@Override
+	public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+		List<String> books = new ArrayList<>();
+		String[] split = title.split(" ");
+
+		String starredInput = "";
+		for (String spaced : split) {
+			starredInput = spaced + "* ";
+		}
+
+		String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+
+
+		Connection con = null;
+		try {
+			con = connector.getConnection();
+			PreparedStatement statement = con.prepareStatement(queryString);
+			statement.setString(1, starredInput);
+			ResultSet resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				books.add(resultSet.getString(1));
+
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+				return null;
+			} else {
+				e.printStackTrace();
+			}
+		} finally {
+			connector.closeConnection();
+		}
+		return books;
+	}
+
+	/**
+	 * Gets a list of City names from a partial name.
+	 *
+	 * @param name String partial name of a city.
+	 * @return List<String> List of String names of cities.
+	 * @throws ConnectionAlreadyClosedException
+	 */
+	@Override
+	public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+		List<String> cities = new ArrayList<>();
+		String[] split = name.split(" ");
+
+		String starredInput = "";
+		for (String spaced : split) {
+			starredInput = spaced + "* ";
+		}
+		starredInput = starredInput.substring(0, starredInput.length()-1);
+
+		String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+
+
+		Connection con;
+		try {
+			con = connector.getConnection();
+			PreparedStatement statement = con.prepareStatement(queryString);
+			statement.setString(1, starredInput);
+			ResultSet resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+
+				cities.add(resultSet.getString(1));
+
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			if (Objects.equals(System.getenv("PROCESS_ENV"), "prod")) {
+				return null;
+			} else {
+				e.printStackTrace();
+			}
+		} finally {
+			connector.closeConnection();
+		}
+		return cities;
 	}
 }

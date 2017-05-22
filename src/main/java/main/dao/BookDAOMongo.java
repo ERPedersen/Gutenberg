@@ -1,10 +1,18 @@
 package main.dao;
 
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.ConnectionAlreadyClosedException;
 import main.util.DBConnectorMongo;
 
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,12 +21,17 @@ import java.util.List;
 public class BookDAOMongo implements IBookDAO {
 
     DBConnectorMongo connector;
+    MongoCollection<Document> collection;
+    MongoDatabase db;
+
+
 
     /**
      * Default Constructor.
      */
     public BookDAOMongo() {
         connector = new DBConnectorMongo();
+        db = connector.getConnection();
     }
 
     /**
@@ -51,7 +64,21 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name) {
-        return null;
+
+        collection = db.getCollection("books");
+
+        AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
+                    new Document("author", new Document("$elemMatch", new Document("name", name)))
+        ));
+
+        List<Book> books = new ArrayList<>();
+
+        for (Document dbObject : output) {
+
+            books.add(new Book((long)dbObject.get("UID"),(String)dbObject.get("title"),(List<Author>)dbObject.get("authors"),(List<Location>)dbObject.get("locations"),(String)dbObject.get("text")));
+        }
+
+        return books;
     }
 
     /**
@@ -62,7 +89,23 @@ public class BookDAOMongo implements IBookDAO {
      */
     @Override
     public List<Location> getCitiesFromBook(String title) {
-        return null;
+
+        db = connector.getConnection();
+        collection = db.getCollection("books");
+
+        AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
+                new Document("title", title)
+        ));
+
+        List<Location> cities = new ArrayList<>();
+
+        for (Document dbObject : output) {
+
+            //cities.add(dbObject.get("user") + ", " + dbObject.get("tweet_count"));
+           // cities.add(new Location(dbObject.get("UID"),dbObject.get("title"),dbObject.get("author")));
+        }
+
+        return cities;
     }
 
     /**
@@ -74,5 +117,41 @@ public class BookDAOMongo implements IBookDAO {
     @Override
     public List<Book> getAuthorsAndBooksFromCity(String name) {
         return null;
+    }
+
+    /**
+     * Unused.
+     *
+     * @param name
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+    }
+
+    /**
+     * Unused.
+     *
+     * @param title
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+    }
+
+    /**
+     * Unused.
+     *
+     * @param name
+     * @return
+     * @throws ConnectionAlreadyClosedException
+     */
+    @Override
+    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
+        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 }
