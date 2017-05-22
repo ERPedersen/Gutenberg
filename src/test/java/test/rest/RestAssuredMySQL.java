@@ -20,9 +20,7 @@ import main.dto.Location;
 import main.exception.BookNotFoundException;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 
 import java.util.List;
