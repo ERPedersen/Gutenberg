@@ -8,21 +8,17 @@ package main.api;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.sql.SQLException;
+
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+
 import main.dao.BookDAOMySQL;
 import main.dao.IBookDAO;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 import main.facade.BookFacade;
 import main.facade.IBookFacade;
 
@@ -78,7 +74,7 @@ public class MySQLAPI {
         List<Book> books;
         try {
             books = facade.getBooksFromLatLong(latitude, longitude, radius);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
         }
 
@@ -101,7 +97,7 @@ public class MySQLAPI {
         List<Book> books;
         try {
             books = facade.getBooksAndCitiesFromAuthor(author);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
         }
 
@@ -122,7 +118,7 @@ public class MySQLAPI {
         List<Location> cities;
         try {
             cities = facade.getCitiesFromBook(bookName);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             ex.printStackTrace();
             return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
         }
@@ -144,7 +140,7 @@ public class MySQLAPI {
         List<Book> books;
         try {
             books = facade.getAuthorsAndBookFromCity(cityName);
-        } catch (SQLException | ClassNotFoundException | ConnectionAlreadyClosedException | BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(ex).build();
         }
 
