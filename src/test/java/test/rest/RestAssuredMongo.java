@@ -1,9 +1,7 @@
 package test.rest;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
@@ -14,7 +12,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
-import static com.jayway.restassured.http.ContentType.HTML;
 import static com.jayway.restassured.http.ContentType.JSON;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -60,8 +57,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Location> cities = gson.fromJson(jsonString, new TypeToken<List<Location>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
         assertThat(cities, hasSize(greaterThan(0)));
     }
@@ -78,8 +76,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Location> cities = gson.fromJson(jsonString, new TypeToken<List<Location>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
         assertThat(cities, hasSize(equalTo(0)));
 
@@ -98,8 +97,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
 
@@ -119,8 +119,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(0));
 
@@ -139,8 +140,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
 
@@ -158,8 +160,9 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        List<Book> books = gson.fromJson(jsonString, new TypeToken<List<Book>>() {
-        }.getType());
+        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = (JsonArray) data.get("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
         assertThat(books, hasSize(equalTo(0)));
     }

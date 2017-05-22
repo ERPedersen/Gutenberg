@@ -6,7 +6,6 @@ import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.ConnectionAlreadyClosedException;
 import main.util.DBConnectorMongo;
 
 import org.bson.Document;
@@ -182,7 +181,6 @@ public class BookDAOMongo implements IBookDAO {
      *
      * @param name
      * @return
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name)  {
@@ -194,7 +192,6 @@ public class BookDAOMongo implements IBookDAO {
      *
      * @param title
      * @return
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchBook(String title) {
@@ -206,7 +203,6 @@ public class BookDAOMongo implements IBookDAO {
      *
      * @param name
      * @return
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchCity(String name) {

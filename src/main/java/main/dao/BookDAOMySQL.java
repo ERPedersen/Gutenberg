@@ -4,7 +4,6 @@ import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 import main.util.DBConnectorMySQL;
 import main.util.IDBConnectorMySQL;
 
@@ -282,7 +281,6 @@ public class BookDAOMySQL implements IBookDAO {
      *
      * @param name String partial name of an author.
      * @return List<String> List of String names of authors.
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) {
@@ -329,7 +327,6 @@ public class BookDAOMySQL implements IBookDAO {
      *
      * @param title String partial title of a book.
      * @return List<String> List of String book titles.
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchBook(String title) {
@@ -373,7 +370,6 @@ public class BookDAOMySQL implements IBookDAO {
      *
      * @param name String partial name of a city.
      * @return List<String> List of String names of cities.
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
     public List<String> getFuzzySearchCity(String name)  {

@@ -1,7 +1,5 @@
 package main.util;
 
-import main.exception.ConnectionAlreadyClosedException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -61,8 +59,6 @@ public class DBConnectorMySQL implements IDBConnectorMySQL {
 
 	/**
 	 * Checks if the connection is open and closes it.
-	 *
-	 * @throws ConnectionAlreadyClosedException If the connection is already closed or non-existent.
 	 */
 	@Override
 	public void closeConnection() {

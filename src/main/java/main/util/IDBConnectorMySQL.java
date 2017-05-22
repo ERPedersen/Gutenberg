@@ -1,7 +1,5 @@
 package main.util;
 
-import main.exception.ConnectionAlreadyClosedException;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 

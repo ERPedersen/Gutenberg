@@ -1,13 +1,10 @@
 package main.facade;
 
 import main.dao.IBookDAO;
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
