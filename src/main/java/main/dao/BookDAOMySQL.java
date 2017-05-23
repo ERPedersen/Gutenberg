@@ -280,7 +280,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Returns a list of Author names for fuzzy searching.
      *
      * @param name Partial name of an author.
-     * @return List<String> Names of authors.
+     * @return Names of authors.
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) {
@@ -328,7 +328,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Gets a list of Book titles for fuzzy searching.
      *
      * @param title Partial title of a book.
-     * @return List<String> Book titles.
+     * @return Book titles.
      */
     @Override
     public List<String> getFuzzySearchBook(String title) {
@@ -372,7 +372,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Gets a list of City names from a partial name.
      *
      * @param name Partial name of a city.
-     * @return List<String> Names of cities.
+     * @return Names of cities.
      */
     @Override
     public List<String> getFuzzySearchCity(String name)  {
