@@ -62,21 +62,17 @@ public class MySQLAPI {
 	}
 
 	/**
-	 * Takes latitude and longitude and returns all books that mention a city at
-	 * that coordinate.
+	 * Returns books that mention locations within a given radius of a given set of coordinates.
 	 *
-	 * @param latitude  Float the latitude of the location.
-	 * @param longitude Float the longitude of the location.
-	 * @param radius    Integer the radius of the location.
-	 * @return Response object with JSON data.
+	 * @param latitude  The latitude of the location.
+	 * @param longitude The longitude of the location.
+	 * @param radius    The radius of the location.
+	 * @return Response object with books.
 	 */
 	@GET
 	@Path("book/location")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromLatLong(
-			@QueryParam("lat") double latitude,
-			@QueryParam("long") double longitude,
-			@QueryParam("rad") int radius) {
+	public Response getBooksFromLatLong(@QueryParam("lat") double latitude, @QueryParam("long") double longitude, @QueryParam("rad") int radius) {
 
 		List<Book> books;
 
@@ -101,7 +97,7 @@ public class MySQLAPI {
 	/**
 	 * Enables fuzzy searching of authors.
 	 *
-	 * @param author String the partial name of an author.
+	 * @param author The partial name of an author.
 	 * @return Response object with Page JSON data.
 	 */
 	@GET
@@ -287,7 +283,7 @@ public class MySQLAPI {
 	/**
 	 * Forms an error response.
 	 *
-	 * @param code The HTTP code of the response.
+	 * @param code    The HTTP code of the response.
 	 * @param message The message of the response.
 	 * @return Error response
 	 */
