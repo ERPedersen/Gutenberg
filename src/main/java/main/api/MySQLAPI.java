@@ -227,21 +227,31 @@ public class MySQLAPI {
 	/**
 	 * Takes a city name, and returns all books which mention the city.
 	 *
-	 * @param cityName String name of the city.
+	 * @param city String name of the city.
 	 * @return Response object with JSON data.
 	 */
 	@GET
-	@Path("fromcity")
+	@Path("book/city")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
+	public Response getBooksFromCity(@QueryParam("q") String city) {
 		List<Book> books;
+
 		try {
-			books = facade.getAuthorsAndBookFromCity(cityName);
+			books = facade.getAuthorsAndBookFromCity(city);
 		} catch (BookNotFoundException ex) {
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
 		}
 
-		return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", books);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 	}
 
 	/**

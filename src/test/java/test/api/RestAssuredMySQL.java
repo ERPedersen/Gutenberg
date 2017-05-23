@@ -3,7 +3,6 @@ package test.api;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import com.jayway.restassured.response.Response;
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import org.junit.Test;
@@ -107,7 +106,7 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/fromcity?q=Copenhagen")
+				.get("http://localhost:8080/api/mysql/book/city?q=Copenhagen")
 				.then()
 				.contentType(JSON)
 				.statusCode(200)
@@ -115,21 +114,11 @@ public class RestAssuredMySQL {
 
 		String jsonString = response.asString();
 
-		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
-		}.getType());
+		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
 		assertThat(books, hasSize(greaterThan(0)));
-
-		List<Author> authors = books.get(0).getAuthors();
-
-		assertThat(books.get(0).getTitle(), equalTo("Drake, Nelson and Napoleon"));
-		assertThat(books.get(0).getUID(), equalTo(15299L));
-		assertThat(books.get(0).getAuthors(), hasSize(1));
-		assertThat(authors.get(0).getName(), equalTo("Walter Runciman"));
-		assertThat(authors.get(0).getUID(), equalTo(26L));
-		assertThat(books.get(0).getLocations(), hasSize(equalTo(0)));
-		assertThat(books.get(0).getText(), equalTo("15299.txt"));
 	}
 
 	@Test
@@ -137,10 +126,10 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/fromcity?q=New Donk City")
+				.get("http://localhost:8080/api/mysql/book/city?q=New Donk City")
 				.then()
 				.contentType(JSON)
-				.statusCode(404)
+				.statusCode(204)
 				.extract().response();
 
 	}
