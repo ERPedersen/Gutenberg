@@ -189,7 +189,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of authors.
 	 *
 	 * @param author The partial name of an author.
-	 * @return Object with Page JSON data.
+	 * @return Objects with author names.
 	 */
 	@GET
 	@Path("search/author")
@@ -221,7 +221,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of cities.
 	 *
 	 * @param city The partial name of a city.
-	 * @return Object with Page JSON data.
+	 * @return Object with city names.
 	 */
 	@GET
 	@Path("search/city")
