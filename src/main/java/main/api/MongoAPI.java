@@ -143,7 +143,7 @@ public class MongoAPI {
     @GET
     @Path("location")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCitiesFromBook(
+    public Response getLocationsFromBook(
             @QueryParam("q") String bookName,
             @QueryParam("lim") int limit) {
         List<Location> cities;
@@ -174,7 +174,7 @@ public class MongoAPI {
     @GET
     @Path("book/city")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAuthorsAndBooksFromCity(
+    public Response getBooksFromCity(
             @QueryParam("q") String cityName,
             @QueryParam("lim") int limit) {
         List<Book> books;

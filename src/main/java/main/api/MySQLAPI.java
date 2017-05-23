@@ -94,6 +94,98 @@ public class MySQLAPI {
 	}
 
 	/**
+	 * Takes an author name and returns all books by that author, along with all
+	 * cities mentioned in those books.
+	 *
+	 * @param author The author's name.
+	 * @return Response object with JSON data.
+	 */
+	@GET
+	@Path("book/author")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
+
+		List<Book> books;
+
+		try {
+			books = facade.getBooksAndCitiesFromAuthor(author);
+		} catch (BookNotFoundException ex) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.build();
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", books);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
+	}
+
+	/**
+	 * Takes a book name, and finds all cities mentioned in that book.
+	 *
+	 * @param title Title of the book.
+	 * @return Response object with JSON locations.
+	 */
+	@GET
+	@Path("location")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocationsFromBook(@QueryParam("q") String title) {
+		List<Location> locations;
+
+		try {
+			locations = facade.getCitiesFromBook(title);
+		} catch (BookNotFoundException ex) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.build();
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", locations);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
+	}
+
+	/**
+	 * Takes a city name, and returns all books which mention the city.
+	 *
+	 * @param city Name of the city.
+	 * @return Response object with JSON data.
+	 */
+	@GET
+	@Path("book/city")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooksFromCity(@QueryParam("q") String city) {
+		List<Book> books;
+
+		try {
+			books = facade.getAuthorsAndBookFromCity(city);
+		} catch (BookNotFoundException ex) {
+			return Response
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.build();
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", books);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
+	}
+
+	/**
 	 * Enables fuzzy searching of authors.
 	 *
 	 * @param author The partial name of an author.
@@ -180,98 +272,6 @@ public class MySQLAPI {
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
-
-		return Response
-				.status(Response.Status.OK)
-				.entity(gson.toJson(map))
-				.build();
-	}
-
-	/**
-	 * Takes an author name and returns all books by that author, along with all
-	 * cities mentioned in those books.
-	 *
-	 * @param author The author's name.
-	 * @return Response object with JSON data.
-	 */
-	@GET
-	@Path("book/author")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
-
-		List<Book> books;
-
-		try {
-			books = facade.getBooksAndCitiesFromAuthor(author);
-		} catch (BookNotFoundException ex) {
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
-					.build();
-		}
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("data", books);
-
-		return Response
-				.status(Response.Status.OK)
-				.entity(gson.toJson(map))
-				.build();
-	}
-
-	/**
-	 * Takes a city name, and returns all books which mention the city.
-	 *
-	 * @param city Name of the city.
-	 * @return Response object with JSON data.
-	 */
-	@GET
-	@Path("book/city")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromCity(@QueryParam("q") String city) {
-		List<Book> books;
-
-		try {
-			books = facade.getAuthorsAndBookFromCity(city);
-		} catch (BookNotFoundException ex) {
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
-					.build();
-		}
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("data", books);
-
-		return Response
-				.status(Response.Status.OK)
-				.entity(gson.toJson(map))
-				.build();
-	}
-
-	/**
-	 * Takes a book name, and finds all cities mentioned in that book.
-	 *
-	 * @param title Title of the book.
-	 * @return Response object with JSON locations.
-	 */
-	@GET
-	@Path("location")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLocationsFromBook(@QueryParam("q") String title) {
-		List<Location> locations;
-
-		try {
-			locations = facade.getCitiesFromBook(title);
-		} catch (BookNotFoundException ex) {
-			return Response
-					.status(Response.Status.BAD_REQUEST)
-					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
-					.build();
-		}
-
-		Map<String, Object> map = new HashMap<>();
-		map.put("data", locations);
 
 		return Response
 				.status(Response.Status.OK)
