@@ -38,10 +38,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @param latitude Double the latitude of the location.
      * @param longitude Double the longitude of the location.
      * @param radius The radius the locations are found from.
+     * @param limit The limit of returned rows.
      * @return The list of books where the location is mentioned.
      */
     @Override
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
         List<Book> books = new ArrayList<>();
         String queryString = "" +
                 "SELECT b.b_id, b.title, b.text, a.a_id, a.name, l1.l_id, l1.latitude, l1.longitude, l1.name " +
@@ -61,17 +62,24 @@ public class BookDAOMySQL implements IBookDAOMySQL {
                 "+ sin ( radians(?) ) " +
                 "* sin(radians( l2.latitude ))" +
                 ")) < ?" +
-                ");";
+                ")";
+                if(limit != 0) {
+                    queryString += " LIMIT ?";
+                }
+                queryString += ";";
 
         try {
             Connection con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setDouble(1, latitude);
-            statement.setDouble(2, longitude);
-            statement.setDouble(3, latitude);
-            statement.setInt(4, radius);
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setDouble(1, latitude);
+            preparedStatement.setDouble(2, longitude);
+            preparedStatement.setDouble(3, latitude);
+            preparedStatement.setInt(4, radius);
+            if(limit != 0) {
+                preparedStatement.setInt(5, limit);
+            }
 
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             Book book = null;
             long currentBookUID = 0L;
@@ -116,10 +124,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Returns a List of books from the MYSQL database which is written by the author.
      *
      * @param name The name of the author who has written the books.
+     * @param limit The limit of returned rows.
      * @return Books which are written by the author.
      */
     @Override
-    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
+    public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) throws BookNotFoundException {
         List<Book> books = new ArrayList<>();
         String queryString =
                 "SELECT DISTINCT b.b_id, b.title, b.text, a.a_id, l.l_id, l.latitude, l.longitude, l.name " +
@@ -129,12 +138,19 @@ public class BookDAOMySQL implements IBookDAOMySQL {
                         "JOIN author_book ab ON b.b_id = ab.b_id " +
                         "JOIN author a ON ab.a_id = a.a_id " +
                         "WHERE a.name = ?" +
-                        "ORDER BY b.b_id;";
+                        "ORDER BY b.b_id";
+                        if(limit != 0) {
+                            queryString += " LIMIT ?";
+                        }
+                        queryString += ";";
         try {
             Connection con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setString(1, name);
+            if(limit != 0) {
+                preparedStatement.setInt(2, limit);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             Book book = null;
             long currentBookUID = 0L;
@@ -182,22 +198,30 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Returns a List of books from the MYSQL database where the cities mentioned in a Book is mentioned.
      *
      * @param title The title of the book.
+     * @param limit The limit of returned rows.
      * @return Books with locations.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title) {
+    public List<Location> getCitiesFromBook(String title, int limit) {
         List<Location> locations = new ArrayList<>();
         String queryString =
                 "SELECT * FROM location l " +
                         "JOIN book_location bl ON l.l_id = bl.l_id " +
                         "JOIN book b ON bl.b_id = b.b_id " +
-                        "WHERE MATCH(b.title) AGAINST(?) AND b.title LIKE ?;";
+                        "WHERE MATCH(b.title) AGAINST(?) AND b.title LIKE ?";
+                        if(limit != 0) {
+                            queryString += " LIMIT ?";
+                        }
+                        queryString += ";";
 
         try {
             Connection con = connector.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setString(1, title);
             preparedStatement.setString(2, title);
+            if(limit != 0) {
+                preparedStatement.setInt(3, limit);
+            }
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -228,10 +252,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Returns a List of books from the MYSQL database which has a location mentioned somewhere in the book.
      *
      * @param name The name of the location that is mentioned in the books.
+     * @param limit The limit of returned rows.
      * @return The books where the location is mentioned.
      */
     @Override
-    public List<Book> getAuthorsAndBooksFromCity(String name) {
+    public List<Book> getAuthorsAndBooksFromCity(String name, int limit) {
         List<Book> books = new ArrayList<>();
         String queryString = "" +
                 "SELECT b.b_id, b.title, b.text, a.a_id, a.name " +
@@ -240,15 +265,22 @@ public class BookDAOMySQL implements IBookDAOMySQL {
                 "JOIN author a ON ab.a_id = a.a_id " +
                 "JOIN book_location bl ON b.b_id = bl.b_id " +
                 "JOIN location l ON bl.l_id = l.l_id " +
-                "WHERE l.name = ?;";
+                "WHERE l.name = ?";
+                if(limit != 0) {
+                    queryString += " LIMIT ?";
+                }
+                queryString += ";";
 
 
         Connection con = null;
         try {
             con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setString(1, name);
+            if(limit != 0) {
+                preparedStatement.setInt(2, limit);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Book book = new Book(
@@ -280,10 +312,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Returns a list of Author names for fuzzy searching.
      *
      * @param name Partial name of an author.
+     * @param limit The limit of returned rows.
      * @return Names of authors.
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name) {
+    public List<String> getFuzzySearchAuthor(String name, int limit) {
         List<String> authors = new ArrayList<>();
 
         String[] split = name.split(" ");
@@ -295,15 +328,25 @@ public class BookDAOMySQL implements IBookDAOMySQL {
 
         starredInput = starredInput.substring(0, starredInput.length()-1);
 
-        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "" +
+                "SELECT name FROM author " +
+                "WHERE MATCH(author.name) " +
+                "AGAINST(? IN BOOLEAN MODE)";
+                if(limit != 0) {
+                    queryString += " LIMIT ?";
+                }
+                queryString += ";";
 
 
         Connection con = null;
         try {
             con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, starredInput);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setString(1, starredInput);
+            if(limit != 0) {
+                preparedStatement.setInt(2,limit);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
 
 
             while (resultSet.next()) {
@@ -328,10 +371,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Gets a list of Book titles for fuzzy searching.
      *
      * @param title Partial title of a book.
+     * @param limit The limit of returned rows.
      * @return Book titles.
      */
     @Override
-    public List<String> getFuzzySearchBook(String title) {
+    public List<String> getFuzzySearchBook(String title, int limit) {
         List<String> books = new ArrayList<>();
         String[] split = title.split(" ");
 
@@ -341,15 +385,25 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         }
         starredInput = starredInput.substring(0, starredInput.length()-1);
 
-        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "" +
+                "SELECT title FROM book " +
+                "WHERE MATCH(book.title) " +
+                "AGAINST(? IN BOOLEAN MODE)";
+                if(limit != 0) {
+                    queryString += " LIMIT ?";
+                }
+                queryString += ";";
 
 
         Connection con = null;
         try {
             con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, starredInput);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setString(1, starredInput);
+            if(limit != 0) {
+                preparedStatement.setInt(2, limit);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
 
@@ -372,10 +426,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * Gets a list of City names from a partial name.
      *
      * @param name Partial name of a city.
+     * @param limit The limit of returned rows.
      * @return Names of cities.
      */
     @Override
-    public List<String> getFuzzySearchCity(String name)  {
+    public List<String> getFuzzySearchCity(String name, int limit)  {
         List<String> cities = new ArrayList<>();
         String[] split = name.split(" ");
 
@@ -385,15 +440,25 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         }
         starredInput = starredInput.substring(0, starredInput.length()-1);
 
-        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "" +
+                "SELECT name FROM location " +
+                "WHERE MATCH(location.name) " +
+                "AGAINST(? IN BOOLEAN MODE)";
+                if(limit != 0) {
+                    queryString += " LIMIT ?";
+                }
+                queryString += ";";
 
 
         Connection con;
         try {
             con = connector.getConnection();
-            PreparedStatement statement = con.prepareStatement(queryString);
-            statement.setString(1, starredInput);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement preparedStatement = con.prepareStatement(queryString);
+            preparedStatement.setString(1, starredInput);
+            if(limit != 0) {
+                preparedStatement.setInt(2, limit);
+            }
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
 

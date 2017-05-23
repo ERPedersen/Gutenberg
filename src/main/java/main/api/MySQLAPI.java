@@ -73,12 +73,16 @@ public class MySQLAPI {
 	@GET
 	@Path("book/location")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromLatLong(@QueryParam("lat") double latitude, @QueryParam("long") double longitude, @QueryParam("rad") int radius) {
+	public Response getBooksFromLatLong(
+			@QueryParam("lat") double latitude,
+			@QueryParam("long") double longitude,
+			@QueryParam("rad") int radius,
+			@QueryParam("lim") int limit) {
 
 		List<Book> books;
 
 		try {
-			books = facade.getBooksFromLatLong(latitude, longitude, radius);
+			books = facade.getBooksFromLatLong(latitude, longitude, radius, limit);
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
@@ -105,12 +109,14 @@ public class MySQLAPI {
 	@GET
 	@Path("book/author")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
+	public Response booksAndCitiesFromAuthor(
+			@QueryParam("q") String author,
+			@QueryParam("lim") int limit) {
 
 		List<Book> books;
 
 		try {
-			books = facade.getBooksAndCitiesFromAuthor(author);
+			books = facade.getBooksAndCitiesFromAuthor(author, limit);
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
@@ -136,11 +142,13 @@ public class MySQLAPI {
 	@GET
 	@Path("location")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLocationsFromBook(@QueryParam("q") String title) {
+	public Response getLocationsFromBook(
+			@QueryParam("q") String title,
+			@QueryParam("lim") int limit) {
 		List<Location> locations;
 
 		try {
-			locations = facade.getCitiesFromBook(title);
+			locations = facade.getCitiesFromBook(title, limit);
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
@@ -166,11 +174,13 @@ public class MySQLAPI {
 	@GET
 	@Path("book/city")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromCity(@QueryParam("q") String city) {
+	public Response getBooksFromCity(
+			@QueryParam("q") String city,
+			@QueryParam("lim") int limit) {
 		List<Book> books;
 
 		try {
-			books = facade.getAuthorsAndBookFromCity(city);
+			books = facade.getAuthorsAndBookFromCity(city, limit);
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
@@ -196,14 +206,16 @@ public class MySQLAPI {
 	@GET
 	@Path("search/author")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAuthors(@QueryParam("q") String author) {
+	public Response getAuthors(
+			@QueryParam("q") String author,
+			@QueryParam("lim") int limit) {
 
 		Map<String, Object> map;
 
 		try {
 			map = new HashMap<>();
 			map.put("type", "author");
-			map.put("data", facade.getFuzzySearchAuthor(author));
+			map.put("data", facade.getFuzzySearchAuthor(author, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
@@ -228,14 +240,16 @@ public class MySQLAPI {
 	@GET
 	@Path("search/city")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCities(@QueryParam("q") String city) {
+	public Response getCities(
+			@QueryParam("q") String city,
+			@QueryParam("lim") int limit) {
 
 		Map<String, Object> map;
 
 		try {
 			map = new HashMap<>();
 			map.put("type", "city");
-			map.put("data", facade.getFuzzySearchCity(city));
+			map.put("data", facade.getFuzzySearchCity(city, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
@@ -259,14 +273,16 @@ public class MySQLAPI {
 	@GET
 	@Path("search/book")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooks(@QueryParam("q") String title) {
+	public Response getBooks(
+			@QueryParam("q") String title,
+			@QueryParam("lim") int limit) {
 
 		Map<String, Object> map;
 
 		try {
 			map = new HashMap<>();
 			map.put("type", "book");
-			map.put("data", facade.getFuzzySearchBook(title));
+			map.put("data", facade.getFuzzySearchBook(title, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
