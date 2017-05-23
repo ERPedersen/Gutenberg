@@ -94,8 +94,7 @@ public class BookDAOMongoIT {
         assertThat(books, hasSize(equalTo(0)));
     }
 
-    //@Test(expected = UnsupportedOperationException.class)
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void successfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
 
