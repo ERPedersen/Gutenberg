@@ -84,11 +84,12 @@ public class MongoAPI {
     public Response getBooksFromLatLong(
             @QueryParam("lat") double latitude,
             @QueryParam("long") double longitude,
-            @QueryParam("rad") int radius) {
+            @QueryParam("rad") int radius,
+            @QueryParam("lim") int limit) {
 
         List<Book> books;
         try {
-            books = facade.getBooksFromLatLong(latitude, longitude, radius, 10);
+            books = facade.getBooksFromLatLong(latitude, longitude, radius, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
@@ -115,11 +116,13 @@ public class MongoAPI {
     @GET
     @Path("book/author")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
+    public Response booksAndCitiesFromAuthor(
+            @QueryParam("q") String author,
+            @QueryParam("lim") int limit) {
 
         List<Book> books;
         try {
-            books = facade.getBooksAndCitiesFromAuthor(author, 10);
+            books = facade.getBooksAndCitiesFromAuthor(author, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
@@ -145,10 +148,12 @@ public class MongoAPI {
     @GET
     @Path("location")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCitiesFromBook(@QueryParam("q") String bookName) {
+    public Response getCitiesFromBook(
+            @QueryParam("q") String bookName,
+            @QueryParam("lim") int limit) {
         List<Location> cities;
         try {
-            cities = facade.getCitiesFromBook(bookName, 10);
+            cities = facade.getCitiesFromBook(bookName, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
@@ -174,10 +179,12 @@ public class MongoAPI {
     @GET
     @Path("book/city")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
+    public Response getAuthorsAndBooksFromCity(
+            @QueryParam("q") String cityName,
+            @QueryParam("lim") int limit) {
         List<Book> books;
         try {
-            books = facade.getAuthorsAndBookFromCity(cityName, 10);
+            books = facade.getAuthorsAndBookFromCity(cityName, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
