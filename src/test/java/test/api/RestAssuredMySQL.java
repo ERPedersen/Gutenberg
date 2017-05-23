@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package test.api;
 
-import static com.jayway.restassured.RestAssured.*;
-import static com.jayway.restassured.http.ContentType.JSON;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
-
 import com.google.common.reflect.TypeToken;
-import com.google.gson.*;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
@@ -20,14 +12,15 @@ import main.dto.Location;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.*;
-
 import java.util.List;
 
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.http.ContentType.JSON;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
 
-/**
- * @author Private
- */
 public class RestAssuredMySQL {
 
     Response response;
