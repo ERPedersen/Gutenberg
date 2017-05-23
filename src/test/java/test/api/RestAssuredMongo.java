@@ -41,31 +41,31 @@ public class RestAssuredMongo {
         assertThat(map.get("msg"), equalTo("You have successfully connected to the Mongo API!"));
     }
 
-//    @Test
-//    public void successfulTestGetBooksFromLatLong() {
-//        response = given()
-//                .when()
-//                .get("http://localhost:8080/api/mongo/book/location?lat=52.18935&long=-2.22001&rad=50")
-//                .then()
-//                .contentType(JSON)
-//                .statusCode(200)
-//                .extract().response();
-//
-//        String jsonString = response.asString();
-//
-//        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
-//        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
-//        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
-//        }.getType());
-//
-//        assertThat(books, hasSize(greaterThan(0)));
-//    }
-//
+    @Test
+    public void successfulTestGetBooksFromLatLong() {
+        response = given()
+                .when()
+                .get("http://localhost:8080/api/mongo/book/location?lat=53.79391&long=-1.75206&rad=5000&lim=100")
+                .then()
+                .contentType(JSON)
+                .statusCode(200)
+                .extract().response();
+
+        String jsonString = response.asString();
+
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
+
+        assertThat(books, hasSize(greaterThan(0)));
+    }
+
 //    @Test
 //    public void unsuccessfulTestGetBooksFromLatLong() {
 //        response = given()
 //                .when()
-//                .get("http://localhost:8080/api/mongo/book/location?lat=420420.0&long=-696969.0&rad=666")
+//                .get("http://localhost:8080/api/mongo/book/location?lat=0.0&long=-0.0&rad=0&lim=100")
 //                .then()
 //                .contentType(JSON)
 //                .statusCode(400)
