@@ -27,8 +27,13 @@ public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundExcepti
 			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
 			.create();
 
+	/**
+	 * Handles 404 responses.
+	 *
+	 * @param ex The exception that is caught.
+	 * @return
+	 */
 	public Response toResponse(NotFoundException ex){
-
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", 404);
