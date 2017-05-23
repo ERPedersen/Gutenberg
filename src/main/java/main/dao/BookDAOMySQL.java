@@ -292,6 +292,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         for (String spaced : split) {
             starredInput = spaced + "* ";
         }
+        starredInput = starredInput.substring(0, starredInput.length()-1);
 
         String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
 
@@ -337,6 +338,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         for (String spaced : split) {
             starredInput = spaced + "* ";
         }
+        starredInput = starredInput.substring(0, starredInput.length()-1);
 
         String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
 
