@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ErrorResponse {
+
     /**
      * Forms an error response.
      *
