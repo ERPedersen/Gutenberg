@@ -71,6 +71,38 @@ public class RestAssuredMySQL {
 	}
 
 	@Test
+	public void successfulTestGetBooksAndCitiesFromAuthor() {
+
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/book/author?q=Thomas Clarkson")
+				.then()
+				.contentType(JSON)
+				.statusCode(200)
+				.extract().response();
+
+		String jsonString = response.asString();
+
+		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+
+		assertThat(books, hasSize(greaterThan(0)));
+
+	}
+
+	@Test
+	public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/book/author?q=Hunk SlabChest")
+				.then()
+				.contentType(JSON)
+				.statusCode(400)
+				.extract().response();
+	}
+
+	@Test
 	public void successfulTestGetCitiesFromBook() {
 
 		response = given()
@@ -132,37 +164,5 @@ public class RestAssuredMySQL {
 				.statusCode(400)
 				.extract().response();
 
-	}
-
-	@Test
-	public void successfulTestGetBooksAndCitiesFromAuthor() {
-
-		response = given()
-				.when()
-				.get("http://localhost:8080/api/mysql/book/author?q=Thomas Clarkson")
-				.then()
-				.contentType(JSON)
-				.statusCode(200)
-				.extract().response();
-
-		String jsonString = response.asString();
-
-		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
-		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
-		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-
-		assertThat(books, hasSize(greaterThan(0)));
-
-	}
-
-	@Test
-	public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
-		response = given()
-				.when()
-				.get("http://localhost:8080/api/mysql/book/author?q=Hunk SlabChest")
-				.then()
-				.contentType(JSON)
-				.statusCode(400)
-				.extract().response();
 	}
 }
