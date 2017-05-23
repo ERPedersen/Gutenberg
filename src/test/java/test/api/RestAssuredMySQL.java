@@ -12,6 +12,7 @@ import main.dto.Location;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
@@ -30,11 +31,17 @@ public class RestAssuredMySQL {
 
 	@Test
 	public void testConnectionOpen() {
-		given()
+		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/test/")
+				.get("http://localhost:8080/api/mysql/")
 				.then()
-				.statusCode(200);
+				.statusCode(200)
+				.extract().response();
+
+		String jsonString = response.asString();
+		Map<String, Object> map = gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {}.getType());
+		assertThat(map.get("code"), equalTo("200"));
+		assertThat(map.get("msg"), equalTo("You have successfully connected to the MySQL API!"));
 	}
 
 	@Test
