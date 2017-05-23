@@ -3,23 +3,20 @@ package test.api;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import com.jayway.restassured.response.Response;
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 
-/**
- * Created by Private on 5/19/2017.
- */
 public class RestAssuredMongo {
 
     Response response;
@@ -28,101 +25,60 @@ public class RestAssuredMongo {
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .create();
 
-    public RestAssuredMongo() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
     @Test
     public void testConnectionOpen() {
-        given()
-                .when()
-                .get("http://localhost:8080/api/mongo/test/")
-                .then()
-                .statusCode(200);
-    }
-
-    @Test
-    public void successfulTestGetCitiesFromBook() {
-
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mongo/frombook?q=The Truce of God")
+                .get("http://localhost:8080/api/mongo/")
                 .then()
                 .statusCode(200)
                 .extract().response();
 
         String jsonString = response.asString();
-
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);;
-        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
-
-        assertThat(cities, hasSize(greaterThan(0)));
+        Map<String, Object> map = gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        assertThat(map.get("code"), equalTo("200"));
+        assertThat(map.get("msg"), equalTo("You have successfully connected to the Mongo API!"));
     }
 
-//    @Test(expected = BookNotFoundException.class)
-//    public void unsuccessfulTestGetCitiesFromBook() {
-//
+//    @Test
+//    public void successfulTestGetBooksFromLatLong() {
 //        response = given()
 //                .when()
-//                .get("http://localhost:8080/api/mongo/frombook?q=Bonerbutt: The Collected Works")
-//                .then()
-//                .statusCode(404)
-//                .extract().response();
-////
-////        String jsonString = response.asString();
-////
-////        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-////        JsonArray jsonArray = (JsonArray) data.get("data");
-////        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
-////
-////        assertThat(cities, hasSize(equalTo(0)));
-//
-//    }
-
-    @Test
-    public void successfulTestGetAuthorsAndBooksFromCity() {
-
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mongo/fromcity?q=Copenhagen")
-                .then()
-                .contentType(JSON)
-                .statusCode(200)
-                .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-
-
-        assertThat(books, hasSize(greaterThan(0)));
-
-        List<Author> authors = books.get(0).getAuthors();
-    }
-
-//    @Test(expected = BookNotFoundException.class)
-//    public void unsuccessfulTestGetAuthorsAndBooksFromCity() {
-//
-//        response = given()
-//                .when()
-//                .get("http://localhost:8080/api/mongo/fromcity?q=New Donk City")
+//                .get("http://localhost:8080/api/mongo/book/location?lat=52.18935&long=-2.22001&rad=50")
 //                .then()
 //                .contentType(JSON)
-//                .statusCode(404)
+//                .statusCode(200)
 //                .extract().response();
 //
-////        String jsonString = response.asString();
-////
-////        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-////        JsonArray jsonArray = (JsonArray) data.get("data");
-////        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-////
-////        assertThat(books, hasSize(0));
+//        String jsonString = response.asString();
 //
+//        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+//        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+//        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+//        }.getType());
+//
+//        assertThat(books, hasSize(greaterThan(0)));
+//    }
+//
+//    @Test
+//    public void unsuccessfulTestGetBooksFromLatLong() {
+//        response = given()
+//                .when()
+//                .get("http://localhost:8080/api/mongo/book/location?lat=420420.0&long=-696969.0&rad=666")
+//                .then()
+//                .contentType(JSON)
+//                .statusCode(400)
+//                .extract().response();
+//
+//        String jsonString = response.asString();
+//
+//        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+//        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+//        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+//        }.getType());
+//
+//        assertThat(books, hasSize(equalTo(0)));
 //    }
 
     @Test
@@ -130,7 +86,7 @@ public class RestAssuredMongo {
 
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mongo/fromauthor?q=Thomas Clarkson")
+                .get("http://localhost:8080/api/mongo/book/author?q=Thomas Clarkson")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
@@ -138,37 +94,80 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
-
     }
-
-//    @Test(expected = BookNotFoundException.class)
-//    public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
-//        response = given()
-//                .when()
-//                .get("http://localhost:8080/api/mongo/fromauthor?q=Hunk SlabChest")
-//                .then()
-//                .contentType(JSON)
-//                .statusCode(200)
-//                .extract().response();
-//
-////        String jsonString = response.asString();
-////
-////        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-////        JsonArray jsonArray = (JsonArray) data.get("data");
-////        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-////
-////        assertThat(books, hasSize(equalTo(0)));
-//    }
 
     @Test
-    public void successfulTestGetBooksFromLatLong() {
+    public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mongo/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
+                .get("http://localhost:8080/api/mongo/book/author?q=Hunk SlabChest")
+                .then()
+                .contentType(JSON)
+                .statusCode(400)
+                .extract().response();
+
+        String jsonString = response.asString();
+
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
+
+        assertThat(books, hasSize(equalTo(0)));
+    }
+
+    @Test
+    public void successfulTestGetCitiesFromBook() {
+
+        response = given()
+                .when()
+                .get("http://localhost:8080/api/mongo/location?q=What Peace Means")
+                .then()
+                .statusCode(200)
+                .extract().response();
+
+        String jsonString = response.asString();
+
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Location> locations = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
+
+        assertThat(locations, hasSize(greaterThan(0)));
+    }
+
+    @Test()
+    public void unsuccessfulTestGetCitiesFromBook() {
+
+        response = given()
+                .when()
+                .get("http://localhost:8080/api/mongo/location?q=Bonerbutt: The Collected Works")
+                .then()
+                .statusCode(400)
+                .extract().response();
+
+        String jsonString = response.asString();
+
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Location> locations = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
+
+        assertThat(locations, hasSize(equalTo(0)));
+    }
+
+    @Test
+    public void successfulTestGetAuthorsAndBooksFromCity() {
+
+        response = given()
+                .when()
+                .get("http://localhost:8080/api/mongo/book/city?q=Copenhagen")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
@@ -176,28 +175,32 @@ public class RestAssuredMongo {
 
         String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
 
         assertThat(books, hasSize(greaterThan(0)));
     }
 
-//    @Test(expected = BookNotFoundException.class)
-//    public void unsuccessfulTestGetBooksFromLatLong() {
-//        response = given()
-//                .when()
-//                .get("http://localhost:8080/api/mongo/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
-//                .then()
-//                .contentType(JSON)
-//                .statusCode(404)
-//                .extract().response();
-//
-////        String jsonString = response.asString();
-////
-////        JsonObject data = gson.fromJson(jsonString, JsonObject.class);
-////        JsonArray jsonArray = (JsonArray) data.get("data");
-////        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
-////
-////        assertThat(books, hasSize(equalTo(0)));
-//    }
+    @Test
+    public void unsuccessfulTestGetAuthorsAndBooksFromCity() {
+
+        response = given()
+                .when()
+                .get("http://localhost:8080/api/mongo/book/city?q=New Donk City")
+                .then()
+                .contentType(JSON)
+                .statusCode(400)
+                .extract().response();
+
+        String jsonString = response.asString();
+
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+        }.getType());
+
+        assertThat(books, hasSize(equalTo(0)));
+    }
 }
