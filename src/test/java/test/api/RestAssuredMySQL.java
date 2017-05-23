@@ -9,7 +9,6 @@ import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -28,13 +27,6 @@ public class RestAssuredMySQL {
             .setPrettyPrinting()
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .create();
-
-    public RestAssuredMySQL() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
 
     @Test
     public void testConnectionOpen() {
