@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import main.dto.Book;
 import main.dto.Location;
-import main.dto.Page;
 import main.exception.BookNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
@@ -140,7 +139,7 @@ public class MySQLAPI {
 	@GET
 	@Path("search/city")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFuzzySearchCity(@QueryParam("q") String city) {
+	public Response getCities(@QueryParam("q") String city) {
 
 		Map<String, Object> map;
 
@@ -165,22 +164,32 @@ public class MySQLAPI {
 	/**
 	 * Enables fuzzy searching of books.
 	 *
-	 * @param book String The partial name of a book.
-	 * @return Response object with Page JSON data.
+	 * @param title The partial name of a book.
+	 * @return Response object with book titles.
 	 */
 	@GET
-	@Path("fuzzybook")
+	@Path("search/book")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFuzzySearchBook(@QueryParam("q") String book) {
+	public Response getBooks(@QueryParam("q") String title) {
 
-		Page page;
+		Map<String, Object> map;
+
 		try {
-			page = new Page("Book", facade.getFuzzySearchBook(book));
+			map = new HashMap<>();
+			map.put("type", "book");
+			map.put("data", facade.getFuzzySearchBook(title));
+
 		} catch (BookNotFoundException ex) {
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
 		}
 
-		return Response.status(Response.Status.OK).entity(gson.toJson(page)).build();
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 	}
 
 	/**
