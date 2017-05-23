@@ -129,7 +129,7 @@ public class MySQLAPI {
 	/**
 	 * Enables fuzzy searching of cities.
 	 *
-	 * @param city String the partial name of a city.
+	 * @param city The partial name of a city.
 	 * @return Response object with Page JSON data.
 	 */
 	@GET
@@ -192,7 +192,7 @@ public class MySQLAPI {
 	 * Takes an author name and returns all books by that author, along with all
 	 * cities mentioned in those books.
 	 *
-	 * @param author String the author's name.
+	 * @param author The author's name.
 	 * @return Response object with JSON data.
 	 */
 	@GET
@@ -223,7 +223,7 @@ public class MySQLAPI {
 	/**
 	 * Takes a city name, and returns all books which mention the city.
 	 *
-	 * @param city String name of the city.
+	 * @param city Name of the city.
 	 * @return Response object with JSON data.
 	 */
 	@GET
