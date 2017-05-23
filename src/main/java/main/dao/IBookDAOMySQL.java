@@ -6,12 +6,13 @@ import main.dto.Location;
 
 import java.util.List;
 
-public interface IBookDAO {
+public interface IBookDAOMySQL {
     /**
      * Gets a List of books from a latitude and a longitude.
      *
      * @param latitude String The latitude.
      * @param longitude String The longitude.
+     * @param radius Integer The radius to search within.
      * @return List of books.
      */
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius);

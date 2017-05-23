@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BookDAOMySQL implements IBookDAO {
+public class BookDAOMySQL implements IBookDAOMySQL {
 
     private IDBConnectorMySQL connector;
 

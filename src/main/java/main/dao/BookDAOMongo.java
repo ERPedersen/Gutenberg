@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class BookDAOMongo implements IBookDAO {
+public class BookDAOMongo implements IBookDAOMongo {
 
     DBConnectorMongo connector;
     MongoCollection<Document> collection;
@@ -47,10 +47,11 @@ public class BookDAOMongo implements IBookDAO {
      * @param latitude  String The latitude of the location.
      * @param longitude String The longitude of the location.
      * @param radius    The radius where locations are searched.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The list of books where the location is mentioned.
      */
     @Override
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
         throw new UnsupportedOperationException("Not implemented");
         /*collection = db.getCollection("books");
 
@@ -82,10 +83,11 @@ public class BookDAOMongo implements IBookDAO {
      * Returns a List of books from the Mongo database which is written by the author.
      *
      * @param name String The name of the author who has written the books.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The books which are written by the author.
      */
     @Override
-    public List<Book> getBooksAndCitiesFromAuthor(String name) {
+    public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) {
 
         collection = db.getCollection("books");
 
@@ -94,7 +96,7 @@ public class BookDAOMongo implements IBookDAO {
         for (Document dbObject : collection.find(
                 eq("author",
                         new Document("$elemMatch",
-                                new Document("name", name))))) {
+                                new Document("name", name)))).limit(limit)) {
 
             books.add(new Book(
                     (int) dbObject.get("UID"),
@@ -111,14 +113,15 @@ public class BookDAOMongo implements IBookDAO {
      * Returns a List of books from the Mongo database where the cities mentioned in a Book is mentioned.
      *
      * @param title String The title of the book where locations are searched.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books with locations.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title) {
+    public List<Location> getCitiesFromBook(String title, int limit) {
 
         collection = db.getCollection("books");
 
-        List<Document> books = (List<Document>) collection.find(eq("title", title)).into(new ArrayList<Document>());
+        List<Document> books = (List<Document>) collection.find(eq("title", title)).limit(limit).into(new ArrayList<Document>());
         List<Location> cities = new ArrayList<>();
 
         for (Document book : books) {
@@ -152,10 +155,11 @@ public class BookDAOMongo implements IBookDAO {
      * Returns a List of books from the Mongo database which has a location mentioned somewhere in the book.
      *
      * @param name String The name of the location that is mentioned in the books.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The books where the location is mentioned.
      */
     @Override
-    public List<Book> getAuthorsAndBooksFromCity(String name) {
+    public List<Book> getAuthorsAndBooksFromCity(String name, int limit) {
         collection = db.getCollection("books");
 
         List<Book> books = new ArrayList<>();
@@ -163,7 +167,7 @@ public class BookDAOMongo implements IBookDAO {
         for (Document dbObject : collection.find(
                 eq("locations",
                         new Document("$elemMatch",
-                                new Document("name", name))))) {
+                                new Document("name", name)))).limit(limit)) {
 
             books.add(new Book(
                     (int) dbObject.get("UID"),
@@ -174,38 +178,5 @@ public class BookDAOMongo implements IBookDAO {
         }
 
         return books;
-    }
-
-    /**
-     * Unused.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public List<String> getFuzzySearchAuthor(String name)  {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
-    }
-
-    /**
-     * Unused.
-     *
-     * @param title
-     * @return
-     */
-    @Override
-    public List<String> getFuzzySearchBook(String title) {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
-    }
-
-    /**
-     * Unused.
-     *
-     * @param name
-     * @return
-     */
-    @Override
-    public List<String> getFuzzySearchCity(String name) {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
     }
 }

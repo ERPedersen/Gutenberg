@@ -42,7 +42,7 @@ public class BookDAOMongoIT {
     public void successfulGetCitiesFromBookTest() {
         dao = new BookDAOMongo();
 
-        List<Location> cities = dao.getCitiesFromBook("The Truce of God");
+        List<Location> cities = dao.getCitiesFromBook("The Truce of God",100);
 
         assertThat(cities, hasSize(greaterThan(0)));
 
@@ -52,7 +52,7 @@ public class BookDAOMongoIT {
     public void unsuccessfulGetCitiesFromBookTest() {
         dao = new BookDAOMongo();
 
-        List<Location> cities = dao.getCitiesFromBook("BoogerButt Anthology, Book III");
+        List<Location> cities = dao.getCitiesFromBook("BoogerButt Anthology, Book III",100);
 
         assertThat(cities, hasSize(equalTo(0)));
 
@@ -62,7 +62,7 @@ public class BookDAOMongoIT {
     public void successfulGetAuthorsAndBooksFromCity() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getAuthorsAndBooksFromCity("Washington");
+        List<Book> books = dao.getAuthorsAndBooksFromCity("Washington",100);
 
         assertThat(books, hasSize(greaterThan(0)));
     }
@@ -71,7 +71,7 @@ public class BookDAOMongoIT {
     public void unsuccessfulGetAuthorsAndBooksFromCity() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getAuthorsAndBooksFromCity("New Donk City");
+        List<Book> books = dao.getAuthorsAndBooksFromCity("New Donk City",100);
 
         assertThat(books, hasSize(equalTo(0)));
     }
@@ -80,7 +80,7 @@ public class BookDAOMongoIT {
     public void successfulGetBooksAndCitiesFromAuthor() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksAndCitiesFromAuthor("Thomas Clarkson");
+        List<Book> books = dao.getBooksAndCitiesFromAuthor("Thomas Clarkson",100);
 
         assertThat(books, hasSize(greaterThan(0)));
     }
@@ -89,16 +89,17 @@ public class BookDAOMongoIT {
     public void unsuccessfulGetBooksAndCitiesFromAuthor() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksAndCitiesFromAuthor("Slab PlunkChunk");
+        List<Book> books = dao.getBooksAndCitiesFromAuthor("Slab PlunkChunk",100);
 
         assertThat(books, hasSize(equalTo(0)));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    //@Test(expected = UnsupportedOperationException.class)
+    @Test
     public void successfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50);
+        List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50,100);
 
         assertThat(books, hasSize(greaterThan(0)));
     }
@@ -107,7 +108,7 @@ public class BookDAOMongoIT {
     public void unsuccessfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666);
+        List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666,100);
 
         assertThat(books, hasSize(equalTo(0)));
     }
