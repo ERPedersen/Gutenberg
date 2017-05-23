@@ -12,7 +12,6 @@ import main.util.DBConnectorMongo;
 import org.bson.Document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -54,6 +53,7 @@ public class BookDAOMongo implements IBookDAOMongo {
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
+
         collection = db.getCollection("books");
 
         List<Book> books = new ArrayList<>();
@@ -61,6 +61,7 @@ public class BookDAOMongo implements IBookDAOMongo {
         List<Double> latLong = new ArrayList<>();
         latLong.add(latitude);
         latLong.add(longitude);
+
 
         AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
                 new Document("$geoNear",
@@ -73,7 +74,6 @@ public class BookDAOMongo implements IBookDAOMongo {
                                 .append("minDistance", 1))
         ));
 
-
         for (Document dbObject : output) {
             books.add(new Book(
                     (int) dbObject.get("UID"),
@@ -84,6 +84,7 @@ public class BookDAOMongo implements IBookDAOMongo {
         }
 
         return books;
+
     }
 
     /**

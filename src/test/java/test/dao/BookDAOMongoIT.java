@@ -94,6 +94,7 @@ public class BookDAOMongoIT {
         assertThat(books, hasSize(equalTo(0)));
     }
 
+
     @Test
     public void successfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
@@ -102,6 +103,7 @@ public class BookDAOMongoIT {
 
         assertThat(books, hasSize(greaterThan(0)));
     }
+
 
     @Test
     public void unsuccessfulGetBooksFromLatLong() {
