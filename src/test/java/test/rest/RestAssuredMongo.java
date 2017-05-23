@@ -170,7 +170,7 @@ public class RestAssuredMongo {
     public void successfulTestGetBooksFromLatLong() {
         response = given()
                 .when()
-                .get("http://localhost:8080/api/mongo/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
+                .get("http://localhost:8080/api/mongo/fromlatlong?lat=53.79391&long=-1.75206&rad=5000")
                 .then()
                 .contentType(JSON)
                 .statusCode(200)
