@@ -11,8 +11,8 @@ The project have been Created by
 - Rune V. Zimsen
 - Dennis Rønnebæk
 - Emil R. Pedersen
-- Nicolai Bonnerup 
-- EbbE V. Nielsen.
+- Nicolai V. Bonderup 
+- Ebbe V. Nielsen.
 
 The assignment for the database course project can be found [here](https://github.com/HelgeCPH/db_course_nosql/blob/master/lecture_notes/Project%20Description.ipynb)
 
