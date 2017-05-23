@@ -76,23 +76,18 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/frombook?q=What Peace Means")
+				.get("http://localhost:8080/api/mysql/location?q=What Peace Means")
 				.then()
 				.statusCode(200)
 				.extract().response();
 
 		String jsonString = response.asString();
 
-		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-		List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
-		}.getType());
+		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+		List<Location> locations = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
 
-		assertThat(cities, hasSize(greaterThan(0)));
-
-		assertThat(cities.get(0).getName(), equalTo("Same"));
-		assertThat(cities.get(0).getUID(), equalTo(150276L));
-		assertThat(cities.get(0).getLatitude(), equalTo(-4.06667));
-		assertThat(cities.get(0).getLongitude(), equalTo(37.73333));
+		assertThat(locations, hasSize(greaterThan(0)));
 	}
 
 	@Test
@@ -100,9 +95,9 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/frombook/Bonerbutt: The Collected Works")
+				.get("http://localhost:8080/api/mysql/location/Bonerbutt: The Collected Works")
 				.then()
-				.statusCode(404)
+				.statusCode(204)
 				.extract().response();
 
 	}

@@ -225,27 +225,6 @@ public class MySQLAPI {
 	}
 
 	/**
-	 * Takes a book name, and finds all cities mentioned in that book.
-	 *
-	 * @param bookName String name of the book.
-	 * @return Response object with JSON data.
-	 */
-	@GET
-	@Path("frombook")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCitiesFromBook(@QueryParam("q") String bookName) {
-		List<Location> cities;
-		try {
-			cities = facade.getCitiesFromBook(bookName);
-		} catch (BookNotFoundException ex) {
-			//ex.printStackTrace(); should this one print the stacktrace???
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
-		}
-
-		return Response.status(Response.Status.OK).entity(gson.toJson(cities)).build();
-	}
-
-	/**
 	 * Takes a city name, and returns all books which mention the city.
 	 *
 	 * @param cityName String name of the city.
@@ -263,6 +242,36 @@ public class MySQLAPI {
 		}
 
 		return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+	}
+
+	/**
+	 * Takes a book name, and finds all cities mentioned in that book.
+	 *
+	 * @param title Title of the book.
+	 * @return Response object with JSON locations.
+	 */
+	@GET
+	@Path("location")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocationsFromBook(@QueryParam("q") String title) {
+		List<Location> locations;
+
+		try {
+			locations = facade.getCitiesFromBook(title);
+		} catch (BookNotFoundException ex) {
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", locations);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 	}
 
 	/**
