@@ -10,58 +10,58 @@ public interface IBookDAOMySQL {
     /**
      * Gets a List of books from a latitude and a longitude.
      *
-     * @param latitude String The latitude.
-     * @param longitude String The longitude.
-     * @param radius Integer The radius to search within.
-     * @return List of books.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @param radius The radius to search within.
+     * @return Books in the vicinity of the lat long position that is searched for.
      */
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius);
 
     /**
      * Returns a List of books an author has written.
      *
-     * @param name String The name of the author.
-     * @return List of books The books the author has written.
+     * @param name The name of the author.
+     * @return The books the author has written.
      */
     public List<Book> getBooksAndCitiesFromAuthor(String name);
 
     /**
      * Returns a List of books where cities mentioned in a book is in.
      *
-     * @param title String The title of a book.
-     * @return List of books The books where the cities are mentioned.
+     * @param title The title of a book.
+     * @return The books where the cities are mentioned.
      */
     public List<Location> getCitiesFromBook(String title);
 
     /**
      * Returns a List of books which has a specific location somewhere in the text.
      *
-     * @param name String The name of he location that is mentioned.
-     * @return List of books The books where the location is mentioned.
+     * @param name The name of he location that is mentioned.
+     * @return The books where the location is mentioned.
      */
     public List<Book> getAuthorsAndBooksFromCity(String name);
 
     /**
      * Returns a List of Authors from a partial name.
      *
-     * @param name String partial name of an author.
-     * @return List<String> List of String author names.
+     * @param name Partial name of an author.
+     * @return List<String> Author names.
      */
     public List<String> getFuzzySearchAuthor(String name);
 
     /**
      * Returns a List of Books from a partial title.
      *
-     * @param title String partial title of a book.
-     * @return List<String> List of String book titles.
+     * @param title Partial title of a book.
+     * @return List<String> Book titles.
      */
     public List<String> getFuzzySearchBook(String title);
 
     /**
      * Returns a List of Cities from a partial name.
      *
-     * @param name String partial name of a city.
-     * @return List<String> List of String city names.
+     * @param name Partial name of a city.
+     * @return List<String> City names.
      */
     public List<String> getFuzzySearchCity(String name);
 }
