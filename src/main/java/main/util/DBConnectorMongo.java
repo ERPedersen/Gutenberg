@@ -28,10 +28,10 @@ public class DBConnectorMongo implements IDBConnectorMongo {
     /**
      * Dependency injector.
      *
-     * @param uri String to the mongoDB.
-     * @param user String username to log in with.
-     * @param password String passqord to log in with.
-     * @param database String the database to connect to.
+     * @param uri URI to the mongoDB.
+     * @param user Username to log in with.
+     * @param password Password to log in with.
+     * @param database The database to connect to.
      */
     public DBConnectorMongo(String uri, String user, String password, String database) {
         this.uri = uri;
@@ -43,13 +43,10 @@ public class DBConnectorMongo implements IDBConnectorMongo {
     /**
      * Create a mongodatabase client.
      *
-     * @return MongoDatabase.
+     * @return The client.
      */
     @Override
     public MongoDatabase getConnection() {
-        //MongoCredential credential = MongoCredential.createCredential(user, database, password.toCharArray());
-        // Removed the credentials as we have remove login temporarily.
-        //MongoClient mongoClient = new MongoClient(new ServerAddress(uri), Arrays.asList(credential));
         MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
         MongoDatabase db = mongoClient.getDatabase(database);
 
