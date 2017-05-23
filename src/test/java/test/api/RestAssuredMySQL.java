@@ -155,7 +155,7 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/fromauthor?q=Edith Wharton")
+				.get("http://localhost:8080/api/mysql/book/author?q=Thomas Clarkson")
 				.then()
 				.contentType(JSON)
 				.statusCode(200)
@@ -163,9 +163,9 @@ public class RestAssuredMySQL {
 
 		String jsonString = response.asString();
 
-		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
-		}.getType());
+		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
 
 		assertThat(books, hasSize(greaterThan(0)));
 
@@ -178,7 +178,7 @@ public class RestAssuredMySQL {
 				.get("http://localhost:8080/api/mysql/fromauthor?q=Hunk SlabChest")
 				.then()
 				.contentType(JSON)
-				.statusCode(404)
+				.statusCode(204)
 				.extract().response();
 	}
 }

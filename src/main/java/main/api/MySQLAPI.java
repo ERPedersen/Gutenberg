@@ -200,18 +200,28 @@ public class MySQLAPI {
 	 * @return Response object with JSON data.
 	 */
 	@GET
-	@Path("fromauthor")
+	@Path("book/author")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
 
 		List<Book> books;
+
 		try {
 			books = facade.getBooksAndCitiesFromAuthor(author);
 		} catch (BookNotFoundException ex) {
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
 		}
 
-		return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+		Map<String, Object> map = new HashMap<>();
+		map.put("data", books);
+
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 	}
 
 	/**
