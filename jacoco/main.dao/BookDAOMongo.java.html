@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BookDAOMongo.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gutenberg</a> &gt; <a href="index.source.html" class="el_package">main.dao</a> &gt; <span class="el_source">BookDAOMongo.java</span></div><h1>BookDAOMongo.java</h1><pre class="source lang-java linenums">package main.dao;
+
+import com.google.gson.Gson;
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import main.dto.Author;
+import main.dto.Book;
+import main.dto.Location;
+import main.util.DBConnectorMongo;
+
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
+
+public class BookDAOMongo implements IBookDAOMongo {
+
+    DBConnectorMongo connector;
+    MongoCollection&lt;Document&gt; collection;
+    MongoDatabase db;
+<span class="fc" id="L25">    Gson gson = new Gson();</span>
+
+
+
+    /**
+     * Default Constructor.
+     */
+<span class="fc" id="L32">    public BookDAOMongo() {</span>
+<span class="fc" id="L33">        connector = new DBConnectorMongo();</span>
+<span class="fc" id="L34">        db = connector.getConnection();</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Constructor with dependency injection.
+     *
+     * @param connector The connector to the Mongo database.
+     */
+<span class="fc" id="L42">    public BookDAOMongo(DBConnectorMongo connector) {</span>
+<span class="fc" id="L43">        this.connector = connector;</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * Returns a List of books from the Mongo database which have the location of a latitude and longitude mentioned.
+     *
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius where locations are searched.
+     * @param limit The limit on how many results to return.
+     * @return The list of books where the location is mentioned.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
+<span class="fc" id="L57">        collection = db.getCollection(&quot;books&quot;);</span>
+
+<span class="fc" id="L59">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L61">        List&lt;Double&gt; latLong = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L62">        latLong.add(latitude);</span>
+<span class="fc" id="L63">        latLong.add(longitude);</span>
+
+<span class="fc" id="L65">        AggregateIterable&lt;Document&gt; output = collection.aggregate(Arrays.asList(</span>
+                new Document(&quot;$geoNear&quot;,
+                        new Document(&quot;near&quot;,
+                                new Document(&quot;type&quot;, &quot;Point&quot;)
+<span class="fc" id="L69">                                        .append(&quot;coordinates&quot;, latLong))</span>
+<span class="fc" id="L70">                                .append(&quot;spherical&quot;, true)</span>
+<span class="fc" id="L71">                                .append(&quot;maxDistance&quot;, radius)</span>
+<span class="fc" id="L72">                                .append(&quot;distanceField&quot;, &quot;distance&quot;)</span>
+<span class="fc" id="L73">                                .append(&quot;minDistance&quot;, 1))</span>
+        ));
+
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (Document dbObject : output) {</span>
+<span class="fc" id="L78">            books.add(new Book(</span>
+<span class="fc" id="L79">                    (int) dbObject.get(&quot;UID&quot;),</span>
+<span class="fc" id="L80">                    (String) dbObject.get(&quot;title&quot;),</span>
+<span class="fc" id="L81">                    (List&lt;Author&gt;) dbObject.get(&quot;authors&quot;),</span>
+<span class="fc" id="L82">                    (List&lt;Location&gt;) dbObject.get(&quot;locations&quot;),</span>
+<span class="fc" id="L83">                    (String) dbObject.get(&quot;text&quot;)));</span>
+<span class="fc" id="L84">        }</span>
+
+<span class="fc" id="L86">        return books;</span>
+    }
+
+    /**
+     * Returns a List of books from the Mongo database which is written by the author.
+     *
+     * @param name The name of the author who has written the books.
+     * @param limit The limit on how many results to return.
+     * @return The books which are written by the author.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksAndCitiesFromAuthor(String name, int limit) {
+
+<span class="fc" id="L99">        collection = db.getCollection(&quot;books&quot;);</span>
+
+<span class="fc" id="L101">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for (Document dbObject : collection.find(</span>
+<span class="fc" id="L104">                eq(&quot;author&quot;,</span>
+                        new Document(&quot;$elemMatch&quot;,
+<span class="fc" id="L106">                                new Document(&quot;name&quot;, name)))).limit(limit)) {</span>
+
+<span class="fc" id="L108">            books.add(new Book(</span>
+<span class="fc" id="L109">                    (int) dbObject.get(&quot;UID&quot;),</span>
+<span class="fc" id="L110">                    (String) dbObject.get(&quot;title&quot;),</span>
+<span class="fc" id="L111">                    (List&lt;Author&gt;) dbObject.get(&quot;authors&quot;),</span>
+<span class="fc" id="L112">                    (List&lt;Location&gt;) dbObject.get(&quot;locations&quot;),</span>
+<span class="fc" id="L113">                    (String) dbObject.get(&quot;text&quot;)));</span>
+<span class="fc" id="L114">        }</span>
+
+<span class="fc" id="L116">        return books;</span>
+    }
+
+    /**
+     * Returns a List of books from the Mongo database where the cities mentioned in a Book is mentioned.
+     *
+     * @param title The title of the book where locations are searched.
+     * @param limit The limit on how many results to return.
+     * @return List of books with locations.
+     */
+    @Override
+    public List&lt;Location&gt; getCitiesFromBook(String title, int limit) {
+
+<span class="fc" id="L129">        collection = db.getCollection(&quot;books&quot;);</span>
+
+<span class="fc" id="L131">        List&lt;Document&gt; books = (List&lt;Document&gt;) collection.find(eq(&quot;title&quot;, title)).limit(limit).into(new ArrayList&lt;Document&gt;());</span>
+<span class="fc" id="L132">        List&lt;Location&gt; cities = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (Document book : books) {</span>
+
+<span class="fc" id="L136">            List&lt;Document&gt; locations = (List&lt;Document&gt;) book.get(&quot;locations&quot;);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            for (Document loc : locations) {</span>
+<span class="fc" id="L138">                String uid = (String) loc.get(&quot;UID&quot;);</span>
+<span class="fc" id="L139">                int id = Integer.parseInt(uid);</span>
+
+<span class="fc" id="L141">                String json = loc.toJson();</span>
+
+<span class="fc" id="L143">                Document coords = (Document) loc.get(&quot;loc&quot;);</span>
+<span class="fc" id="L144">                List&lt;Document&gt; latLong = (List&lt;Document&gt;) coords.get(&quot;coordinates&quot;);</span>
+<span class="fc" id="L145">                Object latObj = latLong.get(0);</span>
+<span class="fc" id="L146">                Object longObj = latLong.get(1);</span>
+
+<span class="fc" id="L148">                Location newLocation = gson.fromJson(json, Location.class);</span>
+
+<span class="fc" id="L150">                newLocation.setLatitude((double) latObj);</span>
+<span class="fc" id="L151">                newLocation.setLongitude((double) longObj);</span>
+
+<span class="fc" id="L153">                cities.add(newLocation);</span>
+
+<span class="fc" id="L155">            }</span>
+<span class="fc" id="L156">        }</span>
+
+<span class="fc" id="L158">        return cities;</span>
+    }
+
+    /**
+     * Returns a List of books from the Mongo database which has a location mentioned somewhere in the book.
+     *
+     * @param name The name of the location that is mentioned in the books.
+     * @param limit The limit on how many results to return.
+     * @return The books where the location is mentioned.
+     */
+    @Override
+    public List&lt;Book&gt; getAuthorsAndBooksFromCity(String name, int limit) {
+<span class="fc" id="L170">        collection = db.getCollection(&quot;books&quot;);</span>
+
+<span class="fc" id="L172">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        for (Document dbObject : collection.find(</span>
+<span class="fc" id="L175">                eq(&quot;locations&quot;,</span>
+                        new Document(&quot;$elemMatch&quot;,
+<span class="fc" id="L177">                                new Document(&quot;name&quot;, name)))).limit(limit)) {</span>
+
+<span class="fc" id="L179">            books.add(new Book(</span>
+<span class="fc" id="L180">                    (int) dbObject.get(&quot;UID&quot;),</span>
+<span class="fc" id="L181">                    (String) dbObject.get(&quot;title&quot;),</span>
+<span class="fc" id="L182">                    (List&lt;Author&gt;) dbObject.get(&quot;authors&quot;),</span>
+<span class="fc" id="L183">                    (List&lt;Location&gt;) dbObject.get(&quot;locations&quot;),</span>
+<span class="fc" id="L184">                    (String) dbObject.get(&quot;text&quot;)));</span>
+<span class="fc" id="L185">        }</span>
+
+<span class="fc" id="L187">        return books;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

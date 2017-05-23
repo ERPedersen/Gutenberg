@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MySQLAPI.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gutenberg</a> &gt; <a href="index.source.html" class="el_package">main.api</a> &gt; <span class="el_source">MySQLAPI.java</span></div><h1>MySQLAPI.java</h1><pre class="source lang-java linenums">package main.api;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import main.dto.Book;
+import main.dto.Location;
+import main.exception.BookNotFoundException;
+import main.facade.BookFacadeMySQL;
+import main.facade.IBookFacadeMySQL;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+@Path(&quot;mysql&quot;)
+public class MySQLAPI {
+
+	private Gson gson;
+	private IBookFacadeMySQL facade;
+
+	@Context
+	private UriInfo context;
+
+	/**
+	 * Creates a new instance of MySQLAPI
+	 */
+<span class="nc" id="L37">	public MySQLAPI() {</span>
+<span class="nc" id="L38">		gson = new GsonBuilder()</span>
+<span class="nc" id="L39">				.setPrettyPrinting()</span>
+<span class="nc" id="L40">				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)</span>
+<span class="nc" id="L41">				.create();</span>
+<span class="nc" id="L42">		facade = new BookFacadeMySQL();</span>
+<span class="nc" id="L43">	}</span>
+
+	/**
+	 * Root endpoint.
+	 *
+	 * @return The root endpoint of the MySQL API.
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getRoot() {
+
+<span class="nc" id="L54">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+
+<span class="nc" id="L56">		map.put(&quot;code&quot;, &quot;200&quot;);</span>
+<span class="nc" id="L57">		map.put(&quot;msg&quot;, &quot;You have successfully connected to the MySQL API!&quot;);</span>
+
+<span class="nc" id="L59">		return Response</span>
+<span class="nc" id="L60">				.status(Response.Status.OK)</span>
+<span class="nc" id="L61">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L62">				.build();</span>
+	}
+
+	/**
+	 * Returns books that mention locations within a given radius of a given set of coordinates.
+	 *
+	 * @param latitude The latitude of the location.
+	 * @param longitude The longitude of the location.
+	 * @param radius The radius of the location.
+	 * @return Object with books.
+	 */
+	@GET
+	@Path(&quot;book/location&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooksFromLatLong(@QueryParam(&quot;lat&quot;) double latitude, @QueryParam(&quot;long&quot;) double longitude, @QueryParam(&quot;rad&quot;) int radius) {
+
+		List&lt;Book&gt; books;
+
+		try {
+<span class="nc" id="L81">			books = facade.getBooksFromLatLong(latitude, longitude, radius);</span>
+<span class="nc" id="L82">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L83">			return Response</span>
+<span class="nc" id="L84">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L85">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L86">					.build();</span>
+<span class="nc" id="L87">		}</span>
+
+<span class="nc" id="L89">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L90">		map.put(&quot;data&quot;, books);</span>
+
+<span class="nc" id="L92">		return Response</span>
+<span class="nc" id="L93">				.status(Response.Status.OK)</span>
+<span class="nc" id="L94">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L95">				.build();</span>
+	}
+
+	/**
+	 * Takes an author name and returns all books by that author, along with all
+	 * cities mentioned in those books.
+	 *
+	 * @param author The author's name.
+	 * @return Object with JSON data.
+	 */
+	@GET
+	@Path(&quot;book/author&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response booksAndCitiesFromAuthor(@QueryParam(&quot;q&quot;) String author) {
+
+		List&lt;Book&gt; books;
+
+		try {
+<span class="nc" id="L113">			books = facade.getBooksAndCitiesFromAuthor(author);</span>
+<span class="nc" id="L114">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L115">			return Response</span>
+<span class="nc" id="L116">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L117">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L118">					.build();</span>
+<span class="nc" id="L119">		}</span>
+
+<span class="nc" id="L121">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L122">		map.put(&quot;data&quot;, books);</span>
+
+<span class="nc" id="L124">		return Response</span>
+<span class="nc" id="L125">				.status(Response.Status.OK)</span>
+<span class="nc" id="L126">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L127">				.build();</span>
+	}
+
+	/**
+	 * Takes a book name, and finds all cities mentioned in that book.
+	 *
+	 * @param title Title of the book.
+	 * @return Response object with JSON locations.
+	 */
+	@GET
+	@Path(&quot;location&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getLocationsFromBook(@QueryParam(&quot;q&quot;) String title) {
+		List&lt;Location&gt; locations;
+
+		try {
+<span class="nc" id="L143">			locations = facade.getCitiesFromBook(title);</span>
+<span class="nc" id="L144">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L145">			return Response</span>
+<span class="nc" id="L146">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L147">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L148">					.build();</span>
+<span class="nc" id="L149">		}</span>
+
+<span class="nc" id="L151">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L152">		map.put(&quot;data&quot;, locations);</span>
+
+<span class="nc" id="L154">		return Response</span>
+<span class="nc" id="L155">				.status(Response.Status.OK)</span>
+<span class="nc" id="L156">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L157">				.build();</span>
+	}
+
+	/**
+	 * Takes a city name, and returns all books which mention the city.
+	 *
+	 * @param city Name of the city.
+	 * @return Object with JSON data.
+	 */
+	@GET
+	@Path(&quot;book/city&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooksFromCity(@QueryParam(&quot;q&quot;) String city) {
+		List&lt;Book&gt; books;
+
+		try {
+<span class="nc" id="L173">			books = facade.getAuthorsAndBookFromCity(city);</span>
+<span class="nc" id="L174">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L175">			return Response</span>
+<span class="nc" id="L176">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L177">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L178">					.build();</span>
+<span class="nc" id="L179">		}</span>
+
+<span class="nc" id="L181">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L182">		map.put(&quot;data&quot;, books);</span>
+
+<span class="nc" id="L184">		return Response</span>
+<span class="nc" id="L185">				.status(Response.Status.OK)</span>
+<span class="nc" id="L186">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L187">				.build();</span>
+	}
+
+	/**
+	 * Enables fuzzy searching of authors.
+	 *
+	 * @param author The partial name of an author.
+	 * @return Objects with author names.
+	 */
+	@GET
+	@Path(&quot;search/author&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAuthors(@QueryParam(&quot;q&quot;) String author) {
+
+		Map&lt;String, Object&gt; map;
+
+		try {
+<span class="nc" id="L204">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L205">			map.put(&quot;type&quot;, &quot;author&quot;);</span>
+<span class="nc" id="L206">			map.put(&quot;data&quot;, facade.getFuzzySearchAuthor(author));</span>
+
+<span class="nc" id="L208">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L209">			return Response</span>
+<span class="nc" id="L210">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L211">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L212">					.build();</span>
+<span class="nc" id="L213">		}</span>
+
+<span class="nc" id="L215">		return Response</span>
+<span class="nc" id="L216">				.status(Response.Status.OK)</span>
+<span class="nc" id="L217">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L218">				.build();</span>
+
+	}
+
+	/**
+	 * Enables fuzzy searching of cities.
+	 *
+	 * @param city The partial name of a city.
+	 * @return Object with city names.
+	 */
+	@GET
+	@Path(&quot;search/city&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCities(@QueryParam(&quot;q&quot;) String city) {
+
+		Map&lt;String, Object&gt; map;
+
+		try {
+<span class="nc" id="L236">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L237">			map.put(&quot;type&quot;, &quot;city&quot;);</span>
+<span class="nc" id="L238">			map.put(&quot;data&quot;, facade.getFuzzySearchCity(city));</span>
+
+<span class="nc" id="L240">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L241">			return Response</span>
+<span class="nc" id="L242">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L243">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L244">					.build();</span>
+<span class="nc" id="L245">		}</span>
+
+<span class="nc" id="L247">		return Response</span>
+<span class="nc" id="L248">				.status(Response.Status.OK)</span>
+<span class="nc" id="L249">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L250">				.build();</span>
+	}
+
+	/**
+	 * Enables fuzzy searching of books.
+	 *
+	 * @param title The partial name of a book.
+	 * @return Object with book titles.
+	 */
+	@GET
+	@Path(&quot;search/book&quot;)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooks(@QueryParam(&quot;q&quot;) String title) {
+
+		Map&lt;String, Object&gt; map;
+
+		try {
+<span class="nc" id="L267">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L268">			map.put(&quot;type&quot;, &quot;book&quot;);</span>
+<span class="nc" id="L269">			map.put(&quot;data&quot;, facade.getFuzzySearchBook(title));</span>
+
+<span class="nc" id="L271">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L272">			return Response</span>
+<span class="nc" id="L273">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L274">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L275">					.build();</span>
+<span class="nc" id="L276">		}</span>
+
+<span class="nc" id="L278">		return Response</span>
+<span class="nc" id="L279">				.status(Response.Status.OK)</span>
+<span class="nc" id="L280">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L281">				.build();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

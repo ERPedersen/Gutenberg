@@ -2,6 +2,7 @@
 
 public class Location {
 
+    private Long UID;
     private double latitude;
     private double longitude;
     private String name;
@@ -9,74 +10,94 @@ public class Location {
     /**
      * Default constructor.
      */
-<span class="fc" id="L12">    public Location() {</span>
-<span class="fc" id="L13">    }</span>
+<span class="fc" id="L13">    public Location() {</span>
+<span class="fc" id="L14">    }</span>
 
     /**
-     * Constructor that instantiates a location with latitude, longitude and name.
+     * Constructor that instantiates a locations with id, latitude, longitude and name.
      *
-     * @param latitude Double The latitude of the Location.
-     * @param longitude Double The longitude of the Location.
-     * @param name String The name of the Location.
+     * @param UID The UID of the location.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param name The name of the location.
      */
-<span class="fc" id="L22">    public Location(double latitude, double longitude, String name) {</span>
-<span class="fc" id="L23">        this.latitude = latitude;</span>
-<span class="fc" id="L24">        this.longitude = longitude;</span>
-<span class="fc" id="L25">        this.name = name;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L24">    public Location(Long UID, double latitude, double longitude, String name) {</span>
+<span class="fc" id="L25">        this.UID = UID;</span>
+<span class="fc" id="L26">        this.latitude = latitude;</span>
+<span class="fc" id="L27">        this.longitude = longitude;</span>
+<span class="fc" id="L28">        this.name = name;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Gets the UID of the location.
+     *
+     * @return The UID of the location.
+     */
+    public Long getUID() {
+<span class="fc" id="L37">        return UID;</span>
+    }
+
+    /**
+     * Sets the UID of the location.
+     *
+     * @param UID The UID of the location.
+     */
+    public void setUID(Long UID) {
+<span class="fc" id="L46">        this.UID = UID;</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Get the latitude of the location.
      *
-     * @return Double The latitude of the location.
+     * @return The latitude of the location.
      */
     public double getLatitude() {
-<span class="fc" id="L34">        return latitude;</span>
+<span class="fc" id="L55">        return latitude;</span>
     }
 
     /**
      * Set the latitude of the location.
      *
-     * @param latitude Double The latitude of the location.
+     * @param latitude The latitude of the location.
      */
     public void setLatitude(double latitude) {
-<span class="fc" id="L43">        this.latitude = latitude;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L64">        this.latitude = latitude;</span>
+<span class="fc" id="L65">    }</span>
 
     /**
      * Get the longitude of the location.
      *
-     * @return Double The longitude of the location.
+     * @return The longitude of the location.
      */
     public double getLongitude() {
-<span class="fc" id="L52">        return longitude;</span>
+<span class="fc" id="L73">        return longitude;</span>
     }
 
     /**
      * Set the latitude of the location.
      *
-     * @param longitude Double The longitude of the location.
+     * @param longitude The longitude of the location.
      */
     public void setLongitude(double longitude) {
-<span class="fc" id="L61">        this.longitude = longitude;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L82">        this.longitude = longitude;</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Get the name of the location.
      *
-     * @return String the name of the location.
+     * @return The name of the location.
      */
     public String getName() {
-<span class="fc" id="L70">        return name;</span>
+<span class="fc" id="L91">        return name;</span>
     }
 
     /**
      * Set the name of the location.
      *
-     * @param name String the name of the location.
+     * @param name The name of the location.
      */
     public void setName(String name) {
-<span class="fc" id="L79">        this.name = name;</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L100">        this.name = name;</span>
+<span class="fc" id="L101">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

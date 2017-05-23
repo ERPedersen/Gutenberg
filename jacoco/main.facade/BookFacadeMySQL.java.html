@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BookFacadeMySQL.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gutenberg</a> &gt; <a href="index.source.html" class="el_package">main.facade</a> &gt; <span class="el_source">BookFacadeMySQL.java</span></div><h1>BookFacadeMySQL.java</h1><pre class="source lang-java linenums">package main.facade;
+
+import main.dao.BookDAOMySQL;
+import main.dao.IBookDAOMySQL;
+import main.dto.Book;
+import main.dto.Location;
+import main.exception.BookNotFoundException;
+
+import java.util.List;
+
+/**
+ * Class that distributes calls to either the MySQL, or Mongo database through the injection in the constructor.
+ */
+public class BookFacadeMySQL implements IBookFacadeMySQL
+{
+    private IBookDAOMySQL dao;
+
+    /**
+     * Default constructor
+     */
+<span class="fc" id="L21">    public BookFacadeMySQL() {</span>
+<span class="fc" id="L22">        this.dao = new BookDAOMySQL();</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * Constructor with dependency injector.
+     *
+     * @param dao The dao.
+     */
+<span class="fc" id="L30">    public BookFacadeMySQL(IBookDAOMySQL dao) {</span>
+<span class="fc" id="L31">        this.dao = dao;</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Gets a list of books from the data access object and returns it.
+     *
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius of the search.
+     * @return The books that mentions the location.
+     * @throws BookNotFoundException If no books mention the location.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException {
+<span class="fc" id="L45">        List&lt;Book&gt; books = dao.getBooksFromLatLong(latitude, longitude, radius);</span>
+<span class="pc bpc" id="L46" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L47">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L49">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param name the name of the author that is searched for in the database.
+     * @return The books that the Author has written.
+     * @throws BookNotFoundException If the author has not written any books.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
+<span class="fc" id="L61">        List&lt;Book&gt; books = dao.getBooksAndCitiesFromAuthor(name);</span>
+<span class="pc bpc" id="L62" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L63">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L65">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param title The title of the book that is searched for in the database.
+     * @return The books which mentions cities mentioned in the book.
+     * @throws BookNotFoundException If the book doesn't mention any cities.
+     */
+    @Override
+    public List&lt;Location&gt; getCitiesFromBook(String title) throws BookNotFoundException {
+<span class="fc" id="L77">        List&lt;Location&gt; books = dao.getCitiesFromBook(title);</span>
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L79">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L81">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param name The name that is searched for in the database.
+     * @return The books which the location is mentioned in.
+     * @throws BookNotFoundException If there is no books that is mentioned on the location.
+     */
+    @Override
+    public List&lt;Book&gt; getAuthorsAndBookFromCity(String name) throws BookNotFoundException {
+<span class="fc" id="L93">        List&lt;Book&gt; books = dao.getAuthorsAndBooksFromCity(name);</span>
+<span class="pc bpc" id="L94" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L95">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L97">        return books;</span>
+    }
+
+    /**
+     * Gets a list of city names for fuzzy searching.
+     *
+     * @param name The partial name of a city.
+     * @return A list of Strings for City names.
+     * @throws BookNotFoundException If there is no city names matching.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchCity(String name) throws BookNotFoundException {
+<span class="nc" id="L109">        List&lt;String&gt; cities = dao.getFuzzySearchCity(name);</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">        if (null == cities || cities.size() == 0) {</span>
+<span class="nc" id="L111">            throw new BookNotFoundException(&quot;No city was found&quot;);</span>
+        }
+<span class="nc" id="L113">        return cities;</span>
+    }
+
+    /**
+     *  Gets a list of book names for fuzzy searching.
+     *
+     * @param title The partial title of a book.
+     * @return A list of Strings for Book titles.
+     * @throws BookNotFoundException If there is no Book title matching.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchBook(String title) throws BookNotFoundException {
+<span class="nc" id="L125">        List&lt;String&gt; books = dao.getFuzzySearchBook(title);</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="nc" id="L127">            throw new BookNotFoundException(&quot;No book was found&quot;);</span>
+        }
+<span class="nc" id="L129">        return books;</span>
+    }
+
+    /**
+     * Gets a list of author names for fuzzy searching.
+     *
+     * @param name The partial name of an author.
+     * @return A list of Strings for Author names.
+     * @throws BookNotFoundException If there is no author name matching.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchAuthor(String name) throws BookNotFoundException {
+<span class="nc" id="L141">        List&lt;String&gt; authors = dao.getFuzzySearchAuthor(name);</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">        if (null == authors || authors.size() == 0) {</span>
+<span class="nc" id="L143">            throw new BookNotFoundException(&quot;No author was found&quot;);</span>
+        }
+<span class="nc" id="L145">        return authors;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BookDAOMySQL.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gutenberg</a> &gt; <a href="index.source.html" class="el_package">main.dao</a> &gt; <span class="el_source">BookDAOMySQL.java</span></div><h1>BookDAOMySQL.java</h1><pre class="source lang-java linenums">package main.dao;
+
+import main.dto.Author;
+import main.dto.Book;
+import main.dto.Location;
+import main.exception.BookNotFoundException;
+import main.util.DBConnectorMySQL;
+import main.util.IDBConnectorMySQL;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class BookDAOMySQL implements IBookDAOMySQL {
+
+    private IDBConnectorMySQL connector;
+
+    /**
+     * Default constructor.
+     */
+<span class="fc" id="L22">    public BookDAOMySQL() {</span>
+<span class="fc" id="L23">        connector = new DBConnectorMySQL();</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Constructor with dependency injection.
+     *
+     * @param connector The connector to the MYSQL database.
+     */
+<span class="fc" id="L31">    public BookDAOMySQL(IDBConnectorMySQL connector) {</span>
+<span class="fc" id="L32">        this.connector = connector;</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Returns a List of books from the MYSQL database which have the location of a latitude and longitude mentioned.
+     *
+     * @param latitude Double the latitude of the location.
+     * @param longitude Double the longitude of the location.
+     * @param radius The radius the locations are found from.
+     * @return The list of books where the location is mentioned.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksFromLatLong(double latitude, double longitude, int radius) {
+<span class="fc" id="L45">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L46">        String queryString = &quot;&quot; +</span>
+                &quot;SELECT b.b_id, b.title, b.text, a.a_id, a.name, l1.l_id, l1.latitude, l1.longitude, l1.name &quot; +
+                &quot;FROM book b &quot; +
+                &quot;JOIN author_book ab ON b.b_id = ab.b_id &quot; +
+                &quot;JOIN author a ON ab.a_id = a.a_id &quot; +
+                &quot;JOIN book_location bl ON b.b_id = bl.b_id &quot; +
+                &quot;JOIN location l1 ON bl.l_id = l1.l_id &quot; +
+                &quot;WHERE l1.l_id IN(&quot; +
+                &quot;SELECT l2.l_id &quot; +
+                &quot;FROM location l2 &quot; +
+                &quot;WHERE(&quot; +
+                &quot;6371 * acos(&quot; +
+                &quot;cos(radians(?)) &quot; +
+                &quot;* cos(radians(l2.latitude)) &quot; +
+                &quot;* cos(radians(l2.longitude) - radians(?)) &quot; +
+                &quot;+ sin ( radians(?) ) &quot; +
+                &quot;* sin(radians( l2.latitude ))&quot; +
+                &quot;)) &lt; ?&quot; +
+                &quot;);&quot;;
+
+        try {
+<span class="fc" id="L67">            Connection con = connector.getConnection();</span>
+<span class="fc" id="L68">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="fc" id="L69">            statement.setDouble(1, latitude);</span>
+<span class="fc" id="L70">            statement.setDouble(2, longitude);</span>
+<span class="fc" id="L71">            statement.setDouble(3, latitude);</span>
+<span class="fc" id="L72">            statement.setInt(4, radius);</span>
+
+<span class="fc" id="L74">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="fc" id="L76">            Book book = null;</span>
+<span class="fc" id="L77">            long currentBookUID = 0L;</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">                if (currentBookUID != resultSet.getLong(1)) {</span>
+<span class="fc" id="L81">                    currentBookUID = resultSet.getLong(1);</span>
+<span class="fc" id="L82">                    book = new Book(</span>
+<span class="fc" id="L83">                            resultSet.getLong(1),</span>
+<span class="fc" id="L84">                            resultSet.getString(2),</span>
+                            new ArrayList&lt;&gt;(),
+                            new ArrayList&lt;&gt;(),
+                            new ArrayList&lt;&gt;(),
+<span class="fc" id="L88">                            resultSet.getString(3)</span>
+                    );
+<span class="fc" id="L90">                    books.add(book);</span>
+<span class="fc" id="L91">                    book.addAuthor(new Author(resultSet.getLong(4), resultSet.getString(5)));</span>
+                }
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">                if (book != null) {</span>
+<span class="fc" id="L95">                    book.addLocationWithinRadius(new Location(</span>
+<span class="fc" id="L96">                            resultSet.getLong(6),</span>
+<span class="fc" id="L97">                            resultSet.getDouble(7),</span>
+<span class="fc" id="L98">                            resultSet.getDouble(8),</span>
+<span class="fc" id="L99">                            resultSet.getString(9)</span>
+                    ));
+                }
+            }
+<span class="nc" id="L103">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L105">                return null;</span>
+            } else {
+<span class="nc" id="L107">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="pc" id="L110">            connector.closeConnection();</span>
+<span class="pc" id="L111">        }</span>
+<span class="fc" id="L112">        return books;</span>
+    }
+
+    /**
+     * Returns a List of books from the MYSQL database which is written by the author.
+     *
+     * @param name The name of the author who has written the books.
+     * @return Books which are written by the author.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
+<span class="fc" id="L123">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L124">        String queryString =</span>
+                &quot;SELECT DISTINCT b.b_id, b.title, b.text, a.a_id, l.l_id, l.latitude, l.longitude, l.name &quot; +
+                        &quot;FROM book b &quot; +
+                        &quot;JOIN book_location bl ON b.b_id = bl.b_id &quot; +
+                        &quot;JOIN location l ON bl.l_id = l.l_id &quot; +
+                        &quot;JOIN author_book ab ON b.b_id = ab.b_id &quot; +
+                        &quot;JOIN author a ON ab.a_id = a.a_id &quot; +
+                        &quot;WHERE a.name = ?&quot; +
+                        &quot;ORDER BY b.b_id;&quot;;
+        try {
+<span class="fc" id="L134">            Connection con = connector.getConnection();</span>
+<span class="fc" id="L135">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="fc" id="L136">            statement.setString(1, name);</span>
+<span class="fc" id="L137">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="fc" id="L139">            Book book = null;</span>
+<span class="fc" id="L140">            long currentBookUID = 0L;</span>
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                if (currentBookUID != resultSet.getLong(1)) {</span>
+<span class="fc" id="L145">                    currentBookUID = resultSet.getLong(1);</span>
+
+<span class="fc" id="L147">                    book = new Book(</span>
+<span class="fc" id="L148">                            resultSet.getLong(1),</span>
+<span class="fc" id="L149">                            resultSet.getString(2),</span>
+                            new ArrayList&lt;&gt;(),
+                            new ArrayList&lt;&gt;(),
+<span class="fc" id="L152">                            resultSet.getString(3)</span>
+                    );
+<span class="fc" id="L154">                    books.add(book);</span>
+<span class="fc" id="L155">                    book.addAuthor(new Author(resultSet.getLong(4), name));</span>
+                }
+
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                if (book != null) {</span>
+<span class="fc" id="L159">                    book.addLocation(new Location(</span>
+<span class="fc" id="L160">                            resultSet.getLong(5),</span>
+<span class="fc" id="L161">                            resultSet.getDouble(6),</span>
+<span class="fc" id="L162">                            resultSet.getDouble(7),</span>
+<span class="fc" id="L163">                            resultSet.getString(8)</span>
+                    ));
+                }
+
+            }
+<span class="nc" id="L168">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L170">                return null;</span>
+            } else {
+<span class="nc" id="L172">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="pc" id="L175">            connector.closeConnection();</span>
+<span class="pc" id="L176">        }</span>
+
+<span class="fc" id="L178">        return books;</span>
+    }
+
+    /**
+     * Returns a List of books from the MYSQL database where the cities mentioned in a Book is mentioned.
+     *
+     * @param title The title of the book.
+     * @return Books with locations.
+     */
+    @Override
+    public List&lt;Location&gt; getCitiesFromBook(String title) {
+<span class="fc" id="L189">        List&lt;Location&gt; locations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L190">        String queryString =</span>
+                &quot;SELECT * FROM location l &quot; +
+                        &quot;JOIN book_location bl ON l.l_id = bl.l_id &quot; +
+                        &quot;JOIN book b ON bl.b_id = b.b_id &quot; +
+                        &quot;WHERE MATCH(b.title) AGAINST(?) AND b.title LIKE ?;&quot;;
+
+        try {
+<span class="fc" id="L197">            Connection con = connector.getConnection();</span>
+<span class="fc" id="L198">            PreparedStatement preparedStatement = con.prepareStatement(queryString);</span>
+<span class="fc" id="L199">            preparedStatement.setString(1, title);</span>
+<span class="fc" id="L200">            preparedStatement.setString(2, title);</span>
+<span class="fc" id="L201">            ResultSet resultSet = preparedStatement.executeQuery();</span>
+
+<span class="fc bfc" id="L203" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L204">                Location location = new Location(</span>
+<span class="fc" id="L205">                        resultSet.getLong(1),</span>
+<span class="fc" id="L206">                        resultSet.getDouble(2),</span>
+<span class="fc" id="L207">                        resultSet.getDouble(3),</span>
+<span class="fc" id="L208">                        resultSet.getString(4)</span>
+                );
+<span class="fc" id="L210">                locations.add(location);</span>
+<span class="fc" id="L211">            }</span>
+
+<span class="nc" id="L213">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L215">                return null;</span>
+            } else {
+<span class="nc" id="L217">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="pc" id="L220">            connector.closeConnection();</span>
+<span class="pc" id="L221">        }</span>
+
+<span class="fc" id="L223">        return locations;</span>
+
+    }
+
+    /**
+     * Returns a List of books from the MYSQL database which has a location mentioned somewhere in the book.
+     *
+     * @param name The name of the location that is mentioned in the books.
+     * @return The books where the location is mentioned.
+     */
+    @Override
+    public List&lt;Book&gt; getAuthorsAndBooksFromCity(String name) {
+<span class="fc" id="L235">        List&lt;Book&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L236">        String queryString = &quot;&quot; +</span>
+                &quot;SELECT b.b_id, b.title, b.text, a.a_id, a.name &quot; +
+                &quot;FROM book b &quot; +
+                &quot;JOIN author_book ab ON b.b_id = ab.b_id &quot; +
+                &quot;JOIN author a ON ab.a_id = a.a_id &quot; +
+                &quot;JOIN book_location bl ON b.b_id = bl.b_id &quot; +
+                &quot;JOIN location l ON bl.l_id = l.l_id &quot; +
+                &quot;WHERE l.name = ?;&quot;;
+
+
+<span class="fc" id="L246">        Connection con = null;</span>
+        try {
+<span class="fc" id="L248">            con = connector.getConnection();</span>
+<span class="fc" id="L249">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="fc" id="L250">            statement.setString(1, name);</span>
+<span class="fc" id="L251">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc" id="L254">                Book book = new Book(</span>
+<span class="fc" id="L255">                        resultSet.getLong(1),</span>
+<span class="fc" id="L256">                        resultSet.getString(2),</span>
+                        new ArrayList&lt;&gt;(),
+                        new ArrayList&lt;&gt;(),
+<span class="fc" id="L259">                        resultSet.getString(3)</span>
+                );
+<span class="fc" id="L261">                book.addAuthor(new Author(</span>
+<span class="fc" id="L262">                        resultSet.getLong(4),</span>
+<span class="fc" id="L263">                        resultSet.getString(5)</span>
+                ));
+<span class="fc" id="L265">                books.add(book);</span>
+<span class="fc" id="L266">            }</span>
+<span class="nc" id="L267">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L269">                return null;</span>
+            } else {
+<span class="nc" id="L271">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="pc" id="L274">            connector.closeConnection();</span>
+<span class="pc" id="L275">        }</span>
+<span class="fc" id="L276">        return books;</span>
+    }
+
+    /**
+     * Returns a list of Author names for fuzzy searching.
+     *
+     * @param name Partial name of an author.
+     * @return Names of authors.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchAuthor(String name) {
+<span class="nc" id="L287">        List&lt;String&gt; authors = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L289">        String[] split = name.split(&quot; &quot;);</span>
+
+<span class="nc" id="L291">        String starredInput = &quot;&quot;;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        for (String spaced : split) {</span>
+<span class="nc" id="L293">            starredInput = spaced + &quot;* &quot;;</span>
+        }
+
+<span class="nc" id="L296">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
+
+<span class="nc" id="L298">        String queryString = &quot;SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+
+
+<span class="nc" id="L301">        Connection con = null;</span>
+        try {
+<span class="nc" id="L303">            con = connector.getConnection();</span>
+<span class="nc" id="L304">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L305">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L306">            ResultSet resultSet = statement.executeQuery();</span>
+
+
+<span class="nc bnc" id="L309" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+
+<span class="nc" id="L311">                authors.add(resultSet.getString(1));</span>
+
+            }
+
+<span class="nc" id="L315">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L317">                return null;</span>
+            } else {
+<span class="nc" id="L319">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="nc" id="L322">            connector.closeConnection();</span>
+<span class="nc" id="L323">        }</span>
+<span class="nc" id="L324">        return authors;</span>
+    }
+
+    /**
+     * Gets a list of Book titles for fuzzy searching.
+     *
+     * @param title Partial title of a book.
+     * @return Book titles.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchBook(String title) {
+<span class="nc" id="L335">        List&lt;String&gt; books = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L336">        String[] split = title.split(&quot; &quot;);</span>
+
+<span class="nc" id="L338">        String starredInput = &quot;&quot;;</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        for (String spaced : split) {</span>
+<span class="nc" id="L340">            starredInput = spaced + &quot;* &quot;;</span>
+        }
+<span class="nc" id="L342">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
+
+<span class="nc" id="L344">        String queryString = &quot;SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+
+
+<span class="nc" id="L347">        Connection con = null;</span>
+        try {
+<span class="nc" id="L349">            con = connector.getConnection();</span>
+<span class="nc" id="L350">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L351">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L352">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+
+<span class="nc" id="L356">                books.add(resultSet.getString(1));</span>
+
+            }
+<span class="nc" id="L359">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L361">                return null;</span>
+            } else {
+<span class="nc" id="L363">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="nc" id="L366">            connector.closeConnection();</span>
+<span class="nc" id="L367">        }</span>
+<span class="nc" id="L368">        return books;</span>
+    }
+
+    /**
+     * Gets a list of City names from a partial name.
+     *
+     * @param name Partial name of a city.
+     * @return Names of cities.
+     */
+    @Override
+    public List&lt;String&gt; getFuzzySearchCity(String name)  {
+<span class="nc" id="L379">        List&lt;String&gt; cities = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L380">        String[] split = name.split(&quot; &quot;);</span>
+
+<span class="nc" id="L382">        String starredInput = &quot;&quot;;</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        for (String spaced : split) {</span>
+<span class="nc" id="L384">            starredInput = spaced + &quot;* &quot;;</span>
+        }
+<span class="nc" id="L386">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
+
+<span class="nc" id="L388">        String queryString = &quot;SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+
+
+        Connection con;
+        try {
+<span class="nc" id="L393">            con = connector.getConnection();</span>
+<span class="nc" id="L394">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L395">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L396">            ResultSet resultSet = statement.executeQuery();</span>
+
+<span class="nc bnc" id="L398" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+
+<span class="nc" id="L400">                cities.add(resultSet.getString(1));</span>
+
+            }
+<span class="nc" id="L403">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L405">                return null;</span>
+            } else {
+<span class="nc" id="L407">                e.printStackTrace();</span>
+            }
+        } finally {
+<span class="nc" id="L410">            connector.closeConnection();</span>
+<span class="nc" id="L411">        }</span>
+<span class="nc" id="L412">        return cities;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
