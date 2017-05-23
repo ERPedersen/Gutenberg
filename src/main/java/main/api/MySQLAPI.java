@@ -28,6 +28,7 @@ public class MySQLAPI {
 
 	private Gson gson;
 	private IBookFacadeMySQL facade;
+
 	@Context
 	private UriInfo context;
 
@@ -43,12 +44,11 @@ public class MySQLAPI {
 	}
 
 	/**
-	 * Test endpoint for confirming proper connection.
+	 * Root endpoint.
 	 */
 	@GET
-	@Path("test")
 	@Produces("application/json")
-	public Response testApi() {
+	public Response getRoot() {
 
 		Map<String, Object> map = new HashMap<>();
 
