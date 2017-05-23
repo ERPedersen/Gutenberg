@@ -22,7 +22,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -49,13 +52,21 @@ public class MongoAPI {
     }
 
     /**
-     * Test endpoint for confirming proper connection.
+     * Root endpoint.
      */
     @GET
-    @Path("test")
-    public Response testApi() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoot() {
 
-        return Response.status(Response.Status.OK).entity("hey hvasså ska vi smut på grillen").build();
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("code", "200");
+        map.put("msg", "You have successfully connected to the Mongo API!");
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(gson.toJson(map))
+                .build();
     }
 
     /**
@@ -68,7 +79,7 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromlatlong")
+    @Path("book/location")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBooksFromLatLong(
             @QueryParam("lat") double latitude,
@@ -79,10 +90,19 @@ public class MongoAPI {
         try {
             books = facade.getBooksFromLatLong(latitude, longitude, radius, 10);
         } catch (BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .build();
         }
 
-        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", books);
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(gson.toJson(map))
+                .build();
     }
 
     /**
@@ -93,7 +113,7 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromauthor")
+    @Path("book/author")
     @Produces(MediaType.APPLICATION_JSON)
     public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
 
@@ -101,10 +121,19 @@ public class MongoAPI {
         try {
             books = facade.getBooksAndCitiesFromAuthor(author, 10);
         } catch (BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .build();
         }
 
-        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", books);
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(gson.toJson(map))
+                .build();
     }
 
     /**
@@ -114,17 +143,26 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("frombook")
+    @Path("location")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCitiesFromBook(@QueryParam("q") String bookName) {
         List<Location> cities;
         try {
             cities = facade.getCitiesFromBook(bookName, 10);
         } catch (BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .build();
         }
 
-        return Response.status(Response.Status.OK).entity(gson.toJson(cities)).build();
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", cities);
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(gson.toJson(map))
+                .build();
     }
 
     /**
@@ -134,17 +172,42 @@ public class MongoAPI {
      * @return Response object with JSON data.
      */
     @GET
-    @Path("fromcity")
+    @Path("book/city")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
         List<Book> books;
         try {
             books = facade.getAuthorsAndBookFromCity(cityName, 10);
         } catch (BookNotFoundException ex) {
-            return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .build();
         }
 
-        return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", books);
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(gson.toJson(map))
+                .build();
+    }
+
+    /**
+     * Forms an error response.
+     *
+     * @param code The HTTP code of the response.
+     * @param message The message of the response.
+     * @return Error response
+     */
+    private Map<String, Object> getErrorResponse(int code, String message) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", code);
+        map.put("msg", message);
+        map.put("data", new ArrayList<>());
+
+        return map;
     }
 
 }
