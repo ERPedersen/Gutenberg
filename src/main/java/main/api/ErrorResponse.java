@@ -9,7 +9,7 @@ public class ErrorResponse {
     /**
      * Forms an error response.
      *
-     * @param code    The HTTP code of the response.
+     * @param code The HTTP code of the response.
      * @param message The message of the response.
      * @return Error response
      */
