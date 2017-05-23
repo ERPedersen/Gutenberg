@@ -22,156 +22,160 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class RestAssuredMySQL {
 
-    private Response response;
-    private Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
-            .create();
+	private Response response;
+	private Gson gson = new GsonBuilder()
+			.setPrettyPrinting()
+			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+			.create();
 
-    @Test
-    public void testConnectionOpen() {
-        given()
-                .when()
-                .get("http://localhost:8080/api/mysql/test/")
-                .then()
-                .statusCode(200);
-    }
+	@Test
+	public void testConnectionOpen() {
+		given()
+				.when()
+				.get("http://localhost:8080/api/mysql/test/")
+				.then()
+				.statusCode(200);
+	}
 
-    @Test
-    public void successfulTestGetCitiesFromBook() {
+	@Test
+	public void successfulTestGetCitiesFromBook() {
 
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/frombook?q=What Peace Means")
-                .then()
-                .statusCode(200)
-                .extract().response();
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/frombook?q=What Peace Means")
+				.then()
+				.statusCode(200)
+				.extract().response();
 
-        String jsonString = response.asString();
+		String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {}.getType());
+		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+		List<Location> cities = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+		}.getType());
 
-        assertThat(cities, hasSize(greaterThan(0)));
+		assertThat(cities, hasSize(greaterThan(0)));
 
-        assertThat(cities.get(0).getName(), equalTo("Same"));
-        assertThat(cities.get(0).getUID(), equalTo(150276L));
-        assertThat(cities.get(0).getLatitude(), equalTo(-4.06667));
-        assertThat(cities.get(0).getLongitude(), equalTo(37.73333));
-    }
+		assertThat(cities.get(0).getName(), equalTo("Same"));
+		assertThat(cities.get(0).getUID(), equalTo(150276L));
+		assertThat(cities.get(0).getLatitude(), equalTo(-4.06667));
+		assertThat(cities.get(0).getLongitude(), equalTo(37.73333));
+	}
 
-    @Test
-    public void unsuccessfulTestGetCitiesFromBook() {
+	@Test
+	public void unsuccessfulTestGetCitiesFromBook() {
 
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/frombook/Bonerbutt: The Collected Works")
-                .then()
-                .statusCode(404)
-                .extract().response();
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/frombook/Bonerbutt: The Collected Works")
+				.then()
+				.statusCode(404)
+				.extract().response();
 
-    }
+	}
 
-    @Test
-    public void successfulTestGetAuthorsAndBooksFromCity() {
+	@Test
+	public void successfulTestGetAuthorsAndBooksFromCity() {
 
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromcity?q=Copenhagen")
-                .then()
-                .contentType(JSON)
-                .statusCode(200)
-                .extract().response();
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromcity?q=Copenhagen")
+				.then()
+				.contentType(JSON)
+				.statusCode(200)
+				.extract().response();
 
-        String jsonString = response.asString();
+		String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
+		}.getType());
 
-        assertThat(books, hasSize(greaterThan(0)));
+		assertThat(books, hasSize(greaterThan(0)));
 
-        List<Author> authors = books.get(0).getAuthors();
+		List<Author> authors = books.get(0).getAuthors();
 
-        assertThat(books.get(0).getTitle(), equalTo("Drake, Nelson and Napoleon"));
-        assertThat(books.get(0).getUID(), equalTo(15299L));
-        assertThat(books.get(0).getAuthors(), hasSize(1));
-        assertThat(authors.get(0).getName(), equalTo("Walter Runciman"));
-        assertThat(authors.get(0).getUID(), equalTo(26L));
-        assertThat(books.get(0).getLocations(), hasSize(equalTo(0)));
-        assertThat(books.get(0).getText(), equalTo("15299.txt"));
-    }
+		assertThat(books.get(0).getTitle(), equalTo("Drake, Nelson and Napoleon"));
+		assertThat(books.get(0).getUID(), equalTo(15299L));
+		assertThat(books.get(0).getAuthors(), hasSize(1));
+		assertThat(authors.get(0).getName(), equalTo("Walter Runciman"));
+		assertThat(authors.get(0).getUID(), equalTo(26L));
+		assertThat(books.get(0).getLocations(), hasSize(equalTo(0)));
+		assertThat(books.get(0).getText(), equalTo("15299.txt"));
+	}
 
-    @Test
-    public void unsuccessfulTestGetAuthorsAndBooksFromCity() {
+	@Test
+	public void unsuccessfulTestGetAuthorsAndBooksFromCity() {
 
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromcity?q=New Donk City")
-                .then()
-                .contentType(JSON)
-                .statusCode(404)
-                .extract().response();
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromcity?q=New Donk City")
+				.then()
+				.contentType(JSON)
+				.statusCode(404)
+				.extract().response();
 
-    }
+	}
 
-    @Test
-    public void successfulTestGetBooksAndCitiesFromAuthor() {
+	@Test
+	public void successfulTestGetBooksAndCitiesFromAuthor() {
 
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromauthor?q=Edith Wharton")
-                .then()
-                .contentType(JSON)
-                .statusCode(200)
-                .extract().response();
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromauthor?q=Edith Wharton")
+				.then()
+				.contentType(JSON)
+				.statusCode(200)
+				.extract().response();
 
-        String jsonString = response.asString();
+		String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
+		}.getType());
 
-        assertThat(books, hasSize(greaterThan(0)));
+		assertThat(books, hasSize(greaterThan(0)));
 
-    }
+	}
 
-    @Test
-    public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromauthor?q=Hunk SlabChest")
-                .then()
-                .contentType(JSON)
-                .statusCode(404)
-                .extract().response();
-    }
+	@Test
+	public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromauthor?q=Hunk SlabChest")
+				.then()
+				.contentType(JSON)
+				.statusCode(404)
+				.extract().response();
+	}
 
-    @Test
-    public void successfulTestGetBooksFromLatLong() {
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
-                .then()
-                .contentType(JSON)
-                .statusCode(200)
-                .extract().response();
+	@Test
+	public void successfulTestGetBooksFromLatLong() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
+				.then()
+				.contentType(JSON)
+				.statusCode(200)
+				.extract().response();
 
-        String jsonString = response.asString();
+		String jsonString = response.asString();
 
-        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
+		}.getType());
 
-        assertThat(books, hasSize(greaterThan(0)));
-    }
+		assertThat(books, hasSize(greaterThan(0)));
+	}
 
-    @Test
-    public void unsuccessfulTestGetBooksFromLatLong() {
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
-                .then()
-                .contentType(JSON)
-                .statusCode(404)
-                .extract().response();
-    }
+	@Test
+	public void unsuccessfulTestGetBooksFromLatLong() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
+				.then()
+				.contentType(JSON)
+				.statusCode(404)
+				.extract().response();
+	}
 
 }
