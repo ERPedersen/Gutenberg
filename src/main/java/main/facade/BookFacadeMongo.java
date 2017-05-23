@@ -21,7 +21,7 @@ public class BookFacadeMongo implements IBookFacadeMongo {
     /**
      * Constructor with dependency injector.
      *
-     * @param dao IBookDAO The dao.
+     * @param dao The dao.
      */
     public BookFacadeMongo(IBookDAOMongo dao) {
         this.dao = dao;
@@ -30,9 +30,11 @@ public class BookFacadeMongo implements IBookFacadeMongo {
     /**
      * Gets a list of books from the data access object and returns it.
      *
-     * @param latitude String The latitude of the location.
-     * @param longitude String The longitude of the location.
-     * @return List of Books The books that mentions the location.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius of the search.
+     * @param limit The maximum amount of results allowed from the query.
+     * @return The books that mentions the location.
      * @throws BookNotFoundException Exception If no books mention the location.
      */
     @Override
@@ -47,9 +49,10 @@ public class BookFacadeMongo implements IBookFacadeMongo {
     /**
      * Gets a list of books from the dao and returns it.
      *
-     * @param name String the name of the author that is searched for in the database.
-     * @return List of Books The books that the Author has written.
-     * @throws BookNotFoundException Exception If the author has not written any books.
+     * @param name The name of the author that is searched for in the database.
+     * @param limit The maximum amount of results allowed from the query.
+     * @return The books that the Author has written.
+     * @throws BookNotFoundException If the author has not written any books.
      */
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) throws BookNotFoundException {
@@ -63,9 +66,10 @@ public class BookFacadeMongo implements IBookFacadeMongo {
     /**
      * Gets a list of books from the dao and returns it.
      *
-     * @param title String The title of the book that is searched for in the database.
-     * @return List of Books The books which mentions cities mentioned in the book.
-     * @throws BookNotFoundException Exception If the book doesn't mention any cities.
+     * @param title The title of the book that is searched for in the database.
+     * @param limit The maximum amount of results allowed from the query.
+     * @return The books which mentions cities mentioned in the book.
+     * @throws BookNotFoundException If the book doesn't mention any cities.
      */
     @Override
     public List<Location> getCitiesFromBook(String title, int limit) throws BookNotFoundException {
@@ -80,8 +84,9 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      * Gets a list of books from the dao and returns it.
      *
      * @param name The name that is searched for in the database.
-     * @return List of Books The books which the location is mentioned in.
-     * @throws BookNotFoundException Exception If there is no books that is mentioned on the location.
+     * @param limit The maximum amount of results allowed from the query.
+     * @return The books which the location is mentioned in.
+     * @throws BookNotFoundException If there is no books that is mentioned on the location.
      */
     @Override
     public List<Book> getAuthorsAndBookFromCity(String name, int limit) throws BookNotFoundException {
