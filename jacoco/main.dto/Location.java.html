@@ -2,10 +2,10 @@
 
 public class Location {
 
-    private Long UID;
     private double latitude;
     private double longitude;
     private String name;
+
     /**
      * Default constructor.
      */
@@ -13,37 +13,17 @@ public class Location {
 <span class="fc" id="L13">    }</span>
 
     /**
-     * Constructor that instantiates a locations with id, latitude, longitude and name.
+     * Constructor that instantiates a location with latitude, longitude and name.
      *
-     * @param UID Long The UID of the location.
-     * @param latitude Double The latitude of the location.
-     * @param longitude Double The longitude of the location.
-     * @param name String The name of the location.
+     * @param latitude Double The latitude of the Location.
+     * @param longitude Double The longitude of the Location.
+     * @param name String The name of the Location.
      */
-<span class="fc" id="L23">    public Location(Long UID, double latitude, double longitude, String name) {</span>
-<span class="fc" id="L24">        this.UID = UID;</span>
-<span class="fc" id="L25">        this.latitude = latitude;</span>
-<span class="fc" id="L26">        this.longitude = longitude;</span>
-<span class="fc" id="L27">        this.name = name;</span>
-<span class="fc" id="L28">    }</span>
-
-    /**
-     * Gets the UID of the location.
-     *
-     * @return Long The UID of the location.
-     */
-    public Long getUID() {
-<span class="fc" id="L36">        return UID;</span>
-    }
-
-    /**
-     * Sets the UID of the location.
-     *
-     * @param UID Long The UID of the location.
-     */
-    public void setUID(Long UID) {
-<span class="fc" id="L45">        this.UID = UID;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L22">    public Location(double latitude, double longitude, String name) {</span>
+<span class="fc" id="L23">        this.latitude = latitude;</span>
+<span class="fc" id="L24">        this.longitude = longitude;</span>
+<span class="fc" id="L25">        this.name = name;</span>
+<span class="fc" id="L26">    }</span>
 
     /**
      * Get the latitude of the location.
@@ -51,7 +31,7 @@ public class Location {
      * @return Double The latitude of the location.
      */
     public double getLatitude() {
-<span class="fc" id="L54">        return latitude;</span>
+<span class="fc" id="L34">        return latitude;</span>
     }
 
     /**
@@ -60,8 +40,8 @@ public class Location {
      * @param latitude Double The latitude of the location.
      */
     public void setLatitude(double latitude) {
-<span class="fc" id="L63">        this.latitude = latitude;</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L43">        this.latitude = latitude;</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Get the longitude of the location.
@@ -69,7 +49,7 @@ public class Location {
      * @return Double The longitude of the location.
      */
     public double getLongitude() {
-<span class="fc" id="L72">        return longitude;</span>
+<span class="fc" id="L52">        return longitude;</span>
     }
 
     /**
@@ -78,8 +58,8 @@ public class Location {
      * @param longitude Double The longitude of the location.
      */
     public void setLongitude(double longitude) {
-<span class="fc" id="L81">        this.longitude = longitude;</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L61">        this.longitude = longitude;</span>
+<span class="fc" id="L62">    }</span>
 
     /**
      * Get the name of the location.
@@ -87,7 +67,7 @@ public class Location {
      * @return String the name of the location.
      */
     public String getName() {
-<span class="fc" id="L90">        return name;</span>
+<span class="fc" id="L70">        return name;</span>
     }
 
     /**
@@ -96,7 +76,7 @@ public class Location {
      * @param name String the name of the location.
      */
     public void setName(String name) {
-<span class="fc" id="L99">        this.name = name;</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L79">        this.name = name;</span>
+<span class="fc" id="L80">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

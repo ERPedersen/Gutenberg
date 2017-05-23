@@ -7,14 +7,13 @@ public class Book {
     private String title;
     private List&lt;Author&gt; authors;
     private List&lt;Location&gt; locations;
-    private List&lt;Location&gt; locationsWithinRadius;
     private String text;
 
     /**
      * Default constructor.
      */
-<span class="fc" id="L16">    public Book() {</span>
-<span class="fc" id="L17">    }</span>
+<span class="fc" id="L15">    public Book() {</span>
+<span class="fc" id="L16">    }</span>
 
     /**
      * Constructor that initiates the Book with a title, a list of Authors, a list of Locations and text.
@@ -24,12 +23,12 @@ public class Book {
      * @param locations List of Locations The Locations of the Book.
      * @param text String The text of the Book.
      */
-<span class="fc" id="L27">    public Book(String title, List&lt;Author&gt; authors, List&lt;Location&gt; locations, String text) {</span>
-<span class="fc" id="L28">        this.title = title;</span>
-<span class="fc" id="L29">        this.authors = authors;</span>
-<span class="fc" id="L30">        this.locations = locations;</span>
-<span class="fc" id="L31">        this.text = text;</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L26">    public Book(String title, List&lt;Author&gt; authors, List&lt;Location&gt; locations, String text) {</span>
+<span class="fc" id="L27">        this.title = title;</span>
+<span class="fc" id="L28">        this.authors = authors;</span>
+<span class="fc" id="L29">        this.locations = locations;</span>
+<span class="fc" id="L30">        this.text = text;</span>
+<span class="fc" id="L31">    }</span>
 
     /**
      * Constructor that initates the Book with an UID, a title, a list of Authors, a list of Locations and text.
@@ -40,40 +39,22 @@ public class Book {
      * @param locations List of Locations The Locations of the Book.
      * @param text String The text of the Book.
      */
-<span class="fc" id="L43">    public Book(long UID, String title, List&lt;Author&gt; authors, List&lt;Location&gt; locations, String text) {</span>
-<span class="fc" id="L44">        this.UID = UID;</span>
-<span class="fc" id="L45">        this.title = title;</span>
-<span class="fc" id="L46">        this.authors = authors;</span>
-<span class="fc" id="L47">        this.locations = locations;</span>
-<span class="fc" id="L48">        this.text = text;</span>
-<span class="fc" id="L49">    }</span>
-
-<span class="nc" id="L51">    public Book(long UID, String title, List&lt;Author&gt; authors, List&lt;Location&gt; locations, List&lt;Location&gt; locationsWithinRadius, String text) {</span>
-<span class="nc" id="L52">        this.UID = UID;</span>
-<span class="nc" id="L53">        this.title = title;</span>
-<span class="nc" id="L54">        this.authors = authors;</span>
-<span class="nc" id="L55">        this.locations = locations;</span>
-<span class="nc" id="L56">        this.locationsWithinRadius = locationsWithinRadius;</span>
-<span class="nc" id="L57">        this.text = text;</span>
-<span class="nc" id="L58">    }</span>
+<span class="fc" id="L42">    public Book(long UID, String title, List&lt;Author&gt; authors, List&lt;Location&gt; locations, String text) {</span>
+<span class="fc" id="L43">        this.UID = UID;</span>
+<span class="fc" id="L44">        this.title = title;</span>
+<span class="fc" id="L45">        this.authors = authors;</span>
+<span class="fc" id="L46">        this.locations = locations;</span>
+<span class="fc" id="L47">        this.text = text;</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Gets the UID of the Book.
      *
-     * @return Long The UID of the Book.
+     * @return long The UID of the Book.
      */
     public long getUID() {
-<span class="fc" id="L66">        return UID;</span>
+<span class="fc" id="L56">        return UID;</span>
     }
-
-    /**
-     * Sets the UID of the Book.
-     *
-     * @param UID Long The UID of the Book.
-     */
-    public void setUID(long UID) {
-<span class="fc" id="L75">        this.UID = UID;</span>
-<span class="fc" id="L76">    }</span>
 
     /**
      * Gets the Title of the Book.
@@ -81,7 +62,7 @@ public class Book {
      * @return String The title of the Book.
      */
     public String getTitle() {
-<span class="fc" id="L84">        return title;</span>
+<span class="fc" id="L65">        return title;</span>
     }
 
     /**
@@ -90,8 +71,8 @@ public class Book {
      * @param title String The title of the Book.
      */
     public void setTitle(String title) {
-<span class="fc" id="L93">        this.title = title;</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L74">        this.title = title;</span>
+<span class="fc" id="L75">    }</span>
 
     /**
      * Gets a List of Authors associated with the Book.
@@ -99,7 +80,7 @@ public class Book {
      * @return List of Authors The Authors associated with the Book.
      */
     public List&lt;Author&gt; getAuthors() {
-<span class="fc" id="L102">        return authors;</span>
+<span class="fc" id="L83">        return authors;</span>
     }
 
     /**
@@ -108,8 +89,8 @@ public class Book {
      * @param authors List of Authors The Authors associated with the Book.
      */
     public void setAuthors(List&lt;Author&gt; authors) {
-<span class="fc" id="L111">        this.authors = authors;</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L92">        this.authors = authors;</span>
+<span class="fc" id="L93">    }</span>
 
     /**
      * Gets a List of Locations mentioned in the Book.
@@ -117,7 +98,7 @@ public class Book {
      * @return List of Locations The Locations mentioned in the Book.
      */
     public List&lt;Location&gt; getLocations() {
-<span class="fc" id="L120">        return locations;</span>
+<span class="fc" id="L101">        return locations;</span>
     }
 
     /**
@@ -126,8 +107,8 @@ public class Book {
      * @param locations List of Locations The Loactions mentioned in the Book.
      */
     public void setLocations(List&lt;Location&gt; locations) {
-<span class="fc" id="L129">        this.locations = locations;</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L110">        this.locations = locations;</span>
+<span class="fc" id="L111">    }</span>
 
     /**
      * Gets the Url for the text of the Book.
@@ -135,7 +116,7 @@ public class Book {
      * @return String The Url for the text of the Book.
      */
     public String getText() {
-<span class="fc" id="L138">        return text;</span>
+<span class="fc" id="L119">        return text;</span>
     }
 
     /**
@@ -144,52 +125,7 @@ public class Book {
      * @param text String the Url for the text of the Book.
      */
     public void setText(String text) {
-<span class="fc" id="L147">        this.text = text;</span>
-<span class="fc" id="L148">    }</span>
-
-    /**
-     * Adds a location to the locations list.
-     *
-     * @param location The location to add.
-     */
-    public void addLocation(Location location) {
-<span class="fc" id="L156">        this.locations.add(location);</span>
-<span class="fc" id="L157">    }</span>
-
-    /**
-     * Adds a location to the locations list.
-     *
-     * @param author The author to add.
-     */
-	public void addAuthor(Author author) {
-<span class="fc" id="L165">        this.authors.add(author);</span>
-<span class="fc" id="L166">	}</span>
-
-    /**
-     * Gets a list of locations within a radius of another point.
-     *
-     * @return List of locations The list of locations within the radius of another point.
-     */
-    public List&lt;Location&gt; getLocationsWithinRadius() {
-<span class="nc" id="L174">        return locationsWithinRadius;</span>
-    }
-
-    /**
-     * Sets a list of locations within a radius of another point.
-     *
-     * @param locationsWithinRadius List of locations The list of locations within the radius of another point.
-     */
-    public void setLocationsWithinRadius(List&lt;Location&gt; locationsWithinRadius) {
-<span class="nc" id="L183">        this.locationsWithinRadius = locationsWithinRadius;</span>
-<span class="nc" id="L184">    }</span>
-
-    /**
-     * Adds a locations to the location within locations list.
-     *
-     * @param location The location to add.
-     */
-    public void addLocationWithinRadius(Location location) {
-<span class="nc" id="L192">        this.locationsWithinRadius.add(location);</span>
-<span class="nc" id="L193">    }</span>
+<span class="fc" id="L128">        this.text = text;</span>
+<span class="fc" id="L129">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

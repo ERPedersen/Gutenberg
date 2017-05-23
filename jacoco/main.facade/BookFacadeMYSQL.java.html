@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BookFacadeMYSQL.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gutenberg</a> &gt; <a href="index.source.html" class="el_package">main.facade</a> &gt; <span class="el_source">BookFacadeMYSQL.java</span></div><h1>BookFacadeMYSQL.java</h1><pre class="source lang-java linenums">package main.facade;
+
+import main.dao.BookDAOMYSQL;
+import main.dao.IBookDAO;
+import main.dto.Author;
+import main.dto.Book;
+import main.dto.Location;
+import main.exception.BookNotFoundException;
+
+import java.util.List;
+
+public class BookFacadeMYSQL implements IBookFacade{
+
+    private IBookDAO dao;
+
+    /**
+     * Default constructor.
+     */
+<span class="fc" id="L19">    public BookFacadeMYSQL() {</span>
+<span class="fc" id="L20">        this.dao = new BookDAOMYSQL();</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Constructor with dependency injector.
+     * @param dao IBookDAO The dao.
+     */
+<span class="fc" id="L27">    public BookFacadeMYSQL(IBookDAO dao) {</span>
+<span class="fc" id="L28">        this.dao = dao;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Gets a list of books from the data access object and returns it.
+     *
+     * @param latitude String The latitude of the location.
+     * @param longitude String The longitude of the location.
+     * @return List of Books The books that mentions the location.
+     * @throws BookNotFoundException Exception If no books mention the location.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksFromLatLong(String latitude, String longitude) throws BookNotFoundException {
+<span class="fc" id="L41">        List&lt;Book&gt; books = dao.getBooksFromLatLong(latitude, longitude);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (null == books) {</span>
+<span class="fc" id="L43">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L45">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param author Author The author that is searched for in the database.
+     * @return List of Books The books that the Author has written.
+     * @throws BookNotFoundException Exception If the author has not written any books.
+     */
+    @Override
+    public List&lt;Book&gt; getBooksAndCitiesFromAuthor(Author author) throws BookNotFoundException {
+<span class="fc" id="L57">        List&lt;Book&gt; books = dao.getBooksAndCitiesFromAuthor(author);</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        if (null == books) {</span>
+<span class="fc" id="L59">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L61">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param book Book The book that is searched for in the database.
+     * @return List of Books The books which mentions cities mentioned in the book.
+     * @throws BookNotFoundException Exception If the book doesn't mention any cities.
+     */
+    @Override
+    public List&lt;Book&gt; getCitiesFromBook(Book book) throws BookNotFoundException {
+<span class="fc" id="L73">        List&lt;Book&gt; books = dao.getCitiesFromBook(book);</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (null == books) {</span>
+<span class="fc" id="L75">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L77">        return books;</span>
+    }
+
+    /**
+     * Gets a list of books from the dao and returns it.
+     *
+     * @param location The location that is searched for in the database.
+     * @return List of Books The books which the location is mentioned in.
+     * @throws BookNotFoundException Exception If there is no books that is mentioned on the location.
+     */
+    @Override
+    public List&lt;Book&gt; getAuthorsAndBookFromCity(Location location) throws BookNotFoundException {
+<span class="fc" id="L89">        List&lt;Book&gt; books = dao.getAuthorsAndBooksFromCity(location);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (null == books) {</span>
+<span class="fc" id="L91">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+        }
+<span class="fc" id="L93">        return books;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
