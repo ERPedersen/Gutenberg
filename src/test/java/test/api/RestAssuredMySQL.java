@@ -1,10 +1,7 @@
 package test.api;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
+import com.google.gson.*;
 import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
@@ -42,6 +39,36 @@ public class RestAssuredMySQL {
 		Map<String, Object> map = gson.fromJson(jsonString, new TypeToken<Map<String, Object>>() {}.getType());
 		assertThat(map.get("code"), equalTo("200"));
 		assertThat(map.get("msg"), equalTo("You have successfully connected to the MySQL API!"));
+	}
+
+	@Test
+	public void successfulTestGetBooksFromLatLong() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/book/location?lat=52.18935&long=-2.22001&rad=50")
+				.then()
+				.contentType(JSON)
+				.statusCode(200)
+				.extract().response();
+
+		String jsonString = response.asString();
+
+		JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+		JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {}.getType());
+
+		assertThat(books, hasSize(greaterThan(0)));
+	}
+
+	@Test
+	public void unsuccessfulTestGetBooksFromLatLong() {
+		response = given()
+				.when()
+				.get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
+				.then()
+				.contentType(JSON)
+				.statusCode(404)
+				.extract().response();
 	}
 
 	@Test
@@ -154,35 +181,4 @@ public class RestAssuredMySQL {
 				.statusCode(404)
 				.extract().response();
 	}
-
-	@Test
-	public void successfulTestGetBooksFromLatLong() {
-		response = given()
-				.when()
-				.get("http://localhost:8080/api/mysql/fromlatlong?lat=52.18935&long=-2.22001&rad=50")
-				.then()
-				.contentType(JSON)
-				.statusCode(200)
-				.extract().response();
-
-		String jsonString = response.asString();
-
-		JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-		List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Book>>() {
-		}.getType());
-
-		assertThat(books, hasSize(greaterThan(0)));
-	}
-
-	@Test
-	public void unsuccessfulTestGetBooksFromLatLong() {
-		response = given()
-				.when()
-				.get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
-				.then()
-				.contentType(JSON)
-				.statusCode(404)
-				.extract().response();
-	}
-
 }
