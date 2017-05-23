@@ -18,5 +18,4 @@ public interface IDBConnectorMySQL {
 	 * Checks if the connection is open and closes it.
 	 */
 	void closeConnection();
-
 }
