@@ -10,36 +10,41 @@ public interface IBookFacadeMongo {
     /**
      * Gets a List of books from a latitude and a longitude.
      *
-     * @param latitude String The latitude.
-     * @param longitude String The longitude.
-     * @throws BookNotFoundException Exception is thrown if no books are found.
+     * @param latitude The latitude.
+     * @param longitude The longitude.
+     * @param radius The radius of the search.
+     * @param limit The limit of Books allowed from the search.
+     * @throws BookNotFoundException Is thrown if no books are found.
      */
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) throws BookNotFoundException;
 
     /**
      * Returns a List of books an author has written.
      *
-     * @param name String The name of the author.
-     * @return List of books The books the author has written.
-     * @throws BookNotFoundException Exception is thrown if no books are found.
+     * @param name The name of the author.
+     * @param limit The limit of Books allowed from the search.
+     * @return The books the author has written.
+     * @throws BookNotFoundException Is thrown if no books are found.
      */
     public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) throws BookNotFoundException;
 
     /**
      * Returns a List of books where cities mentioned in a book is in.
      *
-     * @param title String The title of a book.
-     * @return List of books The books where the cities are mentioned.
-     * @throws BookNotFoundException Exception is thrown if no books are found.
+     * @param title The title of a book.
+     * @param limit The limit of Books allowed from the search.
+     * @return The books where the cities are mentioned.
+     * @throws BookNotFoundException Is thrown if no books are found.
      */
     public List<Location> getCitiesFromBook(String title, int limit) throws BookNotFoundException;
 
     /**
      * Returns a List of books which has a specific location somewhere in the text.
      *
-     * @param name String The name of the location that is mentioned.
-     * @return List of books The books where the location is mentioned.
-     * @throws BookNotFoundException Exception is thrown if no books are found.
+     * @param name The name of the location that is mentioned.
+     * @param limit The limit of Books allowed from the search.
+     * @return The books where the location is mentioned.
+     * @throws BookNotFoundException Is thrown if no books are found.
      */
     public List<Book> getAuthorsAndBookFromCity(String name, int limit) throws BookNotFoundException;
 

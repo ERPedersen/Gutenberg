@@ -25,7 +25,7 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Constructor with dependency injector.
      *
-     * @param dao IBookDAO The dao.
+     * @param dao The dao.
      */
     public BookFacadeMySQL(IBookDAOMySQL dao) {
         this.dao = dao;
@@ -34,10 +34,11 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Gets a list of books from the data access object and returns it.
      *
-     * @param latitude String The latitude of the location.
-     * @param longitude String The longitude of the location.
-     * @return List of Books The books that mentions the location.
-     * @throws BookNotFoundException Exception If no books mention the location.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius of the search.
+     * @return The books that mentions the location.
+     * @throws BookNotFoundException If no books mention the location.
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException {
@@ -51,9 +52,9 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Gets a list of books from the dao and returns it.
      *
-     * @param name String the name of the author that is searched for in the database.
-     * @return List of Books The books that the Author has written.
-     * @throws BookNotFoundException Exception If the author has not written any books.
+     * @param name the name of the author that is searched for in the database.
+     * @return The books that the Author has written.
+     * @throws BookNotFoundException If the author has not written any books.
      */
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
@@ -67,9 +68,9 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Gets a list of books from the dao and returns it.
      *
-     * @param title String The title of the book that is searched for in the database.
-     * @return List of Books The books which mentions cities mentioned in the book.
-     * @throws BookNotFoundException Exception If the book doesn't mention any cities.
+     * @param title The title of the book that is searched for in the database.
+     * @return The books which mentions cities mentioned in the book.
+     * @throws BookNotFoundException If the book doesn't mention any cities.
      */
     @Override
     public List<Location> getCitiesFromBook(String title) throws BookNotFoundException {
@@ -84,8 +85,8 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * Gets a list of books from the dao and returns it.
      *
      * @param name The name that is searched for in the database.
-     * @return List of Books The books which the location is mentioned in.
-     * @throws BookNotFoundException Exception If there is no books that is mentioned on the location.
+     * @return The books which the location is mentioned in.
+     * @throws BookNotFoundException If there is no books that is mentioned on the location.
      */
     @Override
     public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException {
@@ -99,9 +100,9 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Gets a list of city names for fuzzy searching.
      *
-     * @param name String The partial name of a city.
-     * @return List<String> A list of Strings for City names.
-     * @throws BookNotFoundException
+     * @param name The partial name of a city.
+     * @return A list of Strings for City names.
+     * @throws BookNotFoundException If there is no city names matching.
      */
     @Override
     public List<String> getFuzzySearchCity(String name) throws BookNotFoundException {
@@ -115,10 +116,9 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      *  Gets a list of book names for fuzzy searching.
      *
-     * @param title String The partial title of a book.
-     * @return List<String> A list of Strings for Book titles.
-     * @throws BookNotFoundException
-     * @throws ClassNotFoundException
+     * @param title The partial title of a book.
+     * @return A list of Strings for Book titles.
+     * @throws BookNotFoundException If there is no Book title matching.
      */
     @Override
     public List<String> getFuzzySearchBook(String title) throws BookNotFoundException {
@@ -132,9 +132,9 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     /**
      * Gets a list of author names for fuzzy searching.
      *
-     * @param name String The partial name of an author.
-     * @return List<String> A list of Strings for Author names.
-     * @throws BookNotFoundException
+     * @param name The partial name of an author.
+     * @return A list of Strings for Author names.
+     * @throws BookNotFoundException If there is no author name matching.
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException {

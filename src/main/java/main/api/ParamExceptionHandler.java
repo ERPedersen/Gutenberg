@@ -27,8 +27,13 @@ public class ParamExceptionHandler implements ExceptionMapper<ParamException> {
 			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
 			.create();
 
+	/**
+	 * Handles 404 exceptions.
+	 *
+	 * @param ex The exception to be handled.
+	 * @return The response if the exception is caught.
+	 */
 	public Response toResponse(ParamException ex){
-
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", 400);

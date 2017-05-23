@@ -63,10 +63,10 @@ public class MySQLAPI {
 	/**
 	 * Returns books that mention locations within a given radius of a given set of coordinates.
 	 *
-	 * @param latitude  The latitude of the location.
+	 * @param latitude The latitude of the location.
 	 * @param longitude The longitude of the location.
-	 * @param radius    The radius of the location.
-	 * @return Response object with books.
+	 * @param radius The radius of the location.
+	 * @return Object with books.
 	 */
 	@GET
 	@Path("book/location")
@@ -98,7 +98,7 @@ public class MySQLAPI {
 	 * cities mentioned in those books.
 	 *
 	 * @param author The author's name.
-	 * @return Response object with JSON data.
+	 * @return Object with JSON data.
 	 */
 	@GET
 	@Path("book/author")
@@ -159,7 +159,7 @@ public class MySQLAPI {
 	 * Takes a city name, and returns all books which mention the city.
 	 *
 	 * @param city Name of the city.
-	 * @return Response object with JSON data.
+	 * @return Object with JSON data.
 	 */
 	@GET
 	@Path("book/city")
@@ -189,7 +189,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of authors.
 	 *
 	 * @param author The partial name of an author.
-	 * @return Response object with Page JSON data.
+	 * @return Objects with author names.
 	 */
 	@GET
 	@Path("search/author")
@@ -221,7 +221,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of cities.
 	 *
 	 * @param city The partial name of a city.
-	 * @return Response object with Page JSON data.
+	 * @return Object with city names.
 	 */
 	@GET
 	@Path("search/city")
@@ -252,7 +252,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of books.
 	 *
 	 * @param title The partial name of a book.
-	 * @return Response object with book titles.
+	 * @return Object with book titles.
 	 */
 	@GET
 	@Path("search/book")

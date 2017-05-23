@@ -27,6 +27,12 @@ public class WebApplicationExceptionHandler implements ExceptionMapper<WebApplic
 			.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
 			.create();
 
+	/**
+	 * Handles error 500.
+	 *
+	 * @param ex The exception to be handled.
+	 * @return The response if the exception is caught.
+	 */
 	public Response toResponse(WebApplicationException ex){
 
 

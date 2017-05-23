@@ -16,10 +16,10 @@ public class Location {
     /**
      * Constructor that instantiates a locations with id, latitude, longitude and name.
      *
-     * @param UID       Long The UID of the location.
-     * @param latitude  Double The latitude of the location.
-     * @param longitude Double The longitude of the location.
-     * @param name      String The name of the location.
+     * @param UID The UID of the location.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param name The name of the location.
      */
     public Location(Long UID, double latitude, double longitude, String name) {
         this.UID = UID;
@@ -31,7 +31,7 @@ public class Location {
     /**
      * Gets the UID of the location.
      *
-     * @return Long The UID of the location.
+     * @return The UID of the location.
      */
     public Long getUID() {
         return UID;
@@ -40,7 +40,7 @@ public class Location {
     /**
      * Sets the UID of the location.
      *
-     * @param UID Long The UID of the location.
+     * @param UID The UID of the location.
      */
     public void setUID(Long UID) {
         this.UID = UID;
@@ -49,7 +49,7 @@ public class Location {
     /**
      * Get the latitude of the location.
      *
-     * @return Double The latitude of the location.
+     * @return The latitude of the location.
      */
     public double getLatitude() {
         return latitude;
@@ -58,7 +58,7 @@ public class Location {
     /**
      * Set the latitude of the location.
      *
-     * @param latitude Double The latitude of the location.
+     * @param latitude The latitude of the location.
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
@@ -67,7 +67,7 @@ public class Location {
     /**
      * Get the longitude of the location.
      *
-     * @return Double The longitude of the location.
+     * @return The longitude of the location.
      */
     public double getLongitude() {
         return longitude;
@@ -76,7 +76,7 @@ public class Location {
     /**
      * Set the latitude of the location.
      *
-     * @param longitude Double The longitude of the location.
+     * @param longitude The longitude of the location.
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
@@ -85,7 +85,7 @@ public class Location {
     /**
      * Get the name of the location.
      *
-     * @return String the name of the location.
+     * @return The name of the location.
      */
     public String getName() {
         return name;
@@ -94,7 +94,7 @@ public class Location {
     /**
      * Set the name of the location.
      *
-     * @param name String the name of the location.
+     * @param name The name of the location.
      */
     public void setName(String name) {
         this.name = name;

@@ -26,10 +26,10 @@ public class DBConnectorMySQL implements IDBConnectorMySQL {
 	/**
 	 * Constructor that enables dependency injection.
 	 *
-	 * @param driver String The JDBC database driver.
-	 * @param uri String The URI to connect to.
-	 * @param user String The username to log in with.
-	 * @param password String The password to authenticate with.
+	 * @param driver The JDBC database driver.
+	 * @param uri The URI to connect to.
+	 * @param user The username to log in with.
+	 * @param password The password to authenticate with.
 	 */
 	public DBConnectorMySQL(String driver, String uri, String user, String password) {
 		this.driver = driver;
@@ -41,7 +41,7 @@ public class DBConnectorMySQL implements IDBConnectorMySQL {
 	/**
 	 * Checks if the connection is null or closed, and returns either a new or the old connection.
 	 *
-	 * @return Connection The connection to the MySQL database.
+	 * @return The connection to the MySQL database.
 	 * @throws SQLException If there is a problem connecting to the database.
 	 * @throws ClassNotFoundException If the JDBC driver was not found.
 	 */

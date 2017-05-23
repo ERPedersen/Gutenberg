@@ -19,10 +19,10 @@ public class Book {
     /**
      * Constructor that initiates the Book with a title, a list of Authors, a list of Locations and text.
      *
-     * @param title String The title of the Book.
-     * @param authors List of Authors The Authors of the Book.
-     * @param locations List of Locations The Locations of the Book.
-     * @param text String The text of the Book.
+     * @param title The title of the Book.
+     * @param authors The Authors of the Book.
+     * @param locations The Locations of the Book.
+     * @param text The text of the Book.
      */
     public Book(String title, List<Author> authors, List<Location> locations, String text) {
         this.title = title;
@@ -32,13 +32,13 @@ public class Book {
     }
 
     /**
-     * Constructor that initates the Book with an UID, a title, a list of Authors, a list of Locations and text.
+     * Constructor that initiates the Book with an UID, a title, a list of Authors, a list of Locations and text.
      *
-     * @param UID Long The UID of the Book.
-     * @param title String The title of the Book.
-     * @param authors List of Authors The Authors of the Book.
-     * @param locations List of Locations The Locations of the Book.
-     * @param text String The text of the Book.
+     * @param UID The UID of the Book.
+     * @param title The title of the Book.
+     * @param authors The Authors of the Book.
+     * @param locations The Locations of the Book.
+     * @param text The text of the Book.
      */
     public Book(long UID, String title, List<Author> authors, List<Location> locations, String text) {
         this.UID = UID;
@@ -48,6 +48,15 @@ public class Book {
         this.text = text;
     }
 
+    /**
+     * Constructor that initiates the Book with an UID, a title, a list of Authors, a list of Locations, a list of Locations within a radius and text.
+     * @param UID The UID of the Book.
+     * @param title The title of the Book.
+     * @param authors The authors of the Book.
+     * @param locations The locations of the Book.
+     * @param locationsWithinRadius The locations within a given radius of the Book.
+     * @param text The text of the Book.
+     */
     public Book(long UID, String title, List<Author> authors, List<Location> locations, List<Location> locationsWithinRadius, String text) {
         this.UID = UID;
         this.title = title;
@@ -60,7 +69,7 @@ public class Book {
     /**
      * Gets the UID of the Book.
      *
-     * @return Long The UID of the Book.
+     * @return The UID of the Book.
      */
     public long getUID() {
         return UID;
@@ -69,7 +78,7 @@ public class Book {
     /**
      * Sets the UID of the Book.
      *
-     * @param UID Long The UID of the Book.
+     * @param UID The UID of the Book.
      */
     public void setUID(long UID) {
         this.UID = UID;
@@ -78,7 +87,7 @@ public class Book {
     /**
      * Gets the Title of the Book.
      *
-     * @return String The title of the Book.
+     * @return The title of the Book.
      */
     public String getTitle() {
         return title;
@@ -87,7 +96,7 @@ public class Book {
     /**
      * Sets the Title of the Book.
      *
-     * @param title String The title of the Book.
+     * @param title The title of the Book.
      */
     public void setTitle(String title) {
         this.title = title;
@@ -96,7 +105,7 @@ public class Book {
     /**
      * Gets a List of Authors associated with the Book.
      *
-     * @return List of Authors The Authors associated with the Book.
+     * @return The Authors associated with the Book.
      */
     public List<Author> getAuthors() {
         return authors;
@@ -105,7 +114,7 @@ public class Book {
     /**
      * Sets a List of Authors associated with the Book.
      *
-     * @param authors List of Authors The Authors associated with the Book.
+     * @param authors The Authors associated with the Book.
      */
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
@@ -114,7 +123,7 @@ public class Book {
     /**
      * Gets a List of Locations mentioned in the Book.
      *
-     * @return List of Locations The Locations mentioned in the Book.
+     * @return The Locations mentioned in the Book.
      */
     public List<Location> getLocations() {
         return locations;
@@ -123,7 +132,7 @@ public class Book {
     /**
      * Sets a List of Locations mentioned in the Book.
      *
-     * @param locations List of Locations The Loactions mentioned in the Book.
+     * @param locations The Locations mentioned in the Book.
      */
     public void setLocations(List<Location> locations) {
         this.locations = locations;
@@ -132,7 +141,7 @@ public class Book {
     /**
      * Gets the Url for the text of the Book.
      *
-     * @return String The Url for the text of the Book.
+     * @return The Url for the text of the Book.
      */
     public String getText() {
         return text;
@@ -141,7 +150,7 @@ public class Book {
     /**
      * Sets the Urls for the text of the Book.
      *
-     * @param text String the Url for the text of the Book.
+     * @param text the Url for the text of the Book.
      */
     public void setText(String text) {
         this.text = text;
@@ -168,7 +177,7 @@ public class Book {
     /**
      * Gets a list of locations within a radius of another point.
      *
-     * @return List of locations The list of locations within the radius of another point.
+     * @return The list of locations within the radius of another point.
      */
     public List<Location> getLocationsWithinRadius() {
         return locationsWithinRadius;
@@ -177,7 +186,7 @@ public class Book {
     /**
      * Sets a list of locations within a radius of another point.
      *
-     * @param locationsWithinRadius List of locations The list of locations within the radius of another point.
+     * @param locationsWithinRadius The list of locations within the radius of another point.
      */
     public void setLocationsWithinRadius(List<Location> locationsWithinRadius) {
         this.locationsWithinRadius = locationsWithinRadius;

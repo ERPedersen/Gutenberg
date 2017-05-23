@@ -68,10 +68,11 @@ public class MongoAPI {
      * Takes latitude and longitude and returns all books that mention a city at
      * that coordinate.
      *
-     * @param latitude Float the latitude of the location.
-     * @param longitude Float the longitude of the location.
-     * @param radius Integer the radius of the location.
-     * @return Response object with JSON data.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius of the location.
+     * @param limit The limit of responses of the search
+     * @return Object with JSON data.
      */
     @GET
     @Path("book/location")
@@ -105,8 +106,9 @@ public class MongoAPI {
      * Takes an author name and returns all books by that author, along with all
      * cities mentioned in those books.
      *
-     * @param author String the author's name.
-     * @return Response object with JSON data.
+     * @param author The author's name.
+     * @param limit The limit of responses of the search
+     * @return Object with JSON data.
      */
     @GET
     @Path("book/author")
@@ -137,7 +139,8 @@ public class MongoAPI {
     /**
      * Takes a book name, and finds all cities mentioned in that book.
      *
-     * @param bookName String name of the book.
+     * @param bookName Name of the book.
+     * @param limit The limit of responses of the search
      * @return Response object with JSON data.
      */
     @GET
@@ -168,7 +171,8 @@ public class MongoAPI {
     /**
      * Takes a city name, and returns all books which mention the city.
      *
-     * @param cityName String name of the city.
+     * @param cityName Name of the city.
+     * @param limit The limit of responses of the search
      * @return Response object with JSON data.
      */
     @GET
