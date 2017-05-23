@@ -84,15 +84,9 @@ public class MySQLAPI {
 		try {
 			books = facade.getBooksFromLatLong(latitude, longitude, radius);
 		} catch (BookNotFoundException ex) {
-
-			Map<String, Object> map = new HashMap<>();
-			map.put("code", "204");
-			map.put("msg", ex.getMessage());
-			map.put("data", new ArrayList<>());
-
 			return Response
 					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(map))
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
 					.build();
 		}
 
@@ -112,18 +106,28 @@ public class MySQLAPI {
 	 * @return Response object with Page JSON data.
 	 */
 	@GET
-	@Path("fuzzyauthor")
+	@Path("search/author")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getFuzzySearchAuthor(@QueryParam("q") String author) {
+	public Response getAuthors(@QueryParam("q") String author) {
 
-		Page page;
+		Map<String, Object> map;
+
 		try {
-			page = new Page("Author", facade.getFuzzySearchAuthor(author));
+			map = new HashMap<>();
+			map.put("type", "author");
+			map.put("data", facade.getFuzzySearchAuthor(author));
+
 		} catch (BookNotFoundException ex) {
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
 		}
 
-		return Response.status(Response.Status.OK).entity(gson.toJson(page)).build();
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 
 	}
 
@@ -230,6 +234,22 @@ public class MySQLAPI {
 		}
 
 		return Response.status(Response.Status.OK).entity(gson.toJson(books)).build();
+	}
+
+	/**
+	 * Forms an error response.
+	 *
+	 * @param code The HTTP code of the response.
+	 * @param message The message of the response.
+	 * @return Error response
+	 */
+	private Map<String, Object> getErrorResponse(int code, String message) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("code", code);
+		map.put("msg", message);
+		map.put("data", new ArrayList<>());
+
+		return map;
 	}
 
 }
