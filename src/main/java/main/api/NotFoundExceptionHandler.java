@@ -31,7 +31,7 @@ public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundExcepti
 	 * Handles 404 responses.
 	 *
 	 * @param ex The exception that is caught.
-	 * @return
+	 * @return The response if the exception is caught.
 	 */
 	public Response toResponse(NotFoundException ex){
 
