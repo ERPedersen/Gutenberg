@@ -94,20 +94,22 @@ public class BookDAOMongoIT {
         assertThat(books, hasSize(equalTo(0)));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+
+    @Test
     public void successfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50,100);
+        List<Book> books = dao.getBooksFromLatLong(53.79391,-1.75206,5000,100);
 
         assertThat(books, hasSize(greaterThan(0)));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+
+    @Test
     public void unsuccessfulGetBooksFromLatLong() {
         dao = new BookDAOMongo();
 
-        List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666,100);
+        List<Book> books = dao.getBooksFromLatLong(0.0,-0.0,1,100);
 
         assertThat(books, hasSize(equalTo(0)));
     }

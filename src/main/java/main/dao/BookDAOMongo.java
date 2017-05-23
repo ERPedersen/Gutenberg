@@ -1,6 +1,7 @@
 package main.dao;
 
 import com.google.gson.Gson;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
@@ -11,6 +12,7 @@ import main.util.DBConnectorMongo;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -52,31 +54,36 @@ public class BookDAOMongo implements IBookDAOMongo {
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
-        throw new UnsupportedOperationException("Not implemented");
-        /*collection = db.getCollection("books");
+        collection = db.getCollection("books");
 
         List<Book> books = new ArrayList<>();
 
-        double[] latLong = new double[2];
-        latLong[0] = latitude;
-        latLong[1] = longitude;
+        List<Double> latLong = new ArrayList<>();
+        latLong.add(latitude);
+        latLong.add(longitude);
 
         AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
                 new Document("$geoNear",
                         new Document("near",
                                 new Document("type", "Point")
                                         .append("coordinates", latLong))
-                                .append("spherical", "true")
+                                .append("spherical", true)
                                 .append("maxDistance", radius)
                                 .append("distanceField", "distance")
                                 .append("minDistance", 1))
         ));
 
+
         for (Document dbObject : output) {
-            System.out.println(dbObject);
+            books.add(new Book(
+                    (int) dbObject.get("UID"),
+                    (String) dbObject.get("title"),
+                    (List<Author>) dbObject.get("authors"),
+                    (List<Location>) dbObject.get("locations"),
+                    (String) dbObject.get("text")));
         }
 
-        return books;*/
+        return books;
     }
 
     /**
