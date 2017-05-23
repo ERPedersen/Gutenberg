@@ -37,7 +37,7 @@ public class BookDAOMongo implements IBookDAOMongo {
     /**
      * Constructor with dependency injection.
      *
-     * @param connector DBConnectorMongo The connector to the Mongo database.
+     * @param connector The connector to the Mongo database.
      */
     public BookDAOMongo(DBConnectorMongo connector) {
         this.connector = connector;
@@ -46,11 +46,11 @@ public class BookDAOMongo implements IBookDAOMongo {
     /**
      * Returns a List of books from the Mongo database which have the location of a latitude and longitude mentioned.
      *
-     * @param latitude  String The latitude of the location.
-     * @param longitude String The longitude of the location.
-     * @param radius    The radius where locations are searched.
-     * @param limit Integer The limit on how many results to return.
-     * @return List of books The list of books where the location is mentioned.
+     * @param latitude The latitude of the location.
+     * @param longitude The longitude of the location.
+     * @param radius The radius where locations are searched.
+     * @param limit The limit on how many results to return.
+     * @return The list of books where the location is mentioned.
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
@@ -89,9 +89,9 @@ public class BookDAOMongo implements IBookDAOMongo {
     /**
      * Returns a List of books from the Mongo database which is written by the author.
      *
-     * @param name String The name of the author who has written the books.
-     * @param limit Integer The limit on how many results to return.
-     * @return List of books The books which are written by the author.
+     * @param name The name of the author who has written the books.
+     * @param limit The limit on how many results to return.
+     * @return The books which are written by the author.
      */
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) {
@@ -119,8 +119,8 @@ public class BookDAOMongo implements IBookDAOMongo {
     /**
      * Returns a List of books from the Mongo database where the cities mentioned in a Book is mentioned.
      *
-     * @param title String The title of the book where locations are searched.
-     * @param limit Integer The limit on how many results to return.
+     * @param title The title of the book where locations are searched.
+     * @param limit The limit on how many results to return.
      * @return List of books with locations.
      */
     @Override
@@ -161,9 +161,9 @@ public class BookDAOMongo implements IBookDAOMongo {
     /**
      * Returns a List of books from the Mongo database which has a location mentioned somewhere in the book.
      *
-     * @param name String The name of the location that is mentioned in the books.
-     * @param limit Integer The limit on how many results to return.
-     * @return List of books The books where the location is mentioned.
+     * @param name The name of the location that is mentioned in the books.
+     * @param limit The limit on how many results to return.
+     * @return The books where the location is mentioned.
      */
     @Override
     public List<Book> getAuthorsAndBooksFromCity(String name, int limit) {
