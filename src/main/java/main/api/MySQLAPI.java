@@ -138,18 +138,28 @@ public class MySQLAPI {
 	 * @return Response object with Page JSON data.
 	 */
 	@GET
-	@Path("fuzzycity")
+	@Path("search/city")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getFuzzySearchCity(@QueryParam("q") String city) {
 
-		Page page;
+		Map<String, Object> map;
+
 		try {
-			page = new Page("City", facade.getFuzzySearchCity(city));
+			map = new HashMap<>();
+			map.put("type", "city");
+			map.put("data", facade.getFuzzySearchCity(city));
+
 		} catch (BookNotFoundException ex) {
-			return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
+			return Response
+					.status(Response.Status.NO_CONTENT)
+					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.build();
 		}
 
-		return Response.status(Response.Status.OK).entity(gson.toJson(page)).build();
+		return Response
+				.status(Response.Status.OK)
+				.entity(gson.toJson(map))
+				.build();
 	}
 
 	/**
