@@ -22,15 +22,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * @author Private
- */
 @Path("/mongo")
 public class MongoAPI {
 
@@ -84,15 +79,16 @@ public class MongoAPI {
     public Response getBooksFromLatLong(
             @QueryParam("lat") double latitude,
             @QueryParam("long") double longitude,
-            @QueryParam("rad") int radius) {
+            @QueryParam("rad") int radius,
+            @QueryParam("lim") int limit) {
 
         List<Book> books;
         try {
-            books = facade.getBooksFromLatLong(latitude, longitude, radius, 10);
+            books = facade.getBooksFromLatLong(latitude, longitude, radius, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -115,15 +111,17 @@ public class MongoAPI {
     @GET
     @Path("book/author")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response booksAndCitiesFromAuthor(@QueryParam("q") String author) {
+    public Response booksAndCitiesFromAuthor(
+            @QueryParam("q") String author,
+            @QueryParam("lim") int limit) {
 
         List<Book> books;
         try {
-            books = facade.getBooksAndCitiesFromAuthor(author, 10);
+            books = facade.getBooksAndCitiesFromAuthor(author, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -145,14 +143,16 @@ public class MongoAPI {
     @GET
     @Path("location")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCitiesFromBook(@QueryParam("q") String bookName) {
+    public Response getLocationsFromBook(
+            @QueryParam("q") String bookName,
+            @QueryParam("lim") int limit) {
         List<Location> cities;
         try {
-            cities = facade.getCitiesFromBook(bookName, 10);
+            cities = facade.getCitiesFromBook(bookName, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -174,14 +174,16 @@ public class MongoAPI {
     @GET
     @Path("book/city")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
+    public Response getBooksFromCity(
+            @QueryParam("q") String cityName,
+            @QueryParam("lim") int limit) {
         List<Book> books;
         try {
-            books = facade.getAuthorsAndBookFromCity(cityName, 10);
+            books = facade.getAuthorsAndBookFromCity(cityName, limit);
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -193,21 +195,4 @@ public class MongoAPI {
                 .entity(gson.toJson(map))
                 .build();
     }
-
-    /**
-     * Forms an error response.
-     *
-     * @param code The HTTP code of the response.
-     * @param message The message of the response.
-     * @return Error response
-     */
-    private Map<String, Object> getErrorResponse(int code, String message) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", code);
-        map.put("msg", message);
-        map.put("data", new ArrayList<>());
-
-        return map;
-    }
-
 }
