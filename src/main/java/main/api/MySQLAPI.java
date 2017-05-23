@@ -44,6 +44,8 @@ public class MySQLAPI {
 
 	/**
 	 * Root endpoint.
+	 *
+	 * @return The root endpoint of the MySQL API.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
