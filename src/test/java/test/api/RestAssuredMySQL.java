@@ -63,10 +63,10 @@ public class RestAssuredMySQL {
 	public void unsuccessfulTestGetBooksFromLatLong() {
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/fromlatlong?lat=420420.0&long=-696969.0&rad=666")
+				.get("http://localhost:8080/api/mysql/book/location?lat=420420.0&long=-696969.0&rad=666")
 				.then()
 				.contentType(JSON)
-				.statusCode(404)
+				.statusCode(400)
 				.extract().response();
 	}
 
@@ -94,9 +94,9 @@ public class RestAssuredMySQL {
 
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/location/Bonerbutt: The Collected Works")
+				.get("http://localhost:8080/api/mysql/location?=Bonerbutt: The Collected Works")
 				.then()
-				.statusCode(204)
+				.statusCode(400)
 				.extract().response();
 
 	}
@@ -129,7 +129,7 @@ public class RestAssuredMySQL {
 				.get("http://localhost:8080/api/mysql/book/city?q=New Donk City")
 				.then()
 				.contentType(JSON)
-				.statusCode(204)
+				.statusCode(400)
 				.extract().response();
 
 	}
@@ -159,10 +159,10 @@ public class RestAssuredMySQL {
 	public void unsuccessfulTestGetBooksAndCitiesFromAuthor() {
 		response = given()
 				.when()
-				.get("http://localhost:8080/api/mysql/fromauthor?q=Hunk SlabChest")
+				.get("http://localhost:8080/api/mysql/book/author?q=Hunk SlabChest")
 				.then()
 				.contentType(JSON)
-				.statusCode(204)
+				.statusCode(400)
 				.extract().response();
 	}
 }

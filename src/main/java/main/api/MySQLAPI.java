@@ -80,8 +80,8 @@ public class MySQLAPI {
 			books = facade.getBooksFromLatLong(latitude, longitude, radius);
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -114,8 +114,8 @@ public class MySQLAPI {
 
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -146,8 +146,8 @@ public class MySQLAPI {
 
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -177,8 +177,8 @@ public class MySQLAPI {
 
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -206,8 +206,8 @@ public class MySQLAPI {
 			books = facade.getBooksAndCitiesFromAuthor(author);
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -236,8 +236,8 @@ public class MySQLAPI {
 			books = facade.getAuthorsAndBookFromCity(city);
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
@@ -266,8 +266,8 @@ public class MySQLAPI {
 			locations = facade.getCitiesFromBook(title);
 		} catch (BookNotFoundException ex) {
 			return Response
-					.status(Response.Status.NO_CONTENT)
-					.entity(gson.toJson(getErrorResponse(204, ex.getMessage())))
+					.status(Response.Status.BAD_REQUEST)
+					.entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
 					.build();
 		}
 
