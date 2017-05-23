@@ -3,28 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.rest;
+package test.api;
 
-import static com.jayway.restassured.RestAssured.*;
-import static com.jayway.restassured.http.ContentType.JSON;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jayway.restassured.response.Response;
-import main.dto.Author;
-import main.dto.Book;
-import main.dto.Location;
 import org.junit.BeforeClass;
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.*;
-
-import java.util.List;
 
 
 /**

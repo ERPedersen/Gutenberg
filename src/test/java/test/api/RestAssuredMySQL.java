@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.rest;
+package test.api;
 
 import static com.jayway.restassured.RestAssured.*;
 import static com.jayway.restassured.http.ContentType.JSON;
@@ -17,7 +17,6 @@ import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.BookNotFoundException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

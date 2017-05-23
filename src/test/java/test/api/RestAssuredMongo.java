@@ -1,4 +1,4 @@
-package test.rest;
+package test.api;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
@@ -6,7 +6,6 @@ import com.jayway.restassured.response.Response;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.BookNotFoundException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -14,7 +13,6 @@ import java.util.List;
 
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.http.ContentType.JSON;
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
