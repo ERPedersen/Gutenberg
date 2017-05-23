@@ -22,8 +22,8 @@ import static org.hamcrest.Matchers.hasSize;
 
 public class RestAssuredMySQL {
 
-    Response response;
-    Gson gson = new GsonBuilder()
+    private Response response;
+    private Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
             .create();
