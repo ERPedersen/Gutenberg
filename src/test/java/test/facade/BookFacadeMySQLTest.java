@@ -49,11 +49,11 @@ public class BookFacadeMySQLTest {
         books.add(new Book());
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt())).
+        when(dao.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt())).
                 thenReturn(books);
 
         facade = new BookFacadeMySQL(dao);
-        assertThat(facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt()), is(books));
+        assertThat(facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt()), is(books));
     }
 
     @Test(expected = BookNotFoundException.class)
@@ -62,11 +62,11 @@ public class BookFacadeMySQLTest {
         IBookDAOMySQL dao;
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt())).
+        when(dao.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt())).
                 thenReturn(null);
 
         facade = new BookFacadeMySQL(dao);
-        facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt());
+        facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
     }
 
     @Test
@@ -82,11 +82,11 @@ public class BookFacadeMySQLTest {
         books.add(new Book("title", authors, locations, "text"));
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getBooksAndCitiesFromAuthor(anyString())).
+        when(dao.getBooksAndCitiesFromAuthor(anyString(), anyInt())).
                 thenReturn(books);
 
         facade = new BookFacadeMySQL(dao);
-        assertThat(facade.getBooksAndCitiesFromAuthor(anyString()), is(books));
+        assertThat(facade.getBooksAndCitiesFromAuthor(anyString(), anyInt()), is(books));
     }
 
     @Test(expected = BookNotFoundException.class)
@@ -96,11 +96,11 @@ public class BookFacadeMySQLTest {
 
         Author author = new Author();
         dao = mock(BookDAOMySQL.class);
-        when(dao.getBooksAndCitiesFromAuthor(anyString()))
+        when(dao.getBooksAndCitiesFromAuthor(anyString(), anyInt()))
                 .thenReturn(null);
 
         facade = new BookFacadeMySQL(dao);
-        facade.getBooksAndCitiesFromAuthor(anyString());
+        facade.getBooksAndCitiesFromAuthor(anyString(), anyInt());
     }
 
     @Test
@@ -112,11 +112,11 @@ public class BookFacadeMySQLTest {
         locations.add(new Location(1L, 1.1231, 1.12312, "Jydeland"));
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getCitiesFromBook("title"))
+        when(dao.getCitiesFromBook("title", 10))
                 .thenReturn(locations);
 
         facade = new BookFacadeMySQL(dao);
-        assertThat(facade.getCitiesFromBook("title"), is(locations));
+        assertThat(facade.getCitiesFromBook("title", 10), is(locations));
     }
 
     @Test(expected = BookNotFoundException.class)
@@ -125,11 +125,11 @@ public class BookFacadeMySQLTest {
         IBookDAOMySQL dao;
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getCitiesFromBook("title")).
+        when(dao.getCitiesFromBook("title", 10)).
                 thenReturn(null);
 
         facade = new BookFacadeMySQL(dao);
-        facade.getCitiesFromBook("title");
+        facade.getCitiesFromBook("title", 10);
     }
 
     @Test
@@ -145,11 +145,11 @@ public class BookFacadeMySQLTest {
         books.add(new Book("title", authors, locations, "text"));
 
         dao = mock(BookDAOMySQL.class);
-        when(dao.getAuthorsAndBooksFromCity(anyString())).
+        when(dao.getAuthorsAndBooksFromCity(anyString(), anyInt())).
                 thenReturn(books);
 
         facade = new BookFacadeMySQL(dao);
-        assertThat(facade.getAuthorsAndBookFromCity(anyString()), is(books));
+        assertThat(facade.getAuthorsAndBookFromCity(anyString(), anyInt()), is(books));
     }
 
     @Test(expected = BookNotFoundException.class)
@@ -159,10 +159,10 @@ public class BookFacadeMySQLTest {
 
         Location location = new Location();
         dao = mock(BookDAOMySQL.class);
-        when(dao.getAuthorsAndBooksFromCity(anyString())).
+        when(dao.getAuthorsAndBooksFromCity(anyString(), anyInt())).
                 thenReturn(null);
 
         facade = new BookFacadeMySQL(dao);
-        facade.getAuthorsAndBookFromCity(anyString());
+        facade.getAuthorsAndBookFromCity(anyString(), anyInt());
     }
 }
