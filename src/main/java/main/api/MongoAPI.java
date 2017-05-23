@@ -22,7 +22,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,7 +92,7 @@ public class MongoAPI {
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -126,7 +125,7 @@ public class MongoAPI {
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -157,7 +156,7 @@ public class MongoAPI {
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -188,7 +187,7 @@ public class MongoAPI {
         } catch (BookNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
-                    .entity(gson.toJson(getErrorResponse(400, ex.getMessage())))
+                    .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
                     .build();
         }
 
@@ -200,21 +199,4 @@ public class MongoAPI {
                 .entity(gson.toJson(map))
                 .build();
     }
-
-    /**
-     * Forms an error response.
-     *
-     * @param code The HTTP code of the response.
-     * @param message The message of the response.
-     * @return Error response
-     */
-    private Map<String, Object> getErrorResponse(int code, String message) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", code);
-        map.put("msg", message);
-        map.put("data", new ArrayList<>());
-
-        return map;
-    }
-
 }
