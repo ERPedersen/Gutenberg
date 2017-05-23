@@ -26,7 +26,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Constructor with dependency injection.
      *
-     * @param connector IDBConnectorMySQL The connector to the MYSQL database.
+     * @param connector The connector to the MYSQL database.
      */
     public BookDAOMySQL(IDBConnectorMySQL connector) {
         this.connector = connector;
@@ -35,10 +35,10 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Returns a List of books from the MYSQL database which have the location of a latitude and longitude mentioned.
      *
-     * @param latitude  Double the latitude of the location.
+     * @param latitude Double the latitude of the location.
      * @param longitude Double the longitude of the location.
-     * @param radius    Int The radius the locations are found from.
-     * @return List of books The list of books where the location is mentioned.
+     * @param radius The radius the locations are found from.
+     * @return The list of books where the location is mentioned.
      */
     @Override
     public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
@@ -115,8 +115,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Returns a List of books from the MYSQL database which is written by the author.
      *
-     * @param name String The name of the author who has written the books.
-     * @return List of books which are written by the author.
+     * @param name The name of the author who has written the books.
+     * @return Books which are written by the author.
      */
     @Override
     public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
@@ -181,8 +181,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Returns a List of books from the MYSQL database where the cities mentioned in a Book is mentioned.
      *
-     * @param title String The title of the book.
-     * @return List of books with locations.
+     * @param title The title of the book.
+     * @return Books with locations.
      */
     @Override
     public List<Location> getCitiesFromBook(String title) {
@@ -227,8 +227,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Returns a List of books from the MYSQL database which has a location mentioned somewhere in the book.
      *
-     * @param name String the name of the location that is mentioned in the books.
-     * @return List of books The books where the location is mentioned.
+     * @param name The name of the location that is mentioned in the books.
+     * @return The books where the location is mentioned.
      */
     @Override
     public List<Book> getAuthorsAndBooksFromCity(String name) {
@@ -279,8 +279,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Returns a list of Author names for fuzzy searching.
      *
-     * @param name String partial name of an author.
-     * @return List<String> List of String names of authors.
+     * @param name Partial name of an author.
+     * @return List<String> Names of authors.
      */
     @Override
     public List<String> getFuzzySearchAuthor(String name) {
@@ -327,8 +327,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Gets a list of Book titles for fuzzy searching.
      *
-     * @param title String partial title of a book.
-     * @return List<String> List of String book titles.
+     * @param title Partial title of a book.
+     * @return List<String> Book titles.
      */
     @Override
     public List<String> getFuzzySearchBook(String title) {
@@ -371,8 +371,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     /**
      * Gets a list of City names from a partial name.
      *
-     * @param name String partial name of a city.
-     * @return List<String> List of String names of cities.
+     * @param name Partial name of a city.
+     * @return List<String> Names of cities.
      */
     @Override
     public List<String> getFuzzySearchCity(String name)  {
