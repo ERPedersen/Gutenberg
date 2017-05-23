@@ -1,27 +1,33 @@
 package main.facade;
 
-import main.dao.IBookDAO;
+import main.dao.BookDAOMySQL;
+import main.dao.IBookDAOMySQL;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
  * Class that distributes calls to either the MySQL, or Mongo database through the injection in the constructor.
  */
-public class BookFacade implements IBookFacade
+public class BookFacadeMySQL implements IBookFacadeMySQL
 {
-    private IBookDAO dao;
+    private IBookDAOMySQL dao;
+
+    /**
+     * Default constructor
+     */
+    public BookFacadeMySQL() {
+        this.dao = new BookDAOMySQL();
+    }
 
     /**
      * Constructor with dependency injector.
      *
      * @param dao IBookDAO The dao.
      */
-    public BookFacade(IBookDAO dao) {
+    public BookFacadeMySQL(IBookDAOMySQL dao) {
         this.dao = dao;
     }
 
@@ -34,7 +40,7 @@ public class BookFacade implements IBookFacade
      * @throws BookNotFoundException Exception If no books mention the location.
      */
     @Override
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) throws BookNotFoundException {
         List<Book> books = dao.getBooksFromLatLong(latitude, longitude, radius);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
@@ -50,7 +56,7 @@ public class BookFacade implements IBookFacade
      * @throws BookNotFoundException Exception If the author has not written any books.
      */
     @Override
-    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public List<Book> getBooksAndCitiesFromAuthor(String name) throws BookNotFoundException {
         List<Book> books = dao.getBooksAndCitiesFromAuthor(name);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
@@ -66,7 +72,7 @@ public class BookFacade implements IBookFacade
      * @throws BookNotFoundException Exception If the book doesn't mention any cities.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title) throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public List<Location> getCitiesFromBook(String title) throws BookNotFoundException {
         List<Location> books = dao.getCitiesFromBook(title);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
@@ -82,7 +88,7 @@ public class BookFacade implements IBookFacade
      * @throws BookNotFoundException Exception If there is no books that is mentioned on the location.
      */
     @Override
-    public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException, ConnectionAlreadyClosedException, SQLException, ClassNotFoundException {
+    public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException {
         List<Book> books = dao.getAuthorsAndBooksFromCity(name);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No Book was found");
@@ -95,11 +101,10 @@ public class BookFacade implements IBookFacade
      *
      * @param name String The partial name of a city.
      * @return List<String> A list of Strings for City names.
-     * @throws ConnectionAlreadyClosedException
      * @throws BookNotFoundException
      */
     @Override
-    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException, BookNotFoundException {
+    public List<String> getFuzzySearchCity(String name) throws BookNotFoundException {
         List<String> cities = dao.getFuzzySearchCity(name);
         if (null == cities || cities.size() == 0) {
             throw new BookNotFoundException("No city was found");
@@ -113,12 +118,10 @@ public class BookFacade implements IBookFacade
      * @param title String The partial title of a book.
      * @return List<String> A list of Strings for Book titles.
      * @throws BookNotFoundException
-     * @throws ConnectionAlreadyClosedException
-     * @throws SQLException
      * @throws ClassNotFoundException
      */
     @Override
-    public List<String> getFuzzySearchBook(String title) throws BookNotFoundException, ConnectionAlreadyClosedException, SQLException, ClassNotFoundException {
+    public List<String> getFuzzySearchBook(String title) throws BookNotFoundException {
         List<String> books = dao.getFuzzySearchBook(title);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No book was found");
@@ -132,10 +135,9 @@ public class BookFacade implements IBookFacade
      * @param name String The partial name of an author.
      * @return List<String> A list of Strings for Author names.
      * @throws BookNotFoundException
-     * @throws ConnectionAlreadyClosedException
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException, ConnectionAlreadyClosedException {
+    public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException {
         List<String> authors = dao.getFuzzySearchAuthor(name);
         if (null == authors || authors.size() == 0) {
             throw new BookNotFoundException("No author was found");

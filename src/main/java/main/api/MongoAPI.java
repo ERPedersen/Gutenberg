@@ -8,23 +8,21 @@ package main.api;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-import main.dao.BookDAOMySQL;
-import main.dao.IBookDAO;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
-import main.exception.ConnectionAlreadyClosedException;
-import main.facade.BookFacade;
-import main.facade.IBookFacade;
+import main.facade.BookFacadeMongo;
+import main.facade.IBookFacadeMongo;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 /**
  *
@@ -33,9 +31,8 @@ import main.facade.IBookFacade;
 @Path("/mongo")
 public class MongoAPI {
 
-    Gson gson;
-    IBookDAO dao;
-    IBookFacade facade;
+    private Gson gson;
+    private IBookFacadeMongo facade;
 
     @Context
     private UriInfo context;
@@ -48,8 +45,7 @@ public class MongoAPI {
                 .setPrettyPrinting()
                 .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
                 .create();
-        dao = new BookDAOMySQL();
-        facade = new BookFacade(dao);
+        facade = new BookFacadeMongo();
     }
 
     /**
@@ -81,8 +77,8 @@ public class MongoAPI {
 
         List<Book> books;
         try {
-            books = facade.getBooksFromLatLong(latitude, longitude, radius);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+            books = facade.getBooksFromLatLong(latitude, longitude, radius, 10);
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
@@ -103,8 +99,8 @@ public class MongoAPI {
 
         List<Book> books;
         try {
-            books = facade.getBooksAndCitiesFromAuthor(author);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+            books = facade.getBooksAndCitiesFromAuthor(author, 10);
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
@@ -123,8 +119,8 @@ public class MongoAPI {
     public Response getCitiesFromBook(@QueryParam("q") String bookName) {
         List<Location> cities;
         try {
-            cities = facade.getCitiesFromBook(bookName);
-        } catch (ConnectionAlreadyClosedException | BookNotFoundException ex) {
+            cities = facade.getCitiesFromBook(bookName, 10);
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 
@@ -143,8 +139,8 @@ public class MongoAPI {
     public Response getAuthorsAndBooksFromCity(@QueryParam("q") String cityName) {
         List<Book> books;
         try {
-            books = facade.getAuthorsAndBookFromCity(cityName);
-        } catch (SQLException | ClassNotFoundException | ConnectionAlreadyClosedException | BookNotFoundException ex) {
+            books = facade.getAuthorsAndBookFromCity(cityName, 10);
+        } catch (BookNotFoundException ex) {
             return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(ex.getMessage())).build();
         }
 

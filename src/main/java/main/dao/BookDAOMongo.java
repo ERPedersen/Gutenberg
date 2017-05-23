@@ -1,28 +1,26 @@
 package main.dao;
 
-import com.mongodb.client.AggregateIterable;
+import com.google.gson.Gson;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
-import main.exception.ConnectionAlreadyClosedException;
 import main.util.DBConnectorMongo;
 
 import org.bson.Document;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Ebbe Nielsen on 12/05/2017.
- */
-public class BookDAOMongo implements IBookDAO {
+import static com.mongodb.client.model.Filters.eq;
+
+public class BookDAOMongo implements IBookDAOMongo {
 
     DBConnectorMongo connector;
     MongoCollection<Document> collection;
     MongoDatabase db;
+    Gson gson = new Gson();
 
 
 
@@ -46,36 +44,66 @@ public class BookDAOMongo implements IBookDAO {
     /**
      * Returns a List of books from the Mongo database which have the location of a latitude and longitude mentioned.
      *
-     * @param latitude String The latitude of the location.
+     * @param latitude  String The latitude of the location.
      * @param longitude String The longitude of the location.
-     * @param radius The radius where locations are searched.
+     * @param radius    The radius where locations are searched.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The list of books where the location is mentioned.
      */
     @Override
-    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius) {
-        return null;
+    public List<Book> getBooksFromLatLong(double latitude, double longitude, int radius, int limit) {
+        throw new UnsupportedOperationException("Not implemented");
+        /*collection = db.getCollection("books");
+
+        List<Book> books = new ArrayList<>();
+
+        double[] latLong = new double[2];
+        latLong[0] = latitude;
+        latLong[1] = longitude;
+
+        AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
+                new Document("$geoNear",
+                        new Document("near",
+                                new Document("type", "Point")
+                                        .append("coordinates", latLong))
+                                .append("spherical", "true")
+                                .append("maxDistance", radius)
+                                .append("distanceField", "distance")
+                                .append("minDistance", 1))
+        ));
+
+        for (Document dbObject : output) {
+            System.out.println(dbObject);
+        }
+
+        return books;*/
     }
 
     /**
      * Returns a List of books from the Mongo database which is written by the author.
      *
      * @param name String The name of the author who has written the books.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The books which are written by the author.
      */
     @Override
-    public List<Book> getBooksAndCitiesFromAuthor(String name) {
+    public List<Book> getBooksAndCitiesFromAuthor(String name, int limit) {
 
         collection = db.getCollection("books");
 
-        AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
-                    new Document("author", new Document("$elemMatch", new Document("name", name)))
-        ));
-
         List<Book> books = new ArrayList<>();
 
-        for (Document dbObject : output) {
+        for (Document dbObject : collection.find(
+                eq("author",
+                        new Document("$elemMatch",
+                                new Document("name", name)))).limit(limit)) {
 
-            books.add(new Book((long)dbObject.get("UID"),(String)dbObject.get("title"),(List<Author>)dbObject.get("authors"),(List<Location>)dbObject.get("locations"),(String)dbObject.get("text")));
+            books.add(new Book(
+                    (int) dbObject.get("UID"),
+                    (String) dbObject.get("title"),
+                    (List<Author>) dbObject.get("authors"),
+                    (List<Location>) dbObject.get("locations"),
+                    (String) dbObject.get("text")));
         }
 
         return books;
@@ -85,24 +113,39 @@ public class BookDAOMongo implements IBookDAO {
      * Returns a List of books from the Mongo database where the cities mentioned in a Book is mentioned.
      *
      * @param title String The title of the book where locations are searched.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books with locations.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title) {
+    public List<Location> getCitiesFromBook(String title, int limit) {
 
-        db = connector.getConnection();
         collection = db.getCollection("books");
 
-        AggregateIterable<Document> output = collection.aggregate(Arrays.asList(
-                new Document("title", title)
-        ));
-
+        List<Document> books = (List<Document>) collection.find(eq("title", title)).limit(limit).into(new ArrayList<Document>());
         List<Location> cities = new ArrayList<>();
 
-        for (Document dbObject : output) {
+        for (Document book : books) {
 
-            //cities.add(dbObject.get("user") + ", " + dbObject.get("tweet_count"));
-           // cities.add(new Location(dbObject.get("UID"),dbObject.get("title"),dbObject.get("author")));
+            List<Document> locations = (List<Document>) book.get("locations");
+            for (Document loc : locations) {
+                String uid = (String) loc.get("UID");
+                int id = Integer.parseInt(uid);
+
+                String json = loc.toJson();
+
+                Document coords = (Document) loc.get("loc");
+                List<Document> latLong = (List<Document>) coords.get("coordinates");
+                Object latObj = latLong.get(0);
+                Object longObj = latLong.get(1);
+
+                Location newLocation = gson.fromJson(json, Location.class);
+
+                newLocation.setLatitude((double) latObj);
+                newLocation.setLongitude((double) longObj);
+
+                cities.add(newLocation);
+
+            }
         }
 
         return cities;
@@ -112,46 +155,28 @@ public class BookDAOMongo implements IBookDAO {
      * Returns a List of books from the Mongo database which has a location mentioned somewhere in the book.
      *
      * @param name String The name of the location that is mentioned in the books.
+     * @param limit Integer The limit on how many results to return.
      * @return List of books The books where the location is mentioned.
      */
     @Override
-    public List<Book> getAuthorsAndBooksFromCity(String name) {
-        return null;
-    }
+    public List<Book> getAuthorsAndBooksFromCity(String name, int limit) {
+        collection = db.getCollection("books");
 
-    /**
-     * Unused.
-     *
-     * @param name
-     * @return
-     * @throws ConnectionAlreadyClosedException
-     */
-    @Override
-    public List<String> getFuzzySearchAuthor(String name) throws ConnectionAlreadyClosedException {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
-    }
+        List<Book> books = new ArrayList<>();
 
-    /**
-     * Unused.
-     *
-     * @param title
-     * @return
-     * @throws ConnectionAlreadyClosedException
-     */
-    @Override
-    public List<String> getFuzzySearchBook(String title) throws ConnectionAlreadyClosedException {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
-    }
+        for (Document dbObject : collection.find(
+                eq("locations",
+                        new Document("$elemMatch",
+                                new Document("name", name)))).limit(limit)) {
 
-    /**
-     * Unused.
-     *
-     * @param name
-     * @return
-     * @throws ConnectionAlreadyClosedException
-     */
-    @Override
-    public List<String> getFuzzySearchCity(String name) throws ConnectionAlreadyClosedException {
-        throw new UnsupportedOperationException("Fuzzy search is not supported by the mongo api");
+            books.add(new Book(
+                    (int) dbObject.get("UID"),
+                    (String) dbObject.get("title"),
+                    (List<Author>) dbObject.get("authors"),
+                    (List<Location>) dbObject.get("locations"),
+                    (String) dbObject.get("text")));
+        }
+
+        return books;
     }
 }

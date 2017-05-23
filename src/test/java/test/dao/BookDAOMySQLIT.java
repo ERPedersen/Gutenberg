@@ -1,9 +1,8 @@
 package test.dao;
 
-import main.dao.BookDAOMongo;
+import main.dao.BookDAOMySQL;
 import main.dto.Book;
 import main.dto.Location;
-import main.util.DBConnectorMongo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -19,30 +18,29 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BookDAOMongoIT {
+public class BookDAOMySQLIT {
 
-    BookDAOMongo dao;
+    BookDAOMySQL dao;
 
     @Test
     public void defaultConstructorTest() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
         assertThat(dao, is(notNullValue()));
     }
 
     @Test
     public void dependencyConstructorTest() {
-        DBConnectorMongo connector = new DBConnectorMongo();
-        dao = new BookDAOMongo(connector);
+        dao = new BookDAOMySQL();
 
         assertThat(dao, is(notNullValue()));
     }
 
     @Test
     public void successfulGetCitiesFromBookTest() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Location> cities = dao.getCitiesFromBook("The Truce of God",100);
+        List<Location> cities = dao.getCitiesFromBook("What Peace Means");
 
         assertThat(cities, hasSize(greaterThan(0)));
 
@@ -50,9 +48,9 @@ public class BookDAOMongoIT {
 
     @Test
     public void unsuccessfulGetCitiesFromBookTest() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Location> cities = dao.getCitiesFromBook("BoogerButt Anthology, Book III",100);
+        List<Location> cities = dao.getCitiesFromBook("BoogerButt Anthology, Book III");
 
         assertThat(cities, hasSize(equalTo(0)));
 
@@ -60,54 +58,54 @@ public class BookDAOMongoIT {
 
     @Test
     public void successfulGetAuthorsAndBooksFromCity() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getAuthorsAndBooksFromCity("Washington",100);
+        List<Book> books = dao.getAuthorsAndBooksFromCity("Washington");
 
         assertThat(books, hasSize(greaterThan(0)));
     }
 
     @Test
     public void unsuccessfulGetAuthorsAndBooksFromCity() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getAuthorsAndBooksFromCity("New Donk City",100);
+        List<Book> books = dao.getAuthorsAndBooksFromCity("New Donk City");
 
         assertThat(books, hasSize(equalTo(0)));
     }
 
     @Test
     public void successfulGetBooksAndCitiesFromAuthor() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getBooksAndCitiesFromAuthor("Thomas Clarkson",100);
+        List<Book> books = dao.getBooksAndCitiesFromAuthor("Thomas Clarkson");
 
         assertThat(books, hasSize(greaterThan(0)));
     }
 
     @Test
     public void unsuccessfulGetBooksAndCitiesFromAuthor() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getBooksAndCitiesFromAuthor("Slab PlunkChunk",100);
+        List<Book> books = dao.getBooksAndCitiesFromAuthor("Slab PlunkChunk");
 
         assertThat(books, hasSize(equalTo(0)));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void successfulGetBooksFromLatLong() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50,100);
+        List<Book> books = dao.getBooksFromLatLong(52.18935,-2.22001,50);
 
         assertThat(books, hasSize(greaterThan(0)));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void unsuccessfulGetBooksFromLatLong() {
-        dao = new BookDAOMongo();
+        dao = new BookDAOMySQL();
 
-        List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666,100);
+        List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666);
 
         assertThat(books, hasSize(equalTo(0)));
     }
