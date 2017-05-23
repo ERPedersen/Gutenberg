@@ -6,7 +6,7 @@ import main.exception.BookNotFoundException;
 
 import java.util.List;
 
-public interface IBookFacade {
+public interface IBookFacadeMySQL {
     /**
      * Gets a List of books from a latitude and a longitude.
      *
