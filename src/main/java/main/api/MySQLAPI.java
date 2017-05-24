@@ -157,6 +157,7 @@ public class MySQLAPI {
 				.build();
 	}
 
+
 	/**
 	 * Takes a city name, and returns all books which mention the city.
 	 *
