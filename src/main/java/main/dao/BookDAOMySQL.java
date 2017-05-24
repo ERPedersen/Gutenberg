@@ -286,14 +286,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     public List<String> searchForAuthor(String name) {
         List<String> authors = new ArrayList<>();
 
-        String[] split = name.split(" ");
-
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = name + "*";
 
         String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
 
@@ -335,11 +328,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         List<String> books = new ArrayList<>();
         String[] split = title.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = title + "*";
 
         String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
 
@@ -377,13 +366,8 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     @Override
     public List<String> searchForCity(String name)  {
         List<String> cities = new ArrayList<>();
-        String[] split = name.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = name + "*";
 
         String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
 
