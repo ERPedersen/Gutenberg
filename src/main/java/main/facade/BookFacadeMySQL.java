@@ -102,7 +102,7 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     }
 
     /**
-     * Gets a list of city names for fuzzy searching.
+     * Gets a list of city names for searching.
      *
      * @param name The partial name of a city.
      * @return A list of Strings for City names.
@@ -110,8 +110,8 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @throws BookNotFoundException If there is no city names matching.
      */
     @Override
-    public List<String> getFuzzySearchCity(String name, int limit) throws BookNotFoundException {
-        List<String> cities = dao.getFuzzySearchCity(name, limit);
+    public List<String> searchForCity(String name, int limit) throws BookNotFoundException {
+        List<String> cities = dao.searchForCity(name, limit);
         if (null == cities || cities.size() == 0) {
             throw new BookNotFoundException("No city was found");
         }
@@ -119,7 +119,7 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     }
 
     /**
-     *  Gets a list of book names for fuzzy searching.
+     *  Gets a list of book names for searching.
      *
      * @param title The partial title of a book.
      * @return A list of Strings for Book titles.
@@ -127,8 +127,8 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @throws BookNotFoundException If there is no Book title matching.
      */
     @Override
-    public List<String> getFuzzySearchBook(String title, int limit) throws BookNotFoundException {
-        List<String> books = dao.getFuzzySearchBook(title, limit);
+    public List<String> searchForBook(String title, int limit) throws BookNotFoundException {
+        List<String> books = dao.searchForBook(title, limit);
         if (null == books || books.size() == 0) {
             throw new BookNotFoundException("No book was found");
         }
@@ -136,7 +136,7 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
     }
 
     /**
-     * Gets a list of author names for fuzzy searching.
+     * Gets a list of author names for searching.
      *
      * @param name The partial name of an author.
      * @return A list of Strings for Author names.
@@ -144,8 +144,8 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @throws BookNotFoundException If there is no author name matching.
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name, int limit) throws BookNotFoundException {
-        List<String> authors = dao.getFuzzySearchAuthor(name, limit);
+    public List<String> searchForAuthor(String name, int limit) throws BookNotFoundException {
+        List<String> authors = dao.searchForAuthor(name, limit);
         if (null == authors || authors.size() == 0) {
             throw new BookNotFoundException("No author was found");
         }

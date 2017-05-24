@@ -9,10 +9,7 @@ import main.exception.BookNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,6 +56,7 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
 
@@ -68,6 +66,7 @@ public class MySQLAPI {
 	 * @param latitude The latitude of the location.
 	 * @param longitude The longitude of the location.
 	 * @param radius The radius of the location.
+	 * @param limit The limit of returned rows.
 	 * @return Object with books.
 	 */
 	@GET
@@ -87,6 +86,7 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
@@ -96,6 +96,7 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
 
@@ -104,6 +105,7 @@ public class MySQLAPI {
 	 * cities mentioned in those books.
 	 *
 	 * @param author The author's name.
+	 * @param limit The limit of returned rows.
 	 * @return Object with JSON data.
 	 */
 	@GET
@@ -121,6 +123,7 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
@@ -130,6 +133,7 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
 
@@ -137,6 +141,7 @@ public class MySQLAPI {
 	 * Takes a book name, and finds all cities mentioned in that book.
 	 *
 	 * @param title Title of the book.
+	 * @param limit The limit of returned rows.
 	 * @return Response object with JSON locations.
 	 */
 	@GET
@@ -153,6 +158,7 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
@@ -162,13 +168,16 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
+
 
 	/**
 	 * Takes a city name, and returns all books which mention the city.
 	 *
 	 * @param city Name of the city.
+	 * @param limit The limit of returned rows.
 	 * @return Object with JSON data.
 	 */
 	@GET
@@ -185,6 +194,7 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
@@ -194,13 +204,16 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
+
 
 	/**
 	 * Enables fuzzy searching of authors.
 	 *
 	 * @param author The partial name of an author.
+	 * @param limit The limit of returned rows.
 	 * @return Objects with author names.
 	 */
 	@GET
@@ -215,18 +228,20 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "author");
-			map.put("data", facade.getFuzzySearchAuthor(author, limit));
+			map.put("data", facade.searchForAuthor(author, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 
 	}
@@ -235,6 +250,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of cities.
 	 *
 	 * @param city The partial name of a city.
+	 * @param limit The limit of returned rows.
 	 * @return Object with city names.
 	 */
 	@GET
@@ -249,18 +265,20 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "city");
-			map.put("data", facade.getFuzzySearchCity(city, limit));
+			map.put("data", facade.searchForCity(city, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
 
@@ -268,6 +286,7 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of books.
 	 *
 	 * @param title The partial name of a book.
+	 * @param limit The limit of returned rows.
 	 * @return Object with book titles.
 	 */
 	@GET
@@ -282,18 +301,20 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "book");
-			map.put("data", facade.getFuzzySearchBook(title, limit));
+			map.put("data", facade.searchForBook(title, limit));
 
 		} catch (BookNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
 				.build();
 	}
 }

@@ -52,7 +52,7 @@ public interface IBookDAOMySQL {
      * @param limit The limit of returned rows.
      * @return Author names.
      */
-    public List<String> getFuzzySearchAuthor(String name, int limit);
+    public List<String> searchForAuthor(String name, int limit);
 
     /**
      * Returns a List of Books from a partial title.
@@ -61,7 +61,7 @@ public interface IBookDAOMySQL {
      * @param limit The limit of returned rows.
      * @return Book titles.
      */
-    public List<String> getFuzzySearchBook(String title, int limit);
+    public List<String> searchForBook(String title, int limit);
 
     /**
      * Returns a List of Cities from a partial name.
@@ -70,5 +70,5 @@ public interface IBookDAOMySQL {
      * @param limit The limit of returned rows.
      * @return City names.
      */
-    public List<String> getFuzzySearchCity(String name, int limit);
+    public List<String> searchForCity(String name, int limit);
 }

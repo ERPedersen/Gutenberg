@@ -316,22 +316,19 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Names of authors.
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name, int limit) {
+    public List<String> searchForAuthor(String name, int limit) {
         List<String> authors = new ArrayList<>();
 
-        String[] split = name.split(" ");
-
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
+        String starredInput = name + "*";
+        String modulusInput = name + "%";
 
         starredInput = starredInput.substring(0, starredInput.length()-1);
 
         String queryString = "" +
                 "SELECT name FROM author " +
                 "WHERE MATCH(author.name) " +
-                "AGAINST(? IN BOOLEAN MODE)";
+                "AGAINST(? IN BOOLEAN MODE) " +
+                "HAVING name LIKE (?)";
                 if(limit != 0) {
                     queryString += " LIMIT ?";
                 }
@@ -343,8 +340,9 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setString(1, starredInput);
+            preparedStatement.setString(2, modulusInput);
             if(limit != 0) {
-                preparedStatement.setInt(2,limit);
+                preparedStatement.setInt(3,limit);
             }
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -375,20 +373,17 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Book titles.
      */
     @Override
-    public List<String> getFuzzySearchBook(String title, int limit) {
+    public List<String> searchForBook(String title, int limit) {
         List<String> books = new ArrayList<>();
-        String[] split = title.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = title + "*";
+        String modulusInput = title + "%";
 
         String queryString = "" +
                 "SELECT title FROM book " +
                 "WHERE MATCH(book.title) " +
-                "AGAINST(? IN BOOLEAN MODE)";
+                "AGAINST(? IN BOOLEAN MODE) " +
+                "HAVING title LIKE (?)";
                 if(limit != 0) {
                     queryString += " LIMIT ?";
                 }
@@ -400,6 +395,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setString(1, starredInput);
+            preparedStatement.setString(2, modulusInput);
             if(limit != 0) {
                 preparedStatement.setInt(2, limit);
             }
@@ -430,20 +426,17 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Names of cities.
      */
     @Override
-    public List<String> getFuzzySearchCity(String name, int limit)  {
+    public List<String> searchForCity(String name, int limit)  {
         List<String> cities = new ArrayList<>();
-        String[] split = name.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = name + "*";
+        String modulusInput = name + "%";
 
         String queryString = "" +
                 "SELECT name FROM location " +
                 "WHERE MATCH(location.name) " +
-                "AGAINST(? IN BOOLEAN MODE)";
+                "AGAINST(? IN BOOLEAN MODE) " +
+                "HAVING name LIKE (?)";
                 if(limit != 0) {
                     queryString += " LIMIT ?";
                 }
@@ -455,8 +448,9 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(queryString);
             preparedStatement.setString(1, starredInput);
+            preparedStatement.setString(2, modulusInput);
             if(limit != 0) {
-                preparedStatement.setInt(2, limit);
+                preparedStatement.setInt(3, limit);
             }
             ResultSet resultSet = preparedStatement.executeQuery();
 
