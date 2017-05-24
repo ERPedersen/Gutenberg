@@ -283,7 +283,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Names of authors.
      */
     @Override
-    public List<String> getFuzzySearchAuthor(String name) {
+    public List<String> searchForAuthor(String name) {
         List<String> authors = new ArrayList<>();
 
         String[] split = name.split(" ");
@@ -331,7 +331,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Book titles.
      */
     @Override
-    public List<String> getFuzzySearchBook(String title) {
+    public List<String> searchForBook(String title) {
         List<String> books = new ArrayList<>();
         String[] split = title.split(" ");
 
@@ -375,7 +375,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      * @return Names of cities.
      */
     @Override
-    public List<String> getFuzzySearchCity(String name)  {
+    public List<String> searchForCity(String name)  {
         List<String> cities = new ArrayList<>();
         String[] split = name.split(" ");
 
