@@ -14,13 +14,21 @@ The project have been Created by
 - Nicolai V. Bonderup 
 - Ebbe V. Nielsen.
 
-The assignment for the database course project can be found [here](https://github.com/HelgeCPH/db_course_nosql/blob/master/lecture_notes/Project%20Description.ipynb)
+The assignment for the database course project can be found [here](https://github.com/HelgeCPH/db_course_nosql/blob/master/lecture_notes/Project%20Description.ipynb).
 
-To Find the answer for the Database course click [here]()
+To find the answer for the Database course click [here]().
 
-The assignment for testing course project can be found [here](Semester%20project%20Testing.md)
+The assignment for testing course project can be found [here](Semester%20project%20Testing.md).
 
-To Find the answer for the Testing course click [here]()
+To find the answer for the Testing course click [here]() (Not available yet).
+
+To find the github for the frontend of the project click [here](https://github.com/ERPedersen/GutenbergWeb).
+
+To see the project in action click [here](http://zesty.emilrosenius.dk/).
+
+We have used CI with the project [Travis-CI.com](https://travis-ci.org/ERPedersen/Gutenberg).
+
+To see the maven output see with full java documentation click [here](https://erpedersen.github.io/Gutenberg/) 
 
 ____________________________________________________________
 
@@ -32,9 +40,3 @@ The backend is a three-layer application written in Java 8, which exposes a REST
 
 #### Front-end
 The front-end is a web-application created with Typescript, HTML and SCSS in Angular 4. The front-end uses Karma to run Jasmine unit-tests in the PhantomJS browser. It also uses protractor to perform e2e tests on the entire system.
-
-We have used CI with the project [Travis-CI.com](https://travis-ci.org/ERPedersen/Gutenberg) .
-To see the maven output see with full java documentation click [here](https://erpedersen.github.io/Gutenberg/) 
-
-The Frontend part can be found [here](https://github.com/ERPedersen/Gutenbergweb)
-
