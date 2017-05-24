@@ -286,16 +286,11 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     public List<String> searchForAuthor(String name) {
         List<String> authors = new ArrayList<>();
 
-        String[] split = name.split(" ");
+        String starredInput = name + "*";
+        String modulusInput = name + "%";
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-
-        starredInput = starredInput.substring(0, starredInput.length()-1);
-
-        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);";
 
 
         Connection con = null;
@@ -303,6 +298,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
 
@@ -333,15 +329,13 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     @Override
     public List<String> searchForBook(String title) {
         List<String> books = new ArrayList<>();
-        String[] split = title.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = title + "*";
+        String modulusInput = title + "%";
 
-        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE) HAVING title LIKE (?);";
+
 
 
         Connection con = null;
@@ -349,6 +343,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -377,15 +372,12 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     @Override
     public List<String> searchForCity(String name)  {
         List<String> cities = new ArrayList<>();
-        String[] split = name.split(" ");
 
-        String starredInput = "";
-        for (String spaced : split) {
-            starredInput = spaced + "* ";
-        }
-        starredInput = starredInput.substring(0, starredInput.length()-1);
+        String starredInput = name + "*";
+        String modulusInput = name + "%";
 
-        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);";
 
 
         Connection con;
@@ -393,6 +385,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
