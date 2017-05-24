@@ -16,11 +16,11 @@ The project have been Created by
 
 The assignment for the database course project can be found [here](https://github.com/HelgeCPH/db_course_nosql/blob/master/lecture_notes/Project%20Description.ipynb).
 
-To find the answer for the Database course click [here]().
+To find the documentation for the Database course click [here](https://github.com/ERPedersen/Gutenberg/blob/master/db-documentation.md).
 
 The assignment for testing course project can be found [here](Semester%20project%20Testing.md).
 
-To find the answer for the Testing course click [here]() (Not available yet).
+To find the documentation for the Testing course click [here]() (Not available yet).
 
 To find the github for the frontend of the project click [here](https://github.com/ERPedersen/GutenbergWeb).
 
