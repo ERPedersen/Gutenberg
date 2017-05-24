@@ -66,33 +66,38 @@ public class MySQLAPI {
 	 * @param latitude The latitude of the location.
 	 * @param longitude The longitude of the location.
 	 * @param radius The radius of the location.
+	 * @param limit The limit of returned rows.
 	 * @return Object with books.
 	 */
 	@GET
 	@Path(&quot;book/location&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromLatLong(@QueryParam(&quot;lat&quot;) double latitude, @QueryParam(&quot;long&quot;) double longitude, @QueryParam(&quot;rad&quot;) int radius) {
+	public Response getBooksFromLatLong(
+			@QueryParam(&quot;lat&quot;) double latitude,
+			@QueryParam(&quot;long&quot;) double longitude,
+			@QueryParam(&quot;rad&quot;) int radius,
+			@QueryParam(&quot;lim&quot;) int limit) {
 
 		List&lt;Book&gt; books;
 
 		try {
-<span class="nc" id="L79">			books = facade.getBooksFromLatLong(latitude, longitude, radius);</span>
-<span class="nc" id="L80">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L81">			return Response</span>
-<span class="nc" id="L82">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L83">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L84">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L85">					.build();</span>
-<span class="nc" id="L86">		}</span>
+<span class="nc" id="L84">			books = facade.getBooksFromLatLong(latitude, longitude, radius, limit);</span>
+<span class="nc" id="L85">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L86">			return Response</span>
+<span class="nc" id="L87">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L88">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L89">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L90">					.build();</span>
+<span class="nc" id="L91">		}</span>
 
-<span class="nc" id="L88">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L89">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L93">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L94">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L91">		return Response</span>
-<span class="nc" id="L92">				.status(Response.Status.OK)</span>
-<span class="nc" id="L93">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L94">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L95">				.build();</span>
+<span class="nc" id="L96">		return Response</span>
+<span class="nc" id="L97">				.status(Response.Status.OK)</span>
+<span class="nc" id="L98">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L99">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L100">				.build();</span>
 	}
 
 	/**
@@ -100,64 +105,71 @@ public class MySQLAPI {
 	 * cities mentioned in those books.
 	 *
 	 * @param author The author's name.
+	 * @param limit The limit of returned rows.
 	 * @return Object with JSON data.
 	 */
 	@GET
 	@Path(&quot;book/author&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response booksAndCitiesFromAuthor(@QueryParam(&quot;q&quot;) String author) {
+	public Response booksAndCitiesFromAuthor(
+			@QueryParam(&quot;q&quot;) String author,
+			@QueryParam(&quot;lim&quot;) int limit) {
 
 		List&lt;Book&gt; books;
 
 		try {
-<span class="nc" id="L113">			books = facade.getBooksAndCitiesFromAuthor(author);</span>
-<span class="nc" id="L114">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L115">			return Response</span>
-<span class="nc" id="L116">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L117">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L118">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L119">					.build();</span>
-<span class="nc" id="L120">		}</span>
+<span class="nc" id="L121">			books = facade.getBooksAndCitiesFromAuthor(author, limit);</span>
+<span class="nc" id="L122">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L123">			return Response</span>
+<span class="nc" id="L124">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L125">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L126">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L127">					.build();</span>
+<span class="nc" id="L128">		}</span>
 
-<span class="nc" id="L122">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L123">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L130">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L131">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L125">		return Response</span>
-<span class="nc" id="L126">				.status(Response.Status.OK)</span>
-<span class="nc" id="L127">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L128">				.build();</span>
+<span class="nc" id="L133">		return Response</span>
+<span class="nc" id="L134">				.status(Response.Status.OK)</span>
+<span class="nc" id="L135">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L136">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L137">				.build();</span>
 	}
 
 	/**
 	 * Takes a book name, and finds all cities mentioned in that book.
 	 *
 	 * @param title Title of the book.
+	 * @param limit The limit of returned rows.
 	 * @return Response object with JSON locations.
 	 */
 	@GET
 	@Path(&quot;location&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getLocationsFromBook(@QueryParam(&quot;q&quot;) String title) {
+	public Response getLocationsFromBook(
+			@QueryParam(&quot;q&quot;) String title,
+			@QueryParam(&quot;lim&quot;) int limit) {
 		List&lt;Location&gt; locations;
 
 		try {
-<span class="nc" id="L144">			locations = facade.getCitiesFromBook(title);</span>
-<span class="nc" id="L145">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L146">			return Response</span>
-<span class="nc" id="L147">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L148">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L149">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L150">					.build();</span>
-<span class="nc" id="L151">		}</span>
+<span class="nc" id="L156">			locations = facade.getCitiesFromBook(title, limit);</span>
+<span class="nc" id="L157">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L158">			return Response</span>
+<span class="nc" id="L159">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L160">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L161">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L162">					.build();</span>
+<span class="nc" id="L163">		}</span>
 
-<span class="nc" id="L153">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L154">		map.put(&quot;data&quot;, locations);</span>
+<span class="nc" id="L165">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L166">		map.put(&quot;data&quot;, locations);</span>
 
-<span class="nc" id="L156">		return Response</span>
-<span class="nc" id="L157">				.status(Response.Status.OK)</span>
-<span class="nc" id="L158">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L159">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L160">				.build();</span>
+<span class="nc" id="L168">		return Response</span>
+<span class="nc" id="L169">				.status(Response.Status.OK)</span>
+<span class="nc" id="L170">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L171">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L172">				.build();</span>
 	}
 
 
@@ -165,32 +177,35 @@ public class MySQLAPI {
 	 * Takes a city name, and returns all books which mention the city.
 	 *
 	 * @param city Name of the city.
+	 * @param limit The limit of returned rows.
 	 * @return Object with JSON data.
 	 */
 	@GET
 	@Path(&quot;book/city&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooksFromCity(@QueryParam(&quot;q&quot;) String city) {
+	public Response getBooksFromCity(
+			@QueryParam(&quot;q&quot;) String city,
+			@QueryParam(&quot;lim&quot;) int limit) {
 		List&lt;Book&gt; books;
 
 		try {
-<span class="nc" id="L177">			books = facade.getAuthorsAndBookFromCity(city);</span>
-<span class="nc" id="L178">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L179">			return Response</span>
-<span class="nc" id="L180">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L181">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L182">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L183">					.build();</span>
-<span class="nc" id="L184">		}</span>
+<span class="nc" id="L192">			books = facade.getAuthorsAndBookFromCity(city, limit);</span>
+<span class="nc" id="L193">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L194">			return Response</span>
+<span class="nc" id="L195">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L196">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L197">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L198">					.build();</span>
+<span class="nc" id="L199">		}</span>
 
-<span class="nc" id="L186">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L187">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L201">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L202">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L189">		return Response</span>
-<span class="nc" id="L190">				.status(Response.Status.OK)</span>
-<span class="nc" id="L191">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L192">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L193">				.build();</span>
+<span class="nc" id="L204">		return Response</span>
+<span class="nc" id="L205">				.status(Response.Status.OK)</span>
+<span class="nc" id="L206">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L207">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L208">				.build();</span>
 	}
 
 
@@ -198,33 +213,36 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of authors.
 	 *
 	 * @param author The partial name of an author.
+	 * @param limit The limit of returned rows.
 	 * @return Objects with author names.
 	 */
 	@GET
 	@Path(&quot;search/author&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAuthors(@QueryParam(&quot;q&quot;) String author) {
+	public Response getAuthors(
+			@QueryParam(&quot;q&quot;) String author,
+			@QueryParam(&quot;lim&quot;) int limit) {
 
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L211">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L212">			map.put(&quot;type&quot;, &quot;author&quot;);</span>
-<span class="nc" id="L213">			map.put(&quot;data&quot;, facade.searchForAuthor(author));</span>
+<span class="nc" id="L229">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L230">			map.put(&quot;type&quot;, &quot;author&quot;);</span>
+<span class="nc" id="L231">			map.put(&quot;data&quot;, facade.searchForAuthor(author, limit));</span>
 
-<span class="nc" id="L215">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L216">			return Response</span>
-<span class="nc" id="L217">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L218">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L219">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L220">					.build();</span>
-<span class="nc" id="L221">		}</span>
+<span class="nc" id="L233">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L234">			return Response</span>
+<span class="nc" id="L235">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L236">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L237">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L238">					.build();</span>
+<span class="nc" id="L239">		}</span>
 
-<span class="nc" id="L223">		return Response</span>
-<span class="nc" id="L224">				.status(Response.Status.OK)</span>
-<span class="nc" id="L225">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L226">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L227">				.build();</span>
+<span class="nc" id="L241">		return Response</span>
+<span class="nc" id="L242">				.status(Response.Status.OK)</span>
+<span class="nc" id="L243">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L244">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L245">				.build();</span>
 
 	}
 
@@ -232,66 +250,72 @@ public class MySQLAPI {
 	 * Enables fuzzy searching of cities.
 	 *
 	 * @param city The partial name of a city.
+	 * @param limit The limit of returned rows.
 	 * @return Object with city names.
 	 */
 	@GET
 	@Path(&quot;search/city&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getCities(@QueryParam(&quot;q&quot;) String city) {
+	public Response getCities(
+			@QueryParam(&quot;q&quot;) String city,
+			@QueryParam(&quot;lim&quot;) int limit) {
 
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L245">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L246">			map.put(&quot;type&quot;, &quot;city&quot;);</span>
-<span class="nc" id="L247">			map.put(&quot;data&quot;, facade.searchForCity(city));</span>
+<span class="nc" id="L266">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L267">			map.put(&quot;type&quot;, &quot;city&quot;);</span>
+<span class="nc" id="L268">			map.put(&quot;data&quot;, facade.searchForCity(city, limit));</span>
 
-<span class="nc" id="L249">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L250">			return Response</span>
-<span class="nc" id="L251">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L252">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L253">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L254">					.build();</span>
-<span class="nc" id="L255">		}</span>
+<span class="nc" id="L270">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L271">			return Response</span>
+<span class="nc" id="L272">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L273">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L274">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L275">					.build();</span>
+<span class="nc" id="L276">		}</span>
 
-<span class="nc" id="L257">		return Response</span>
-<span class="nc" id="L258">				.status(Response.Status.OK)</span>
-<span class="nc" id="L259">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L260">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L261">				.build();</span>
+<span class="nc" id="L278">		return Response</span>
+<span class="nc" id="L279">				.status(Response.Status.OK)</span>
+<span class="nc" id="L280">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L281">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L282">				.build();</span>
 	}
 
 	/**
 	 * Enables fuzzy searching of books.
 	 *
 	 * @param title The partial name of a book.
+	 * @param limit The limit of returned rows.
 	 * @return Object with book titles.
 	 */
 	@GET
 	@Path(&quot;search/book&quot;)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooks(@QueryParam(&quot;q&quot;) String title) {
+	public Response getBooks(
+			@QueryParam(&quot;q&quot;) String title,
+			@QueryParam(&quot;lim&quot;) int limit) {
 
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L278">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L279">			map.put(&quot;type&quot;, &quot;book&quot;);</span>
-<span class="nc" id="L280">			map.put(&quot;data&quot;, facade.searchForBook(title));</span>
+<span class="nc" id="L302">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L303">			map.put(&quot;type&quot;, &quot;book&quot;);</span>
+<span class="nc" id="L304">			map.put(&quot;data&quot;, facade.searchForBook(title, limit));</span>
 
-<span class="nc" id="L282">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L283">			return Response</span>
-<span class="nc" id="L284">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L285">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L286">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L287">					.build();</span>
-<span class="nc" id="L288">		}</span>
+<span class="nc" id="L306">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L307">			return Response</span>
+<span class="nc" id="L308">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L309">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L310">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L311">					.build();</span>
+<span class="nc" id="L312">		}</span>
 
-<span class="nc" id="L290">		return Response</span>
-<span class="nc" id="L291">				.status(Response.Status.OK)</span>
-<span class="nc" id="L292">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L293">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
-<span class="nc" id="L294">				.build();</span>
+<span class="nc" id="L314">		return Response</span>
+<span class="nc" id="L315">				.status(Response.Status.OK)</span>
+<span class="nc" id="L316">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L317">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L318">				.build();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
