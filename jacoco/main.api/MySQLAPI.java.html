@@ -83,16 +83,20 @@ public class MySQLAPI {
 <span class="nc" id="L83">			return Response</span>
 <span class="nc" id="L84">					.status(Response.Status.BAD_REQUEST)</span>
 <span class="nc" id="L85">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L86">					.build();</span>
-<span class="nc" id="L87">		}</span>
+<span class="nc" id="L86">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L87">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L88">					.build();</span>
+<span class="nc" id="L89">		}</span>
 
-<span class="nc" id="L89">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L90">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L91">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L92">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L92">		return Response</span>
-<span class="nc" id="L93">				.status(Response.Status.OK)</span>
-<span class="nc" id="L94">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L95">				.build();</span>
+<span class="nc" id="L94">		return Response</span>
+<span class="nc" id="L95">				.status(Response.Status.OK)</span>
+<span class="nc" id="L96">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L97">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L98">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L99">				.build();</span>
 	}
 
 	/**
@@ -110,21 +114,23 @@ public class MySQLAPI {
 		List&lt;Book&gt; books;
 
 		try {
-<span class="nc" id="L113">			books = facade.getBooksAndCitiesFromAuthor(author);</span>
-<span class="nc" id="L114">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L115">			return Response</span>
-<span class="nc" id="L116">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L117">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L118">					.build();</span>
-<span class="nc" id="L119">		}</span>
+<span class="nc" id="L117">			books = facade.getBooksAndCitiesFromAuthor(author);</span>
+<span class="nc" id="L118">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L119">			return Response</span>
+<span class="nc" id="L120">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L121">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L122">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L123">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L124">					.build();</span>
+<span class="nc" id="L125">		}</span>
 
-<span class="nc" id="L121">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L122">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L127">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L128">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L124">		return Response</span>
-<span class="nc" id="L125">				.status(Response.Status.OK)</span>
-<span class="nc" id="L126">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L127">				.build();</span>
+<span class="nc" id="L130">		return Response</span>
+<span class="nc" id="L131">				.status(Response.Status.OK)</span>
+<span class="nc" id="L132">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L133">				.build();</span>
 	}
 
 	/**
@@ -140,21 +146,25 @@ public class MySQLAPI {
 		List&lt;Location&gt; locations;
 
 		try {
-<span class="nc" id="L143">			locations = facade.getCitiesFromBook(title);</span>
-<span class="nc" id="L144">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L145">			return Response</span>
-<span class="nc" id="L146">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L147">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L148">					.build();</span>
-<span class="nc" id="L149">		}</span>
+<span class="nc" id="L149">			locations = facade.getCitiesFromBook(title);</span>
+<span class="nc" id="L150">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L151">			return Response</span>
+<span class="nc" id="L152">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L153">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L154">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L155">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L156">					.build();</span>
+<span class="nc" id="L157">		}</span>
 
-<span class="nc" id="L151">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L152">		map.put(&quot;data&quot;, locations);</span>
+<span class="nc" id="L159">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L160">		map.put(&quot;data&quot;, locations);</span>
 
-<span class="nc" id="L154">		return Response</span>
-<span class="nc" id="L155">				.status(Response.Status.OK)</span>
-<span class="nc" id="L156">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L157">				.build();</span>
+<span class="nc" id="L162">		return Response</span>
+<span class="nc" id="L163">				.status(Response.Status.OK)</span>
+<span class="nc" id="L164">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L165">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L166">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L167">				.build();</span>
 	}
 
 
@@ -171,21 +181,25 @@ public class MySQLAPI {
 		List&lt;Book&gt; books;
 
 		try {
-<span class="nc" id="L174">			books = facade.getAuthorsAndBookFromCity(city);</span>
-<span class="nc" id="L175">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L176">			return Response</span>
-<span class="nc" id="L177">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L178">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L179">					.build();</span>
-<span class="nc" id="L180">		}</span>
+<span class="nc" id="L184">			books = facade.getAuthorsAndBookFromCity(city);</span>
+<span class="nc" id="L185">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L186">			return Response</span>
+<span class="nc" id="L187">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L188">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L189">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L190">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L191">					.build();</span>
+<span class="nc" id="L192">		}</span>
 
-<span class="nc" id="L182">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L183">		map.put(&quot;data&quot;, books);</span>
+<span class="nc" id="L194">		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L195">		map.put(&quot;data&quot;, books);</span>
 
-<span class="nc" id="L185">		return Response</span>
-<span class="nc" id="L186">				.status(Response.Status.OK)</span>
-<span class="nc" id="L187">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L188">				.build();</span>
+<span class="nc" id="L197">		return Response</span>
+<span class="nc" id="L198">				.status(Response.Status.OK)</span>
+<span class="nc" id="L199">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L200">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L201">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L202">				.build();</span>
 	}
 
 
@@ -203,21 +217,25 @@ public class MySQLAPI {
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L206">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L207">			map.put(&quot;type&quot;, &quot;author&quot;);</span>
-<span class="nc" id="L208">			map.put(&quot;data&quot;, facade.searchForAuthor(author));</span>
+<span class="nc" id="L220">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L221">			map.put(&quot;type&quot;, &quot;author&quot;);</span>
+<span class="nc" id="L222">			map.put(&quot;data&quot;, facade.searchForAuthor(author));</span>
 
-<span class="nc" id="L210">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L211">			return Response</span>
-<span class="nc" id="L212">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L213">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L214">					.build();</span>
-<span class="nc" id="L215">		}</span>
+<span class="nc" id="L224">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L225">			return Response</span>
+<span class="nc" id="L226">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L227">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L228">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L229">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L230">					.build();</span>
+<span class="nc" id="L231">		}</span>
 
-<span class="nc" id="L217">		return Response</span>
-<span class="nc" id="L218">				.status(Response.Status.OK)</span>
-<span class="nc" id="L219">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L220">				.build();</span>
+<span class="nc" id="L233">		return Response</span>
+<span class="nc" id="L234">				.status(Response.Status.OK)</span>
+<span class="nc" id="L235">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L236">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L237">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L238">				.build();</span>
 
 	}
 
@@ -235,21 +253,25 @@ public class MySQLAPI {
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L238">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L239">			map.put(&quot;type&quot;, &quot;city&quot;);</span>
-<span class="nc" id="L240">			map.put(&quot;data&quot;, facade.searchForCity(city));</span>
+<span class="nc" id="L256">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L257">			map.put(&quot;type&quot;, &quot;city&quot;);</span>
+<span class="nc" id="L258">			map.put(&quot;data&quot;, facade.searchForCity(city));</span>
 
-<span class="nc" id="L242">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L243">			return Response</span>
-<span class="nc" id="L244">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L245">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L246">					.build();</span>
-<span class="nc" id="L247">		}</span>
+<span class="nc" id="L260">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L261">			return Response</span>
+<span class="nc" id="L262">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L263">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L264">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L265">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L266">					.build();</span>
+<span class="nc" id="L267">		}</span>
 
-<span class="nc" id="L249">		return Response</span>
-<span class="nc" id="L250">				.status(Response.Status.OK)</span>
-<span class="nc" id="L251">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L252">				.build();</span>
+<span class="nc" id="L269">		return Response</span>
+<span class="nc" id="L270">				.status(Response.Status.OK)</span>
+<span class="nc" id="L271">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L272">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L273">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L274">				.build();</span>
 	}
 
 	/**
@@ -266,21 +288,25 @@ public class MySQLAPI {
 		Map&lt;String, Object&gt; map;
 
 		try {
-<span class="nc" id="L269">			map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L270">			map.put(&quot;type&quot;, &quot;book&quot;);</span>
-<span class="nc" id="L271">			map.put(&quot;data&quot;, facade.searchForBook(title));</span>
+<span class="nc" id="L291">			map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L292">			map.put(&quot;type&quot;, &quot;book&quot;);</span>
+<span class="nc" id="L293">			map.put(&quot;data&quot;, facade.searchForBook(title));</span>
 
-<span class="nc" id="L273">		} catch (BookNotFoundException ex) {</span>
-<span class="nc" id="L274">			return Response</span>
-<span class="nc" id="L275">					.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L276">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
-<span class="nc" id="L277">					.build();</span>
-<span class="nc" id="L278">		}</span>
+<span class="nc" id="L295">		} catch (BookNotFoundException ex) {</span>
+<span class="nc" id="L296">			return Response</span>
+<span class="nc" id="L297">					.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L298">					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))</span>
+<span class="nc" id="L299">					.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L300">					.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L301">					.build();</span>
+<span class="nc" id="L302">		}</span>
 
-<span class="nc" id="L280">		return Response</span>
-<span class="nc" id="L281">				.status(Response.Status.OK)</span>
-<span class="nc" id="L282">				.entity(gson.toJson(map))</span>
-<span class="nc" id="L283">				.build();</span>
+<span class="nc" id="L304">		return Response</span>
+<span class="nc" id="L305">				.status(Response.Status.OK)</span>
+<span class="nc" id="L306">				.entity(gson.toJson(map))</span>
+<span class="nc" id="L307">				.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)</span>
+<span class="nc" id="L308">				.header(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, DELETE, PUT&quot;)</span>
+<span class="nc" id="L309">				.build();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
