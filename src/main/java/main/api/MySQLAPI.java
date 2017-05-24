@@ -188,6 +188,7 @@ public class MySQLAPI {
 				.build();
 	}
 
+
 	/**
 	 * Enables fuzzy searching of authors.
 	 *

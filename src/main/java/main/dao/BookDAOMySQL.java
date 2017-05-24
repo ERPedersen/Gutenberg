@@ -337,6 +337,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE) HAVING title LIKE (?);";
 
 
+
         Connection con = null;
         try {
             con = connector.getConnection();
