@@ -83,6 +83,8 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
@@ -92,6 +94,8 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 	}
 
@@ -115,6 +119,8 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
@@ -145,6 +151,8 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
@@ -154,6 +162,8 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 	}
 
@@ -176,6 +186,8 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
@@ -185,6 +197,8 @@ public class MySQLAPI {
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 	}
 
@@ -211,12 +225,16 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 
 	}
@@ -243,12 +261,16 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 	}
 
@@ -274,12 +296,16 @@ public class MySQLAPI {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 					.build();
 		}
 
 		return Response
 				.status(Response.Status.OK)
 				.entity(gson.toJson(map))
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
 				.build();
 	}
 }
