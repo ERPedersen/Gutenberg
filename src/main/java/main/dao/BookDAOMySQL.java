@@ -326,7 +326,6 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     @Override
     public List<String> searchForBook(String title) {
         List<String> books = new ArrayList<>();
-        String[] split = title.split(" ");
 
         String starredInput = title + "*";
 
