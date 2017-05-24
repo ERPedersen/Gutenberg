@@ -45,29 +45,29 @@ public interface IBookFacadeMySQL {
     public List<Book> getAuthorsAndBookFromCity(String name) throws BookNotFoundException;
 
     /**
-     * Enables fuzzy searching of author. Returns a list of Strings with author names.
+     * Enables searching of author. Returns a list of Strings with author names.
      *
      * @param name The partial name of an author.
      * @return A collection of String names of authors.
      * @throws BookNotFoundException Is thrown if there is no authors with the name.
      */
-    public List<String> getFuzzySearchAuthor(String name) throws BookNotFoundException;
+    public List<String> searchForAuthor(String name) throws BookNotFoundException;
 
     /**
-     * Enables fuzzy searching of books. Returns a list of Strings with book titles.
+     * Enables searching of books. Returns a list of Strings with book titles.
      *
      * @param title The partial title of a book.
      * @return A collection of String names of books.
      * @throws BookNotFoundException Is thrown if there is no Books with the title.
      */
-    public List<String> getFuzzySearchBook(String title) throws BookNotFoundException;
+    public List<String> searchForBook(String title) throws BookNotFoundException;
 
     /**
-     * Enables fuzzy searching of cities. Returns a list of Strings with city names.
+     * Enables searching of cities. Returns a list of Strings with city names.
      *
      * @param name The partial name of a city.
      * @return A collection of String titles of cities.
      * @throws BookNotFoundException Is thrown if there is no cities with the names.
      */
-    public List<String> getFuzzySearchCity(String name) throws BookNotFoundException;
+    public List<String> searchForCity(String name) throws BookNotFoundException;
 }

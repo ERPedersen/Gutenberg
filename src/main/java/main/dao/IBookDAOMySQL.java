@@ -47,7 +47,7 @@ public interface IBookDAOMySQL {
      * @param name Partial name of an author.
      * @return Author names.
      */
-    public List<String> getFuzzySearchAuthor(String name);
+    public List<String> searchForAuthor(String name);
 
     /**
      * Returns a List of Books from a partial title.
@@ -55,7 +55,7 @@ public interface IBookDAOMySQL {
      * @param title Partial title of a book.
      * @return Book titles.
      */
-    public List<String> getFuzzySearchBook(String title);
+    public List<String> searchForBook(String title);
 
     /**
      * Returns a List of Cities from a partial name.
@@ -63,5 +63,5 @@ public interface IBookDAOMySQL {
      * @param name Partial name of a city.
      * @return City names.
      */
-    public List<String> getFuzzySearchCity(String name);
+    public List<String> searchForCity(String name);
 }

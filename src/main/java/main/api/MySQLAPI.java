@@ -203,7 +203,7 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "author");
-			map.put("data", facade.getFuzzySearchAuthor(author));
+			map.put("data", facade.searchForAuthor(author));
 
 		} catch (BookNotFoundException ex) {
 			return Response
@@ -235,7 +235,7 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "city");
-			map.put("data", facade.getFuzzySearchCity(city));
+			map.put("data", facade.searchForCity(city));
 
 		} catch (BookNotFoundException ex) {
 			return Response
@@ -266,7 +266,7 @@ public class MySQLAPI {
 		try {
 			map = new HashMap<>();
 			map.put("type", "book");
-			map.put("data", facade.getFuzzySearchBook(title));
+			map.put("data", facade.searchForBook(title));
 
 		} catch (BookNotFoundException ex) {
 			return Response
