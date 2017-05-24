@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.exclude;
+import static com.mongodb.client.model.Projections.fields;
 
 public class BookDAOMongo implements IBookDAOMongo {
 
@@ -174,13 +176,13 @@ public class BookDAOMongo implements IBookDAOMongo {
         for (Document dbObject : collection.find(
                 eq("locations",
                         new Document("$elemMatch",
-                                new Document("name", name)))).limit(limit)) {
+                                new Document("name", name)))).projection(fields(exclude("locations"))).limit(limit)) {
 
             books.add(new Book(
                     (int) dbObject.get("UID"),
                     (String) dbObject.get("title"),
                     (List<Author>) dbObject.get("authors"),
-                    (List<Location>) dbObject.get("locations"),
+                    new ArrayList<>(),
                     (String) dbObject.get("text")));
         }
 
