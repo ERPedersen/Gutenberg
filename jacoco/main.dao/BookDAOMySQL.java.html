@@ -286,42 +286,38 @@ public class BookDAOMySQL implements IBookDAOMySQL {
     public List&lt;String&gt; searchForAuthor(String name) {
 <span class="nc" id="L287">        List&lt;String&gt; authors = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L289">        String[] split = name.split(&quot; &quot;);</span>
+<span class="nc" id="L289">        String starredInput = name + &quot;*&quot;;</span>
+<span class="nc" id="L290">        String modulusInput = name + &quot;%&quot;;</span>
 
-<span class="nc" id="L291">        String starredInput = &quot;&quot;;</span>
-<span class="nc bnc" id="L292" title="All 2 branches missed.">        for (String spaced : split) {</span>
-<span class="nc" id="L293">            starredInput = spaced + &quot;* &quot;;</span>
-        }
-
-<span class="nc" id="L296">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
-
-<span class="nc" id="L298">        String queryString = &quot;SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+        //String queryString = &quot;SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);&quot;;
+<span class="nc" id="L293">        String queryString = &quot;SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);&quot;;</span>
 
 
-<span class="nc" id="L301">        Connection con = null;</span>
+<span class="nc" id="L296">        Connection con = null;</span>
         try {
-<span class="nc" id="L303">            con = connector.getConnection();</span>
-<span class="nc" id="L304">            PreparedStatement statement = con.prepareStatement(queryString);</span>
-<span class="nc" id="L305">            statement.setString(1, starredInput);</span>
-<span class="nc" id="L306">            ResultSet resultSet = statement.executeQuery();</span>
+<span class="nc" id="L298">            con = connector.getConnection();</span>
+<span class="nc" id="L299">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L300">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L301">            statement.setString(2, modulusInput);</span>
+<span class="nc" id="L302">            ResultSet resultSet = statement.executeQuery();</span>
 
 
-<span class="nc bnc" id="L309" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            while (resultSet.next()) {</span>
 
-<span class="nc" id="L311">                authors.add(resultSet.getString(1));</span>
+<span class="nc" id="L307">                authors.add(resultSet.getString(1));</span>
 
             }
 
-<span class="nc" id="L315">        } catch (SQLException | ClassNotFoundException e) {</span>
-<span class="nc bnc" id="L316" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
-<span class="nc" id="L317">                return null;</span>
+<span class="nc" id="L311">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L313">                return null;</span>
             } else {
-<span class="nc" id="L319">                e.printStackTrace();</span>
+<span class="nc" id="L315">                e.printStackTrace();</span>
             }
         } finally {
-<span class="nc" id="L322">            connector.closeConnection();</span>
-<span class="nc" id="L323">        }</span>
-<span class="nc" id="L324">        return authors;</span>
+<span class="nc" id="L318">            connector.closeConnection();</span>
+<span class="nc" id="L319">        }</span>
+<span class="nc" id="L320">        return authors;</span>
     }
 
     /**
@@ -332,40 +328,39 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      */
     @Override
     public List&lt;String&gt; searchForBook(String title) {
-<span class="nc" id="L335">        List&lt;String&gt; books = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L336">        String[] split = title.split(&quot; &quot;);</span>
+<span class="nc" id="L331">        List&lt;String&gt; books = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L338">        String starredInput = &quot;&quot;;</span>
-<span class="nc bnc" id="L339" title="All 2 branches missed.">        for (String spaced : split) {</span>
-<span class="nc" id="L340">            starredInput = spaced + &quot;* &quot;;</span>
-        }
-<span class="nc" id="L342">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
+<span class="nc" id="L333">        String starredInput = title + &quot;*&quot;;</span>
+<span class="nc" id="L334">        String modulusInput = title + &quot;%&quot;;</span>
 
-<span class="nc" id="L344">        String queryString = &quot;SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+        //String queryString = &quot;SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);&quot;;
+<span class="nc" id="L337">        String queryString = &quot;SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE) HAVING title LIKE (?);&quot;;</span>
 
 
-<span class="nc" id="L347">        Connection con = null;</span>
+
+<span class="nc" id="L341">        Connection con = null;</span>
         try {
-<span class="nc" id="L349">            con = connector.getConnection();</span>
-<span class="nc" id="L350">            PreparedStatement statement = con.prepareStatement(queryString);</span>
-<span class="nc" id="L351">            statement.setString(1, starredInput);</span>
-<span class="nc" id="L352">            ResultSet resultSet = statement.executeQuery();</span>
+<span class="nc" id="L343">            con = connector.getConnection();</span>
+<span class="nc" id="L344">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L345">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L346">            statement.setString(2, modulusInput);</span>
+<span class="nc" id="L347">            ResultSet resultSet = statement.executeQuery();</span>
 
-<span class="nc bnc" id="L354" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">            while (resultSet.next()) {</span>
 
-<span class="nc" id="L356">                books.add(resultSet.getString(1));</span>
+<span class="nc" id="L351">                books.add(resultSet.getString(1));</span>
 
             }
-<span class="nc" id="L359">        } catch (SQLException | ClassNotFoundException e) {</span>
-<span class="nc bnc" id="L360" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
-<span class="nc" id="L361">                return null;</span>
+<span class="nc" id="L354">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L356">                return null;</span>
             } else {
-<span class="nc" id="L363">                e.printStackTrace();</span>
+<span class="nc" id="L358">                e.printStackTrace();</span>
             }
         } finally {
-<span class="nc" id="L366">            connector.closeConnection();</span>
-<span class="nc" id="L367">        }</span>
-<span class="nc" id="L368">        return books;</span>
+<span class="nc" id="L361">            connector.closeConnection();</span>
+<span class="nc" id="L362">        }</span>
+<span class="nc" id="L363">        return books;</span>
     }
 
     /**
@@ -376,40 +371,38 @@ public class BookDAOMySQL implements IBookDAOMySQL {
      */
     @Override
     public List&lt;String&gt; searchForCity(String name)  {
-<span class="nc" id="L379">        List&lt;String&gt; cities = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L380">        String[] split = name.split(&quot; &quot;);</span>
+<span class="nc" id="L374">        List&lt;String&gt; cities = new ArrayList&lt;&gt;();</span>
 
-<span class="nc" id="L382">        String starredInput = &quot;&quot;;</span>
-<span class="nc bnc" id="L383" title="All 2 branches missed.">        for (String spaced : split) {</span>
-<span class="nc" id="L384">            starredInput = spaced + &quot;* &quot;;</span>
-        }
-<span class="nc" id="L386">        starredInput = starredInput.substring(0, starredInput.length()-1);</span>
+<span class="nc" id="L376">        String starredInput = name + &quot;*&quot;;</span>
+<span class="nc" id="L377">        String modulusInput = name + &quot;%&quot;;</span>
 
-<span class="nc" id="L388">        String queryString = &quot;SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);&quot;;</span>
+        //String queryString = &quot;SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);&quot;;
+<span class="nc" id="L380">        String queryString = &quot;SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);&quot;;</span>
 
 
         Connection con;
         try {
-<span class="nc" id="L393">            con = connector.getConnection();</span>
-<span class="nc" id="L394">            PreparedStatement statement = con.prepareStatement(queryString);</span>
-<span class="nc" id="L395">            statement.setString(1, starredInput);</span>
-<span class="nc" id="L396">            ResultSet resultSet = statement.executeQuery();</span>
+<span class="nc" id="L385">            con = connector.getConnection();</span>
+<span class="nc" id="L386">            PreparedStatement statement = con.prepareStatement(queryString);</span>
+<span class="nc" id="L387">            statement.setString(1, starredInput);</span>
+<span class="nc" id="L388">            statement.setString(2, modulusInput);</span>
+<span class="nc" id="L389">            ResultSet resultSet = statement.executeQuery();</span>
 
-<span class="nc bnc" id="L398" title="All 2 branches missed.">            while (resultSet.next()) {</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">            while (resultSet.next()) {</span>
 
-<span class="nc" id="L400">                cities.add(resultSet.getString(1));</span>
+<span class="nc" id="L393">                cities.add(resultSet.getString(1));</span>
 
             }
-<span class="nc" id="L403">        } catch (SQLException | ClassNotFoundException e) {</span>
-<span class="nc bnc" id="L404" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
-<span class="nc" id="L405">                return null;</span>
+<span class="nc" id="L396">        } catch (SQLException | ClassNotFoundException e) {</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">            if (Objects.equals(System.getenv(&quot;PROCESS_ENV&quot;), &quot;prod&quot;)) {</span>
+<span class="nc" id="L398">                return null;</span>
             } else {
-<span class="nc" id="L407">                e.printStackTrace();</span>
+<span class="nc" id="L400">                e.printStackTrace();</span>
             }
         } finally {
-<span class="nc" id="L410">            connector.closeConnection();</span>
-<span class="nc" id="L411">        }</span>
-<span class="nc" id="L412">        return cities;</span>
+<span class="nc" id="L403">            connector.closeConnection();</span>
+<span class="nc" id="L404">        }</span>
+<span class="nc" id="L405">        return cities;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
