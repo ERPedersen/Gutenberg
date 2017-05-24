@@ -287,8 +287,10 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         List<String> authors = new ArrayList<>();
 
         String starredInput = name + "*";
+        String modulusInput = name + "%";
 
-        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT name FROM author WHERE MATCH(author.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);";
 
 
         Connection con = null;
@@ -296,6 +298,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
 
@@ -328,8 +331,10 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         List<String> books = new ArrayList<>();
 
         String starredInput = title + "*";
+        String modulusInput = title + "%";
 
-        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT title FROM book WHERE MATCH(book.title) AGAINST(? IN BOOLEAN MODE) HAVING title LIKE (?);";
 
 
         Connection con = null;
@@ -337,6 +342,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -367,8 +373,10 @@ public class BookDAOMySQL implements IBookDAOMySQL {
         List<String> cities = new ArrayList<>();
 
         String starredInput = name + "*";
+        String modulusInput = name + "%";
 
-        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+        //String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE);";
+        String queryString = "SELECT name FROM location WHERE MATCH(location.name) AGAINST(? IN BOOLEAN MODE) HAVING name LIKE (?);";
 
 
         Connection con;
@@ -376,6 +384,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             con = connector.getConnection();
             PreparedStatement statement = con.prepareStatement(queryString);
             statement.setString(1, starredInput);
+            statement.setString(2, modulusInput);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
