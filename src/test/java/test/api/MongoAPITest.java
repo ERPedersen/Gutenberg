@@ -52,7 +52,7 @@ public class MongoAPITest {
     @Test
     public void successfulGetBooksFromLatLongTest() {
         MongoAPI api;
-        IBookFacadeMongo facade;''
+        IBookFacadeMongo facade;
         List<Book> books = new ArrayList<Book>() {{
             add(new Book());
         }};
