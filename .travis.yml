@@ -4,8 +4,7 @@ jdk: oraclejdk8
 
 # Installs tomcat Loads in the deploy.sh script from root.
 before_script:
-- chmod +x ./deploy.sh
-- chmod +x ./tomcat.sh
+- chmod +x ./deploy.sh ./tomcat.sh
 
 before_install:
 - ./tomcat.sh
