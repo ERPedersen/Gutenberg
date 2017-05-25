@@ -2,9 +2,13 @@
 language: java
 jdk: oraclejdk8
 
-# Loads in the deploy.sh script from root.
+# Installs tomcat Loads in the deploy.sh script from root.
 before_script:
 - chmod +x ./deploy.sh
+- chmod +x ./tomcat.sh
+
+before_install:
+- ./tomcat.sh
 
 # Override the normal script mvn test -B, runs the script loaded from the script above
 script:

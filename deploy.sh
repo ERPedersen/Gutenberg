@@ -5,8 +5,6 @@
 
 set -ev # -e tells the script to stop if error, -v prints the script before running
 
-source tomcat.sh #import the Tomcat installation bash script
-
 if [ $TRAVIS_BRANCH == 'master' -a $TRAVIS_PULL_REQUEST == 'false' ]; then
 	mvn clean verify site -X;
 else
