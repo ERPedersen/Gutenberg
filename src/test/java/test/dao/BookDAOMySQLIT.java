@@ -147,4 +147,21 @@ public class BookDAOMySQLIT {
         assertThat(books, hasSize(equalTo(0)));
     }
 
+    @Test
+    public void successfulSearchForCityTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> cities = dao.searchForCity("Copen", 10);
+
+        assertThat(cities, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearchForCityTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> cities = dao.searchForCity("Babylon", 10);
+
+        assertThat(cities, hasSize(equalTo(0)));
+    }
 }
