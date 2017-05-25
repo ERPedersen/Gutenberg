@@ -17,6 +17,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -75,6 +76,39 @@ public class MySQLAPITest {
 
         api = new MySQLAPI(facade);
         Response response = api.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
+
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void successfulBooksAndCitiesFromAuthor() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+        List<Book> books = new ArrayList<Book>() {{
+            add(new Book());
+        }};
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.getBooksAndCitiesFromAuthor(anyString(), anyInt()))
+                .thenReturn(books);
+
+        api = new MySQLAPI(facade);
+        Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulBooksAndCitiesFromAuthor() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.getBooksAndCitiesFromAuthor(anyString(), anyInt()))
+                .thenThrow(BookNotFoundException.class);
+
+        api = new MySQLAPI(facade);
+        Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
 
         assertThat(response.getStatus(), is(400));
     }
