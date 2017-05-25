@@ -397,7 +397,7 @@ public class BookDAOMySQL implements IBookDAOMySQL {
             preparedStatement.setString(1, starredInput);
             preparedStatement.setString(2, modulusInput);
             if(limit != 0) {
-                preparedStatement.setInt(2, limit);
+                preparedStatement.setInt(3, limit);
             }
             ResultSet resultSet = preparedStatement.executeQuery();
 
