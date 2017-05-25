@@ -143,4 +143,36 @@ public class MongoApiTest {
         Response response = api.getLocationsFromBook(anyString(), anyInt());
         assertThat(response.getStatus(), is(400));
     }
+
+    @Test
+    public void successfulGetBooksFromCity() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
+
+        List<Book> books = new ArrayList<Book>() {{
+            add(new Book());
+        }};
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getAuthorsAndBookFromCity(anyString(), anyInt()))
+                .thenReturn(books);
+
+        api = new MongoAPI(facade);
+        Response response = api.getBooksFromCity(anyString(), anyInt());
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetBooksFromCity() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getAuthorsAndBookFromCity(anyString(), anyInt()))
+                .thenThrow(new BookNotFoundException("msg"));
+
+        api = new MongoAPI(facade);
+        Response response = api.getBooksFromCity(anyString(), anyInt());
+        assertThat(response.getStatus(), is(400));
+    }
 }
