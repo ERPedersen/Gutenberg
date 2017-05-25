@@ -1,6 +1,7 @@
 # Define the program language and enviroments to run through travis
 language: java
 jdk: oraclejdk8
+sudo: required
 
 before_install:
 - chmod +x ./tomcat.sh
