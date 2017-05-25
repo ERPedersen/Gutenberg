@@ -47,6 +47,19 @@ public class MongoAPI {
     }
 
     /**
+     * Creates a new instance of MongoAPI that injects a BookMongoFacade.
+     *
+     * @param facade the facade that needs to be injected.
+     */
+    public MongoAPI(IBookFacadeMongo facade) {
+        gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+                .create();
+        this.facade = facade;
+    }
+
+    /**
      * Root endpoint.
      */
     @GET

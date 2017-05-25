@@ -27,4 +27,12 @@ public class MongoApiTest {
 
         assertThat(api, is(notNullValue()));
     }
+
+    @Test
+    public void dependencyInjectorTest() {
+        IBookFacadeMongo facade = new BookFacadeMongo();
+        MongoAPI api = new MongoAPI(facade);
+
+        assertThat(api, is(notNullValue()));
+    }
 }
