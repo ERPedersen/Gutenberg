@@ -5,6 +5,7 @@ import main.dao.IBookDAOMongo;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 
 import java.util.List;
 
@@ -14,18 +15,18 @@ public class BookFacadeMongo implements IBookFacadeMongo {
     /**
      * Default constructor.
      */
-<span class="fc" id="L17">    public BookFacadeMongo() {</span>
-<span class="fc" id="L18">        dao = new BookDAOMongo();</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L18">    public BookFacadeMongo() {</span>
+<span class="fc" id="L19">        dao = new BookDAOMongo();</span>
+<span class="fc" id="L20">    }</span>
 
     /**
      * Constructor with dependency injector.
      *
      * @param dao The dao.
      */
-<span class="fc" id="L26">    public BookFacadeMongo(IBookDAOMongo dao) {</span>
-<span class="fc" id="L27">        this.dao = dao;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L27">    public BookFacadeMongo(IBookDAOMongo dao) {</span>
+<span class="fc" id="L28">        this.dao = dao;</span>
+<span class="fc" id="L29">    }</span>
 
     /**
      * Gets a list of books from the data access object and returns it.
@@ -39,11 +40,11 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      */
     @Override
     public List&lt;Book&gt; getBooksFromLatLong(double latitude, double longitude, int radius, int limit) throws BookNotFoundException {
-<span class="fc" id="L42">        List&lt;Book&gt; books = dao.getBooksFromLatLong(latitude, longitude, radius, limit);</span>
-<span class="pc bpc" id="L43" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
-<span class="fc" id="L44">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+<span class="fc" id="L43">        List&lt;Book&gt; books = dao.getBooksFromLatLong(latitude, longitude, radius, limit);</span>
+<span class="pc bpc" id="L44" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L45">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
         }
-<span class="fc" id="L46">        return books;</span>
+<span class="fc" id="L47">        return books;</span>
     }
 
     /**
@@ -56,11 +57,11 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      */
     @Override
     public List&lt;Book&gt; getBooksAndCitiesFromAuthor(String name, int limit) throws BookNotFoundException {
-<span class="fc" id="L59">        List&lt;Book&gt; books = dao.getBooksAndCitiesFromAuthor(name, limit);</span>
-<span class="pc bpc" id="L60" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
-<span class="fc" id="L61">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+<span class="fc" id="L60">        List&lt;Book&gt; books = dao.getBooksAndCitiesFromAuthor(name, limit);</span>
+<span class="pc bpc" id="L61" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L62">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
         }
-<span class="fc" id="L63">        return books;</span>
+<span class="fc" id="L64">        return books;</span>
     }
 
     /**
@@ -69,15 +70,15 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      * @param title The title of the book that is searched for in the database.
      * @param limit The maximum amount of results allowed from the query.
      * @return The books which mentions cities mentioned in the book.
-     * @throws BookNotFoundException If the book doesn't mention any cities.
+     * @throws LocationNotFoundException If the book doesn't mention any cities.
      */
     @Override
-    public List&lt;Location&gt; getCitiesFromBook(String title, int limit) throws BookNotFoundException {
-<span class="fc" id="L76">        List&lt;Location&gt; books = dao.getCitiesFromBook(title, limit);</span>
-<span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
-<span class="fc" id="L78">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+    public List&lt;Location&gt; getCitiesFromBook(String title, int limit) throws LocationNotFoundException {
+<span class="fc" id="L77">        List&lt;Location&gt; books = dao.getCitiesFromBook(title, limit);</span>
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L79">            throw new LocationNotFoundException(&quot;No Book was found&quot;);</span>
         }
-<span class="fc" id="L80">        return books;</span>
+<span class="fc" id="L81">        return books;</span>
     }
 
     /**
@@ -90,11 +91,11 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      */
     @Override
     public List&lt;Book&gt; getAuthorsAndBookFromCity(String name, int limit) throws BookNotFoundException {
-<span class="fc" id="L93">        List&lt;Book&gt; books = dao.getAuthorsAndBooksFromCity(name, limit);</span>
-<span class="pc bpc" id="L94" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
-<span class="fc" id="L95">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
+<span class="fc" id="L94">        List&lt;Book&gt; books = dao.getAuthorsAndBooksFromCity(name, limit);</span>
+<span class="pc bpc" id="L95" title="1 of 4 branches missed.">        if (null == books || books.size() == 0) {</span>
+<span class="fc" id="L96">            throw new BookNotFoundException(&quot;No Book was found&quot;);</span>
         }
-<span class="fc" id="L97">        return books;</span>
+<span class="fc" id="L98">        return books;</span>
     }
 
 }
