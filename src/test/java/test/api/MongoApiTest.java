@@ -2,6 +2,7 @@ package test.api;
 
 import main.api.MongoAPI;
 import main.dto.Book;
+import main.exception.BookNotFoundException;
 import main.facade.BookFacadeMongo;
 import main.facade.IBookFacadeMongo;
 import org.junit.Test;
@@ -43,5 +44,37 @@ public class MongoApiTest {
 
         Response res = api.getRoot();
         assertThat(res.getStatus(), is(200));
+    }
+
+    @Test
+    public void successfulGetBooksFromLatLongTest() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
+
+        List<Book> books = new ArrayList<Book>() {{
+            add(new Book());
+        }};
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt()))
+                .thenReturn(books);
+
+        api = new MongoAPI(facade);
+        Response response = api.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetBooksFromLatLongTest() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt()))
+                .thenThrow(new BookNotFoundException("msg"));
+
+        api = new MongoAPI(facade);
+        Response response = api.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
+        assertThat(response.getStatus(), is(400));
     }
 }
