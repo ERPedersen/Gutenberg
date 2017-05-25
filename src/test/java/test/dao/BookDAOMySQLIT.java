@@ -1,7 +1,6 @@
 package test.dao;
 
 import main.dao.BookDAOMySQL;
-import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import org.junit.Test;
@@ -151,7 +150,7 @@ public class BookDAOMySQLIT {
     public void successfulSearchForCityTest() {
         dao = new BookDAOMySQL();
 
-        List<String> cities = dao.searchForCity("Copen", 10);
+        List<String> cities = dao.searchForCity("Copenhagen", 10);
 
         assertThat(cities, hasSize(greaterThan(0)));
     }
