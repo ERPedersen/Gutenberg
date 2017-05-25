@@ -2,6 +2,7 @@ package test.api;
 
 import main.api.MySQLAPI;
 import main.dto.Book;
+import main.dto.Location;
 import main.exception.BookNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
@@ -109,6 +110,39 @@ public class MySQLAPITest {
 
         api = new MySQLAPI(facade);
         Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void successfulGetLocationsFromBook() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+        List<Location> locations = new ArrayList<Location>() {{
+            add(new Location());
+        }};
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.getCitiesFromBook(anyString(), anyInt()))
+                .thenReturn(locations);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getLocationsFromBook(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetLocationsFromBooks() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.getCitiesFromBook(anyString(), anyInt()))
+                .thenThrow(BookNotFoundException.class);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getLocationsFromBook(anyString(), anyInt());
 
         assertThat(response.getStatus(), is(400));
     }
