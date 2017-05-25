@@ -212,4 +212,37 @@ public class MySQLAPITest {
 
         assertThat(response.getStatus(), is(400));
     }
+
+    @Test
+    public void successfulGetCititesTest() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+        List<String> cities = new ArrayList<String>() {{
+            add("city");
+        }};
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.searchForCity(anyString(), anyInt()))
+                .thenReturn(cities);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getCities(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetCitiesTest() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.searchForCity(anyString(), anyInt()))
+                .thenThrow(BookNotFoundException.class);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getCities(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(400));
+    }
 }
