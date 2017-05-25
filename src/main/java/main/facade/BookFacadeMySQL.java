@@ -4,7 +4,9 @@ import main.dao.BookDAOMySQL;
 import main.dao.IBookDAOMySQL;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 
 import java.util.List;
 
@@ -73,13 +75,13 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @param title The title of the book that is searched for in the database.
      * @return The books which mentions cities mentioned in the book.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException If the book doesn't mention any cities.
+     * @throws LocationNotFoundException If the book doesn't mention any cities.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title, int limit) throws BookNotFoundException {
+    public List<Location> getCitiesFromBook(String title, int limit) throws LocationNotFoundException {
         List<Location> books = dao.getCitiesFromBook(title, limit);
         if (null == books || books.size() == 0) {
-            throw new BookNotFoundException("No Book was found");
+            throw new LocationNotFoundException("No Book was found");
         }
         return books;
     }
@@ -107,13 +109,13 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @param name The partial name of a city.
      * @return A list of Strings for City names.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException If there is no city names matching.
+     * @throws LocationNotFoundException If there is no city names matching.
      */
     @Override
-    public List<String> searchForCity(String name, int limit) throws BookNotFoundException {
+    public List<String> searchForCity(String name, int limit) throws LocationNotFoundException {
         List<String> cities = dao.searchForCity(name, limit);
         if (null == cities || cities.size() == 0) {
-            throw new BookNotFoundException("No city was found");
+            throw new LocationNotFoundException("No city was found");
         }
         return cities;
     }
@@ -141,13 +143,13 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @param name The partial name of an author.
      * @return A list of Strings for Author names.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException If there is no author name matching.
+     * @throws AuthorNotFoundException If there is no author name matching.
      */
     @Override
-    public List<String> searchForAuthor(String name, int limit) throws BookNotFoundException {
+    public List<String> searchForAuthor(String name, int limit) throws AuthorNotFoundException {
         List<String> authors = dao.searchForAuthor(name, limit);
         if (null == authors || authors.size() == 0) {
-            throw new BookNotFoundException("No author was found");
+            throw new AuthorNotFoundException("No author was found");
         }
         return authors;
     }

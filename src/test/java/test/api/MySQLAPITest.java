@@ -3,7 +3,9 @@ package test.api;
 import main.api.MySQLAPI;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
 import org.junit.Test;
@@ -139,7 +141,7 @@ public class MySQLAPITest {
 
         facade = mock(BookFacadeMySQL.class);
         when(facade.getCitiesFromBook(anyString(), anyInt()))
-                .thenThrow(BookNotFoundException.class);
+                .thenThrow(LocationNotFoundException.class);
 
         api = new MySQLAPI(facade);
         Response response = api.getLocationsFromBook(anyString(), anyInt());
@@ -205,7 +207,7 @@ public class MySQLAPITest {
 
         facade = mock(BookFacadeMySQL.class);
         when(facade.searchForAuthor(anyString(), anyInt()))
-                .thenThrow(BookNotFoundException.class);
+                .thenThrow(AuthorNotFoundException.class);
 
         api = new MySQLAPI(facade);
         Response response = api.getAuthors(anyString(), anyInt());
@@ -214,7 +216,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetCititesTest() {
+    public void successfulGetCitiesTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<String> cities = new ArrayList<String>() {{
@@ -238,7 +240,7 @@ public class MySQLAPITest {
 
         facade = mock(BookFacadeMySQL.class);
         when(facade.searchForCity(anyString(), anyInt()))
-                .thenThrow(BookNotFoundException.class);
+                .thenThrow(LocationNotFoundException.class);
 
         api = new MySQLAPI(facade);
         Response response = api.getCities(anyString(), anyInt());

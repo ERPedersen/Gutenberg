@@ -4,6 +4,7 @@ import main.api.MongoAPI;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMongo;
 import main.facade.IBookFacadeMongo;
 import org.junit.Test;
@@ -140,7 +141,7 @@ public class MongoAPITest {
 
         facade = mock(BookFacadeMongo.class);
         when(facade.getCitiesFromBook(anyString(), anyInt()))
-                .thenThrow(new BookNotFoundException("msg"));
+                .thenThrow(new LocationNotFoundException("msg"));
 
         api = new MongoAPI(facade);
         Response response = api.getLocationsFromBook(anyString(), anyInt());

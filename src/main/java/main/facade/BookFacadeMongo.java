@@ -5,6 +5,7 @@ import main.dao.IBookDAOMongo;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 
 import java.util.List;
 
@@ -69,13 +70,13 @@ public class BookFacadeMongo implements IBookFacadeMongo {
      * @param title The title of the book that is searched for in the database.
      * @param limit The maximum amount of results allowed from the query.
      * @return The books which mentions cities mentioned in the book.
-     * @throws BookNotFoundException If the book doesn't mention any cities.
+     * @throws LocationNotFoundException If the book doesn't mention any cities.
      */
     @Override
-    public List<Location> getCitiesFromBook(String title, int limit) throws BookNotFoundException {
+    public List<Location> getCitiesFromBook(String title, int limit) throws LocationNotFoundException {
         List<Location> books = dao.getCitiesFromBook(title, limit);
         if (null == books || books.size() == 0) {
-            throw new BookNotFoundException("No Book was found");
+            throw new LocationNotFoundException("No Book was found");
         }
         return books;
     }

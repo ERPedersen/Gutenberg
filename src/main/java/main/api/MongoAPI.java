@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMongo;
 import main.facade.IBookFacadeMongo;
 
@@ -165,7 +166,7 @@ public class MongoAPI {
         List<Location> cities;
         try {
             cities = facade.getCitiesFromBook(bookName, limit);
-        } catch (BookNotFoundException ex) {
+        } catch (LocationNotFoundException ex) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))

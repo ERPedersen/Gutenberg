@@ -5,7 +5,9 @@ import main.dao.IBookDAOMySQL;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
 import org.junit.Test;
@@ -41,7 +43,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void getMySQLSuccessfulBooksFromLatitudeLongitudeTest() throws BookNotFoundException {
+    public void getMySQLSuccessfulBooksFromLatitudeLongitudeTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -57,7 +59,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getMySQLEmptyResponseBooksFromLatitudeLongitudeTest() throws BookNotFoundException {
+    public void getMySQLEmptyResponseBooksFromLatitudeLongitudeTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -70,7 +72,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void getMySQLSuccessfulBooksAndCitiesFromAuthorTest() throws BookNotFoundException {
+    public void getMySQLSuccessfulBooksAndCitiesFromAuthorTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -90,7 +92,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getMySQLEmptyResponseBooksAndCitiesFromAuthorTest() throws BookNotFoundException {
+    public void getMySQLEmptyResponseBooksAndCitiesFromAuthorTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -104,7 +106,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void getMySQLSuccessfulCitiesFromBookTest() throws BookNotFoundException {
+    public void getMySQLSuccessfulCitiesFromBookTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -119,8 +121,8 @@ public class BookFacadeMySQLTest {
         assertThat(facade.getCitiesFromBook("title", 10), is(locations));
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void getMySQLEmptyResponseCitiesFromBookTest() throws BookNotFoundException {
+    @Test(expected = LocationNotFoundException.class)
+    public void getMySQLEmptyResponseCitiesFromBookTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -133,7 +135,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void getMySQLSuccessfulAuthorsAndBooksFromCity() throws BookNotFoundException {
+    public void getMySQLSuccessfulAuthorsAndBooksFromCity() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -153,7 +155,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getMySQLEmptyResponseAuthorsAndBooksFromCity() throws BookNotFoundException {
+    public void getMySQLEmptyResponseAuthorsAndBooksFromCity() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -182,7 +184,7 @@ public class BookFacadeMySQLTest {
         assertThat(facade.searchForCity(anyString(), anyInt()), is(cities));
     }
 
-    @Test(expected = BookNotFoundException.class)
+    @Test(expected = LocationNotFoundException.class)
     public void unsuccessfulSearchForCityTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
@@ -237,7 +239,7 @@ public class BookFacadeMySQLTest {
         assertThat(facade.searchForAuthor(anyString(), anyInt()), is(authors));
     }
 
-    @Test(expected = BookNotFoundException.class)
+    @Test(expected = AuthorNotFoundException.class)
     public void unsuccessfulSearchForAuthorTest() {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
