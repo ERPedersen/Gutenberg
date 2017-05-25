@@ -44,7 +44,7 @@ public class MySQLAPI {
 	 *
 	 * @param facade The facade.
 	 */
-	public MySQLAPI(BookFacadeMySQL facade) {
+	public MySQLAPI(IBookFacadeMySQL facade) {
 		gson = new GsonBuilder()
 				.setPrettyPrinting()
 				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
