@@ -129,4 +129,22 @@ public class BookDAOMySQLIT {
         assertThat(authors, hasSize(equalTo(0)));
     }
 
+    @Test
+    public void successfulSearchForBookTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> books = dao.searchForBook("The Declaration", 10);
+
+        assertThat(books, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearForBookTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> books = dao.searchForBook("Mein Kampf", 10);
+
+        assertThat(books, hasSize(equalTo(0)));
+    }
+
 }
