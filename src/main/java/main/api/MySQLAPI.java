@@ -40,6 +40,19 @@ public class MySQLAPI {
 	}
 
 	/**
+	 * Create a new instance of MySQLAPI that is dependent on an instance of a BookFacadeMySQL.
+	 *
+	 * @param facade The facade.
+	 */
+	public MySQLAPI(IBookFacadeMySQL facade) {
+		gson = new GsonBuilder()
+				.setPrettyPrinting()
+				.setFieldNamingPolicy(FieldNamingPolicy.IDENTITY)
+				.create();
+		this.facade = facade;
+	}
+
+	/**
 	 * Root endpoint.
 	 *
 	 * @return The root endpoint of the MySQL API.
