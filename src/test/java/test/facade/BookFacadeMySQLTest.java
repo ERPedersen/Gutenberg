@@ -165,4 +165,87 @@ public class BookFacadeMySQLTest {
         facade = new BookFacadeMySQL(dao);
         facade.getAuthorsAndBookFromCity(anyString(), anyInt());
     }
+
+    @Test
+    public void successfulSearchForCityTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+
+        List<String> cities = new ArrayList<String>(){{
+            add("test");
+        }};
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForCity(anyString(), anyInt()))
+                .thenReturn(cities);
+
+        facade = new BookFacadeMySQL(dao);
+        assertThat(facade.searchForCity(anyString(), anyInt()), is(cities));
+    }
+
+    @Test(expected = BookNotFoundException.class)
+    public void unsuccessfulSearchForCityTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForCity(anyString(), anyInt()))
+                .thenReturn(null);
+
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForCity(anyString(), anyInt());
+    }
+
+    @Test
+    public void successfulSearchForBookTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+        List<String> books = new ArrayList<String>() {{
+            add("test");
+        }};
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForBook(anyString(), anyInt()))
+                .thenReturn(books);
+
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForBook(anyString(), anyInt());
+    }
+
+    @Test(expected = BookNotFoundException.class)
+    public void unsuccessfulSearchForBookTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForBook(anyString(), anyInt()))
+                .thenReturn(null);
+
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForBook(anyString(), anyInt());
+    }
+
+    @Test
+    public void successfulSearchForAuthorTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+        List<String> authors = new ArrayList<String>() {{
+            add("test");
+        }};
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForAuthor(anyString(), anyInt()))
+                .thenReturn(authors);
+
+        facade = new BookFacadeMySQL(dao);
+        assertThat(facade.searchForAuthor(anyString(), anyInt()), is(authors));
+    }
+
+    @Test(expected = BookNotFoundException.class)
+    public void unsuccessfulSearchForAuthorTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForAuthor(anyString(), anyInt()))
+                .thenReturn(null);
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForAuthor(anyString(), anyInt());
+    }
 }

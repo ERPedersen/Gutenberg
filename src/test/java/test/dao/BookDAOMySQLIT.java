@@ -110,4 +110,57 @@ public class BookDAOMySQLIT {
         assertThat(books, hasSize(equalTo(0)));
     }
 
+    @Test
+    public void successfulSearchForAuthorTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> authors = dao.searchForAuthor("Hans", 10);
+
+        assertThat(authors, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearchForAuthorTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> authors = dao.searchForAuthor("John Hitler", 10);
+
+        assertThat(authors, hasSize(equalTo(0)));
+    }
+
+    @Test
+    public void successfulSearchForBookTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> books = dao.searchForBook("The Declaration", 10);
+
+        assertThat(books, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearForBookTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> books = dao.searchForBook("Mein Kampf", 10);
+
+        assertThat(books, hasSize(equalTo(0)));
+    }
+
+    @Test
+    public void successfulSearchForCityTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> cities = dao.searchForCity("Copenhagen", 10);
+
+        assertThat(cities, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearchForCityTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> cities = dao.searchForCity("Babylon", 10);
+
+        assertThat(cities, hasSize(equalTo(0)));
+    }
 }
