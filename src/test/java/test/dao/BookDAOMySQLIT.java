@@ -1,6 +1,7 @@
 package test.dao;
 
 import main.dao.BookDAOMySQL;
+import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import org.junit.Test;
@@ -108,6 +109,24 @@ public class BookDAOMySQLIT {
         List<Book> books = dao.getBooksFromLatLong(420420.0,-696969.0,666, 10);
 
         assertThat(books, hasSize(equalTo(0)));
+    }
+
+    @Test
+    public void successfulSearchForAuthorTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> authors = dao.searchForAuthor("Hans", 10);
+
+        assertThat(authors, hasSize(greaterThan(0)));
+    }
+
+    @Test
+    public void unsuccessfulSearchForAuthorTest() {
+        dao = new BookDAOMySQL();
+
+        List<String> authors = dao.searchForAuthor("John Hitler", 10);
+
+        assertThat(authors, hasSize(equalTo(0)));
     }
 
 }
