@@ -61,25 +61,25 @@ public class RestAssuredMongo {
         assertThat(books, hasSize(greaterThan(0)));
     }
 
-    @Test
-    public void unsuccessfulTestGetBooksFromLatLong() {
-        response = given()
-                .when()
-                .get("http://localhost:8080/api/mongo/book/location?lat=0.0&long=-0.0&rad=0&lim=100")
-                .then()
-                .contentType(JSON)
-                .statusCode(400)
-                .extract().response();
-
-        String jsonString = response.asString();
-
-        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
-        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
-        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
-        }.getType());
-
-        assertThat(books, hasSize(equalTo(0)));
-    }
+//    @Test
+//    public void unsuccessfulTestGetBooksFromLatLong() {
+//        response = given()
+//                .when()
+//                .get("http://localhost:8080/api/mongo/book/location?lat=0.0&long=-0.0&rad=0&lim=100")
+//                .then()
+//                .contentType(JSON)
+//                .statusCode(400)
+//                .extract().response();
+//
+//        String jsonString = response.asString();
+//
+//        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+//        JsonArray jsonArray = jsonObject.getAsJsonArray("data");
+//        List<Book> books = gson.fromJson(jsonArray, new TypeToken<List<Location>>() {
+//        }.getType());
+//
+//        assertThat(books, hasSize(equalTo(0)));
+//    }
 
     @Test
     public void successfulTestGetBooksAndCitiesFromAuthor() {
