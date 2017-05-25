@@ -98,7 +98,7 @@ public class MongoApiTest {
     }
 
     @Test
-    public void unsuccessfulGetBooksAndCititesFromAuthorTest() {
+    public void unsuccessfulGetBooksAndCitiesFromAuthorTest() {
         MongoAPI api;
         IBookFacadeMongo facade;
 
@@ -110,4 +110,6 @@ public class MongoApiTest {
         Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
         assertThat(response.getStatus(), is(400));
     }
+
+
 }
