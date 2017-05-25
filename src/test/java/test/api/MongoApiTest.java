@@ -2,6 +2,7 @@ package test.api;
 
 import main.api.MongoAPI;
 import main.dto.Book;
+import main.dto.Location;
 import main.exception.BookNotFoundException;
 import main.facade.BookFacadeMongo;
 import main.facade.IBookFacadeMongo;
@@ -111,5 +112,35 @@ public class MongoApiTest {
         assertThat(response.getStatus(), is(400));
     }
 
+    @Test
+    public void successfulGetLocationsFromBookTest() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
 
+        List<Location> locations = new ArrayList<Location>() {{
+            add(new Location());
+        }};
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getCitiesFromBook(anyString(), anyInt()))
+                .thenReturn(locations);
+
+        api = new MongoAPI(facade);
+        Response response = api.getLocationsFromBook(anyString(), anyInt());
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetLocationsFromBookTest() {
+        MongoAPI api;
+        IBookFacadeMongo facade;
+
+        facade = mock(BookFacadeMongo.class);
+        when(facade.getCitiesFromBook(anyString(), anyInt()))
+                .thenThrow(new BookNotFoundException("msg"));
+
+        api = new MongoAPI(facade);
+        Response response = api.getLocationsFromBook(anyString(), anyInt());
+        assertThat(response.getStatus(), is(400));
+    }
 }
