@@ -3,6 +3,7 @@ package main.facade;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 
 import java.util.List;
 
@@ -34,9 +35,9 @@ public interface IBookFacadeMySQL {
      * @param title The title of a book.
      * @return The books where the cities are mentioned.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException Is thrown if no books are found.
+     * @throws LocationNotFoundException Is thrown if no books are found.
      */
-    public List<Location> getCitiesFromBook(String title, int limit) throws BookNotFoundException;
+    public List<Location> getCitiesFromBook(String title, int limit) throws LocationNotFoundException;
 
     /**
      * Returns a List of books which has a specific location somewhere in the text.
@@ -74,7 +75,7 @@ public interface IBookFacadeMySQL {
      * @param name The partial name of a city.
      * @return A collection of String titles of cities.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException Is thrown if there is no cities with the names.
+     * @throws LocationNotFoundException Is thrown if there is no cities with the names.
      */
-    public List<String> searchForCity(String name, int limit) throws BookNotFoundException;
+    public List<String> searchForCity(String name, int limit) throws LocationNotFoundException;
 }

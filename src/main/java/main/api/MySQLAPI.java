@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
 
@@ -167,7 +168,7 @@ public class MySQLAPI {
 
 		try {
 			locations = facade.getCitiesFromBook(title, limit);
-		} catch (BookNotFoundException ex) {
+		} catch (LocationNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))
@@ -280,7 +281,7 @@ public class MySQLAPI {
 			map.put("type", "city");
 			map.put("data", facade.searchForCity(city, limit));
 
-		} catch (BookNotFoundException ex) {
+		} catch (LocationNotFoundException ex) {
 			return Response
 					.status(Response.Status.BAD_REQUEST)
 					.entity(gson.toJson(ErrorResponse.getErrorResponse(400, ex.getMessage())))

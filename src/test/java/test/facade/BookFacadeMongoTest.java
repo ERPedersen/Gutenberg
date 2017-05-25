@@ -6,6 +6,7 @@ import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMongo;
 import main.facade.IBookFacadeMongo;
 import org.junit.Test;
@@ -100,7 +101,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test
-    public void getSuccessfulCitiesFromBookTest() throws BookNotFoundException {
+    public void getSuccessfulCitiesFromBookTest() throws LocationNotFoundException {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -115,8 +116,8 @@ public class BookFacadeMongoTest {
         assertThat(facade.getCitiesFromBook(anyString(), anyInt()), is(locations));
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void getEmptyResponseCitiesFromBookTest() throws BookNotFoundException {
+    @Test(expected = LocationNotFoundException.class)
+    public void getEmptyResponseCitiesFromBookTest() throws LocationNotFoundException {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 

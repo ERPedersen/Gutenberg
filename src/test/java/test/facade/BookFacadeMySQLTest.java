@@ -6,6 +6,7 @@ import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
 import main.exception.BookNotFoundException;
+import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
 import main.facade.IBookFacadeMySQL;
 import org.junit.Test;
@@ -104,7 +105,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void getMySQLSuccessfulCitiesFromBookTest() throws BookNotFoundException {
+    public void getMySQLSuccessfulCitiesFromBookTest() throws LocationNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -119,8 +120,8 @@ public class BookFacadeMySQLTest {
         assertThat(facade.getCitiesFromBook("title", 10), is(locations));
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void getMySQLEmptyResponseCitiesFromBookTest() throws BookNotFoundException {
+    @Test(expected = LocationNotFoundException.class)
+    public void getMySQLEmptyResponseCitiesFromBookTest() throws LocationNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -167,7 +168,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void successfulSearchForCityTest() {
+    public void successfulSearchForCityTest() throws LocationNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 
@@ -182,8 +183,8 @@ public class BookFacadeMySQLTest {
         assertThat(facade.searchForCity(anyString(), anyInt()), is(cities));
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void unsuccessfulSearchForCityTest() {
+    @Test(expected = LocationNotFoundException.class)
+    public void unsuccessfulSearchForCityTest() throws LocationNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
         dao = mock(BookDAOMySQL.class);
