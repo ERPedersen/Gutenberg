@@ -179,4 +179,37 @@ public class MySQLAPITest {
 
         assertThat(response.getStatus(), is(400));
     }
+
+    @Test
+    public void successfulGetAuthorsTest() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+        List<String> authors = new ArrayList<String>() {{
+            add("author");
+        }};
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.searchForAuthor(anyString(), anyInt()))
+                .thenReturn(authors);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getAuthors(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void unsuccessfulGetAuthorsTest() {
+        MySQLAPI api;
+        BookFacadeMySQL facade;
+
+        facade = mock(BookFacadeMySQL.class);
+        when(facade.searchForAuthor(anyString(), anyInt()))
+                .thenThrow(BookNotFoundException.class);
+
+        api = new MySQLAPI(facade);
+        Response response = api.getAuthors(anyString(), anyInt());
+
+        assertThat(response.getStatus(), is(400));
+    }
 }
