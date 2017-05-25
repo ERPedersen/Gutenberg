@@ -14,12 +14,12 @@ import java.util.Map;
      * @return Error response
      */
     public static Map&lt;String, Object&gt; getErrorResponse(int code, String message) {
-<span class="nc" id="L17">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L18">        map.put(&quot;code&quot;, code);</span>
-<span class="nc" id="L19">        map.put(&quot;msg&quot;, message);</span>
-<span class="nc" id="L20">        map.put(&quot;data&quot;, new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L17">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L18">        map.put(&quot;code&quot;, code);</span>
+<span class="fc" id="L19">        map.put(&quot;msg&quot;, message);</span>
+<span class="fc" id="L20">        map.put(&quot;data&quot;, new ArrayList&lt;&gt;());</span>
 
-<span class="nc" id="L22">        return map;</span>
+<span class="fc" id="L22">        return map;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
