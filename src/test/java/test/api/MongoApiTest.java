@@ -35,4 +35,13 @@ public class MongoApiTest {
 
         assertThat(api, is(notNullValue()));
     }
+
+
+    @Test
+    public void getRootTest() {
+        MongoAPI api = new MongoAPI();
+
+        Response res = api.getRoot();
+        assertThat(res.getStatus(), is(200));
+    }
 }
