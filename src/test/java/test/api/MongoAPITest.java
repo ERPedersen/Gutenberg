@@ -45,14 +45,14 @@ public class MongoAPITest {
         MongoAPI api = new MongoAPI();
 
         Response res = api.getRoot();
+
         assertThat(res.getStatus(), is(200));
     }
 
     @Test
     public void successfulGetBooksFromLatLongTest() {
         MongoAPI api;
-        IBookFacadeMongo facade;
-
+        IBookFacadeMongo facade;''
         List<Book> books = new ArrayList<Book>() {{
             add(new Book());
         }};
@@ -63,6 +63,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
+
         assertThat(response.getStatus(), is(200));
     }
 
@@ -77,6 +78,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt());
+
         assertThat(response.getStatus(), is(400));
     }
 
@@ -84,7 +86,6 @@ public class MongoAPITest {
     public void successfulGetBooksAndCitiesFromAuthorTest() {
         MongoAPI api;
         IBookFacadeMongo facade;
-
         List<Book> books = new ArrayList<Book>() {{
             add(new Book());
         }};
@@ -95,6 +96,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(200));
     }
 
@@ -109,6 +111,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.booksAndCitiesFromAuthor(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(400));
     }
 
@@ -116,7 +119,6 @@ public class MongoAPITest {
     public void successfulGetLocationsFromBookTest() {
         MongoAPI api;
         IBookFacadeMongo facade;
-
         List<Location> locations = new ArrayList<Location>() {{
             add(new Location());
         }};
@@ -127,6 +129,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getLocationsFromBook(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(200));
     }
 
@@ -141,6 +144,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getLocationsFromBook(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(400));
     }
 
@@ -148,7 +152,6 @@ public class MongoAPITest {
     public void successfulGetBooksFromCity() {
         MongoAPI api;
         IBookFacadeMongo facade;
-
         List<Book> books = new ArrayList<Book>() {{
             add(new Book());
         }};
@@ -159,6 +162,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getBooksFromCity(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(200));
     }
 
@@ -173,6 +177,7 @@ public class MongoAPITest {
 
         api = new MongoAPI(facade);
         Response response = api.getBooksFromCity(anyString(), anyInt());
+
         assertThat(response.getStatus(), is(400));
     }
 }
