@@ -193,4 +193,32 @@ public class BookFacadeMySQLTest {
         facade = new BookFacadeMySQL(dao);
         facade.searchForCity(anyString(), anyInt());
     }
+
+    @Test
+    public void successfulSearchForBookTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+        List<String> books = new ArrayList<String>() {{
+            add("test");
+        }};
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForBook(anyString(), anyInt()))
+                .thenReturn(books);
+
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForBook(anyString(), anyInt());
+    }
+
+    @Test(expected = BookNotFoundException.class)
+    public void unsuccessfulSearchForBookTest() {
+        IBookFacadeMySQL facade;
+        IBookDAOMySQL dao;
+
+        dao = mock(BookDAOMySQL.class);
+        when(dao.searchForBook(anyString(), anyInt()))
+                .thenReturn(null);
+
+        facade = new BookFacadeMySQL(dao);
+        facade.searchForBook(anyString(), anyInt());
+    }
 }
