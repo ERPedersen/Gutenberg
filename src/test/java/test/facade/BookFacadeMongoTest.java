@@ -39,7 +39,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test
-    public void getSuccessfulBooksFromLatitudeLongitudeTest() throws BookNotFoundException {
+    public void getSuccessfulBooksFromLatitudeLongitudeTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -55,7 +55,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getEmptyResponseBooksFromLatitudeLongitudeTest() throws BookNotFoundException {
+    public void getEmptyResponseBooksFromLatitudeLongitudeTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -68,7 +68,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test
-    public void getSuccessfulBooksAndCitiesFromAuthorTest() throws BookNotFoundException {
+    public void getSuccessfulBooksAndCitiesFromAuthorTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -88,7 +88,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getEmptyResponseBooksAndCitiesFromAuthorTest() throws BookNotFoundException {
+    public void getEmptyResponseBooksAndCitiesFromAuthorTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -101,7 +101,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test
-    public void getSuccessfulCitiesFromBookTest() throws LocationNotFoundException {
+    public void getSuccessfulCitiesFromBookTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -117,7 +117,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test(expected = LocationNotFoundException.class)
-    public void getEmptyResponseCitiesFromBookTest() throws LocationNotFoundException {
+    public void getEmptyResponseCitiesFromBookTest() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -130,7 +130,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test
-    public void getSuccessfulAuthorsAndBooksFromCity() throws BookNotFoundException {
+    public void getSuccessfulAuthorsAndBooksFromCity() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 
@@ -150,7 +150,7 @@ public class BookFacadeMongoTest {
     }
 
     @Test(expected = BookNotFoundException.class)
-    public void getEmptyResponseAuthorsAndBooksFromCity() throws BookNotFoundException {
+    public void getEmptyResponseAuthorsAndBooksFromCity() {
         IBookFacadeMongo facade;
         IBookDAOMongo dao;
 

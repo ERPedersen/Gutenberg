@@ -117,7 +117,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetLocationsFromBookTest() throws LocationNotFoundException {
+    public void successfulGetLocationsFromBookTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<Location> locations = new ArrayList<Location>() {{
@@ -135,7 +135,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulGetLocationsFromBooksTest() throws LocationNotFoundException {
+    public void unsuccessfulGetLocationsFromBooksTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
 
@@ -183,7 +183,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetAuthorsTest() throws AuthorNotFoundException {
+    public void successfulGetAuthorsTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<String> authors = new ArrayList<String>() {{
@@ -201,7 +201,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulGetAuthorsTest() throws AuthorNotFoundException {
+    public void unsuccessfulGetAuthorsTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
 
@@ -216,7 +216,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetCitiesTest() throws LocationNotFoundException {
+    public void successfulGetCitiesTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<String> cities = new ArrayList<String>() {{
@@ -234,7 +234,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulGetCitiesTest() throws LocationNotFoundException {
+    public void unsuccessfulGetCitiesTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
 

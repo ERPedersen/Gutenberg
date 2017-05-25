@@ -117,7 +117,7 @@ public class MongoAPITest {
     }
 
     @Test
-    public void successfulGetLocationsFromBookTest() throws LocationNotFoundException {
+    public void successfulGetLocationsFromBookTest() {
         MongoAPI api;
         IBookFacadeMongo facade;
         List<Location> locations = new ArrayList<Location>() {{
@@ -135,7 +135,7 @@ public class MongoAPITest {
     }
 
     @Test
-    public void unsuccessfulGetLocationsFromBookTest() throws LocationNotFoundException {
+    public void unsuccessfulGetLocationsFromBookTest() {
         MongoAPI api;
         IBookFacadeMongo facade;
 
