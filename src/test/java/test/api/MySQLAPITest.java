@@ -3,6 +3,7 @@ package test.api;
 import main.api.MySQLAPI;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
 import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
@@ -182,7 +183,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetAuthorsTest() {
+    public void successfulGetAuthorsTest() throws AuthorNotFoundException {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<String> authors = new ArrayList<String>() {{
@@ -200,13 +201,13 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulGetAuthorsTest() {
+    public void unsuccessfulGetAuthorsTest() throws AuthorNotFoundException {
         MySQLAPI api;
         BookFacadeMySQL facade;
 
         facade = mock(BookFacadeMySQL.class);
         when(facade.searchForAuthor(anyString(), anyInt()))
-                .thenThrow(BookNotFoundException.class);
+                .thenThrow(AuthorNotFoundException.class);
 
         api = new MySQLAPI(facade);
         Response response = api.getAuthors(anyString(), anyInt());

@@ -2,6 +2,7 @@ package main.facade;
 
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
 import main.exception.LocationNotFoundException;
 
@@ -55,9 +56,9 @@ public interface IBookFacadeMySQL {
      * @param name The partial name of an author.
      * @return A collection of String names of authors.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException Is thrown if there is no authors with the name.
+     * @throws AuthorNotFoundException Is thrown if there is no authors with the name.
      */
-    public List<String> searchForAuthor(String name, int limit) throws BookNotFoundException;
+    public List<String> searchForAuthor(String name, int limit) throws AuthorNotFoundException;
 
     /**
      * Enables searching of books. Returns a list of Strings with book titles.

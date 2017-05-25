@@ -5,6 +5,7 @@ import main.dao.IBookDAOMySQL;
 import main.dto.Author;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
 import main.exception.LocationNotFoundException;
 import main.facade.BookFacadeMySQL;
@@ -224,7 +225,7 @@ public class BookFacadeMySQLTest {
     }
 
     @Test
-    public void successfulSearchForAuthorTest() {
+    public void successfulSearchForAuthorTest() throws AuthorNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
         List<String> authors = new ArrayList<String>() {{
@@ -238,8 +239,8 @@ public class BookFacadeMySQLTest {
         assertThat(facade.searchForAuthor(anyString(), anyInt()), is(authors));
     }
 
-    @Test(expected = BookNotFoundException.class)
-    public void unsuccessfulSearchForAuthorTest() {
+    @Test(expected = AuthorNotFoundException.class)
+    public void unsuccessfulSearchForAuthorTest() throws AuthorNotFoundException {
         IBookFacadeMySQL facade;
         IBookDAOMySQL dao;
 

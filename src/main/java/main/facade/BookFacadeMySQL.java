@@ -4,6 +4,7 @@ import main.dao.BookDAOMySQL;
 import main.dao.IBookDAOMySQL;
 import main.dto.Book;
 import main.dto.Location;
+import main.exception.AuthorNotFoundException;
 import main.exception.BookNotFoundException;
 import main.exception.LocationNotFoundException;
 
@@ -142,13 +143,13 @@ public class BookFacadeMySQL implements IBookFacadeMySQL
      * @param name The partial name of an author.
      * @return A list of Strings for Author names.
      * @param limit The limit of returned rows.
-     * @throws BookNotFoundException If there is no author name matching.
+     * @throws AuthorNotFoundException If there is no author name matching.
      */
     @Override
-    public List<String> searchForAuthor(String name, int limit) throws BookNotFoundException {
+    public List<String> searchForAuthor(String name, int limit) throws AuthorNotFoundException {
         List<String> authors = dao.searchForAuthor(name, limit);
         if (null == authors || authors.size() == 0) {
-            throw new BookNotFoundException("No author was found");
+            throw new AuthorNotFoundException("No author was found");
         }
         return authors;
     }
