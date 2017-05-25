@@ -82,7 +82,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulBooksAndCitiesFromAuthor() {
+    public void successfulBooksAndCitiesFromAuthorTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<Book> books = new ArrayList<Book>() {{
@@ -100,7 +100,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulBooksAndCitiesFromAuthor() {
+    public void unsuccessfulBooksAndCitiesFromAuthorTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
 
@@ -115,7 +115,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void successfulGetLocationsFromBook() {
+    public void successfulGetLocationsFromBookTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
         List<Location> locations = new ArrayList<Location>() {{
@@ -133,7 +133,7 @@ public class MySQLAPITest {
     }
 
     @Test
-    public void unsuccessfulGetLocationsFromBooks() {
+    public void unsuccessfulGetLocationsFromBooksTest() {
         MySQLAPI api;
         BookFacadeMySQL facade;
 
