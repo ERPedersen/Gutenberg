@@ -20,7 +20,7 @@ To find the documentation for the Database course click [here](https://github.co
 
 The assignment for testing course project can be found [here](Semester%20project%20Testing.md).
 
-To find the documentation for the Testing course click [here]() (Not available yet).
+To find the documentation for the Testing course click [here](https://github.com/ERPedersen/Gutenberg/blob/master/reflections.pdf).
 
 To find the github for the frontend of the project click [here](https://github.com/ERPedersen/GutenbergWeb).
 
