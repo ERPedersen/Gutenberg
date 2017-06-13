@@ -54,6 +54,11 @@ public class BookFacadeMongoTest {
         assertThat(facade.getBooksFromLatLong(anyDouble(), anyDouble(), anyInt(), anyInt()), is(books));
     }
 
+    @Test
+    public void examassertion() {
+        assertThat(1, is(1));
+    }
+
     @Test(expected = BookNotFoundException.class)
     public void getEmptyResponseBooksFromLatitudeLongitudeTest() {
         IBookFacadeMongo facade;
