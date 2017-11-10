@@ -5,9 +5,9 @@
 ___________________________________________________________
 
 This project covers the semester courses database and testing.
-The project produced here use the Gutenberg project data.
+The project produced here uses the Gutenberg project data.
 
-The project have been Created by 
+The project has been created by 
 - Rune V. Zimsen
 - Dennis Rønnebæk
 - Emil R. Pedersen
@@ -23,8 +23,6 @@ The assignment for testing course project can be found [here](Semester%20project
 To find the documentation for the Testing course click [here](https://github.com/ERPedersen/Gutenberg/blob/master/reflections.pdf).
 
 To find the github for the frontend of the project click [here](https://github.com/ERPedersen/GutenbergWeb).
-
-To see the project in action click [here](http://zesty.emilrosenius.dk/).
 
 We have used CI with the project [Travis-CI.com](https://travis-ci.org/ERPedersen/Gutenberg).
 
